@@ -1,7 +1,10 @@
 package com.smrtgrdyn.smrtgrdyn.Garden;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.UUID;
 
+@Entity
 public class GardenSensorData {
 /*
     {
@@ -16,7 +19,9 @@ public class GardenSensorData {
     smrtgrdyn.com/gardenstatus {json}
 */
 
+    @Id
     UUID gardenid;
+
     boolean wateractive;
     double temperature;
     double soilmoisture;
@@ -30,6 +35,9 @@ public class GardenSensorData {
         this.soilmoisture = soilmoisture;
         this.waterflow = waterflow;
         this.timestamp = timestamp;
+    }
+
+    public GardenSensorData() {
     }
 
     public UUID getGardenid() {
