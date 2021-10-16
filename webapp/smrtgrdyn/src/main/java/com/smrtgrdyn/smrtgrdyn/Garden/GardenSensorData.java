@@ -13,6 +13,7 @@ public class GardenSensorData {
         "temperature" : 45.3,
         "soilmoisture" : 32.1,
         "waterflow" : 43.1,
+        "phbalance" : 7.0,
         "timestamp" : "9082304823048"
     }
 
@@ -26,14 +27,16 @@ public class GardenSensorData {
     double temperature;
     double soilmoisture;
     double waterflow;
+    double phbalance;
     String timestamp;
 
-    public GardenSensorData(UUID gardenid, boolean wateractive, double temperature, double soilmoisture, double waterflow, String timestamp) {
+    public GardenSensorData(UUID gardenid, boolean wateractive, double temperature, double soilmoisture, double waterflow, double phbalance, String timestamp) {
         this.gardenid = gardenid;
         this.wateractive = wateractive;
         this.temperature = temperature;
         this.soilmoisture = soilmoisture;
         this.waterflow = waterflow;
+        this.phbalance = phbalance;
         this.timestamp = timestamp;
     }
 
@@ -78,6 +81,14 @@ public class GardenSensorData {
 
     public void setWaterflow(double waterflow) {
         this.waterflow = waterflow;
+    }
+    
+    public double getPhbalance() {
+        return phbalance;
+    }
+
+    public void setPhbalance(double phbalance) {
+        this.phbalance = phbalance;
     }
 
     public String getTimestamp() {
