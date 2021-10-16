@@ -2,9 +2,14 @@ package com.smrtgrdyn.smrtgrdyn.Garden;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Entity
+@Table(name = "garden-sensor-data")
+@IdClass(GardenSensorDataId.class)
 public class GardenSensorData {
 /*
     {
@@ -21,42 +26,45 @@ public class GardenSensorData {
 */
 
     @Id
-    UUID gardenid;
+    UUID gardenId;
 
-    boolean wateractive;
-    double temperature;
-    double soilmoisture;
-    double waterflow;
-    double phbalance;
+    @Id
     String timestamp;
 
-    public GardenSensorData(UUID gardenid, boolean wateractive, double temperature, double soilmoisture, double waterflow, double phbalance, String timestamp) {
-        this.gardenid = gardenid;
-        this.wateractive = wateractive;
+    boolean waterActive;
+    double temperature;
+    double soilMoisture;
+    double waterFlow;
+    double phBalance;
+
+
+    public GardenSensorData(UUID gardenId, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double phBalance, String timestamp) {
+        this.gardenId = gardenId;
+        this.waterActive = waterActive;
         this.temperature = temperature;
-        this.soilmoisture = soilmoisture;
-        this.waterflow = waterflow;
-        this.phbalance = phbalance;
+        this.soilMoisture = soilMoisture;
+        this.waterFlow = waterFlow;
+        this.phBalance = phBalance;
         this.timestamp = timestamp;
     }
 
     public GardenSensorData() {
     }
 
-    public UUID getGardenid() {
-        return gardenid;
+    public UUID getGardenId() {
+        return gardenId;
     }
 
-    public void setGardenid(UUID gardenid) {
-        this.gardenid = gardenid;
+    public void setGardenId(UUID gardenId) {
+        this.gardenId = gardenId;
     }
 
-    public boolean isWateractive() {
-        return wateractive;
+    public boolean isWaterActive() {
+        return waterActive;
     }
 
-    public void setWateractive(boolean wateractive) {
-        this.wateractive = wateractive;
+    public void setWaterActive(boolean waterActive) {
+        this.waterActive = waterActive;
     }
 
     public double getTemperature() {
@@ -67,28 +75,28 @@ public class GardenSensorData {
         this.temperature = temperature;
     }
 
-    public double getSoilmoisture() {
-        return soilmoisture;
+    public double getSoilMoisture() {
+        return soilMoisture;
     }
 
-    public void setSoilmoisture(double soilmoisture) {
-        this.soilmoisture = soilmoisture;
+    public void setSoilMoisture(double soilMoisture) {
+        this.soilMoisture = soilMoisture;
     }
 
-    public double getWaterflow() {
-        return waterflow;
+    public double getWaterFlow() {
+        return waterFlow;
     }
 
-    public void setWaterflow(double waterflow) {
-        this.waterflow = waterflow;
+    public void setWaterFlow(double waterFlow) {
+        this.waterFlow = waterFlow;
     }
     
-    public double getPhbalance() {
-        return phbalance;
+    public double getPhBalance() {
+        return phBalance;
     }
 
-    public void setPhbalance(double phbalance) {
-        this.phbalance = phbalance;
+    public void setPhBalance(double phBalance) {
+        this.phBalance = phBalance;
     }
 
     public String getTimestamp() {
@@ -102,11 +110,11 @@ public class GardenSensorData {
     @Override
     public String toString() {
         return "GardenSensorData{" +
-                "gardenid=" + gardenid +
-                ", wateractive=" + wateractive +
+                "gardenId=" + gardenId +
+                ", waterActive=" + waterActive +
                 ", temperature=" + temperature +
-                ", soilmoisture=" + soilmoisture +
-                ", waterflow=" + waterflow +
+                ", soilMoisture=" + soilMoisture +
+                ", waterFlow=" + waterFlow +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
     }

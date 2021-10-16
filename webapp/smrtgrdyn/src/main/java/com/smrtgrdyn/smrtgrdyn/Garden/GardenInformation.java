@@ -2,24 +2,32 @@ package com.smrtgrdyn.smrtgrdyn.Garden;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import java.net.InetAddress;
 import java.util.UUID;
 
 @Entity
+@Table(name = "garden-information")
+@IdClass(GardenInformationId.class)
 public class GardenInformation {
 
     @Id
     UUID gardenId;
-
+    @Id
     String user;
-    InetAddress ipAddress;
+
+    String hostName;
+    Integer portNumber;
+
     // List<Sensor> sensorSuite; -- Potential future modification
 
 
-    public GardenInformation(UUID gardenId, String user, InetAddress ipAddress) {
+    public GardenInformation(UUID gardenId, String user, String hostName, Integer portNumber) {
         this.gardenId = gardenId;
         this.user = user;
-        this.ipAddress = ipAddress;
+        this.hostName = hostName;
+        this.portNumber = portNumber;
     }
 
     public GardenInformation() {
@@ -41,20 +49,19 @@ public class GardenInformation {
         this.user = user;
     }
 
-    public InetAddress getIpAddress() {
-        return ipAddress;
+    public String getHostName() {
+        return hostName;
     }
 
-    public void setIpAddress(InetAddress ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
 
-    @Override
-    public String toString() {
-        return "GardenInformation{" +
-                "gardenId=" + gardenId +
-                ", user='" + user + '\'' +
-                ", ipAddress=" + ipAddress +
-                '}';
+    public Integer getPortNumber() {
+        return portNumber;
+    }
+
+    public void setPortNumber(Integer portNumber) {
+        this.portNumber = portNumber;
     }
 }
