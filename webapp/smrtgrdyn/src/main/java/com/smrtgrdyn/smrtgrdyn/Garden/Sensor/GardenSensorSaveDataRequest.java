@@ -1,4 +1,4 @@
-package com.smrtgrdyn.smrtgrdyn.Garden;
+package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

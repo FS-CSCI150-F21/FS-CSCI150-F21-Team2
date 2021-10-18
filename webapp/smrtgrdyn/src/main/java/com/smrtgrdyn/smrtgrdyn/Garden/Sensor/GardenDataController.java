@@ -1,6 +1,7 @@
-package com.smrtgrdyn.smrtgrdyn.Garden;
+package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 
+import com.smrtgrdyn.smrtgrdyn.Garden.Sensor.GardenSensorSaveDataRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

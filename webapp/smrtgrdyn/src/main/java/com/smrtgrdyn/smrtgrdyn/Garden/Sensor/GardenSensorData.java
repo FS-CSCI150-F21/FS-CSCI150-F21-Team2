@@ -1,4 +1,6 @@
-package com.smrtgrdyn.smrtgrdyn.Garden;
+package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
+
+import org.springframework.lang.Nullable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,8 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Entity
-@Table(name = "garden-sensor-data")
-@IdClass(GardenSensorDataId.class)
+@Table(name = "garden_sensor_data")
 public class GardenSensorData {
 /*
     {
@@ -28,13 +29,18 @@ public class GardenSensorData {
     @Id
     UUID gardenId;
 
-    @Id
+    @NotBlank
     String timestamp;
 
+    @Nullable
     boolean waterActive;
+    @Nullable
     double temperature;
+    @Nullable
     double soilMoisture;
+    @Nullable
     double waterFlow;
+    @Nullable
     double phBalance;
 
 

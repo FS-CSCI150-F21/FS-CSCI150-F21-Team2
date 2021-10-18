@@ -1,4 +1,4 @@
-package com.smrtgrdyn.smrtgrdyn.Garden;
+package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

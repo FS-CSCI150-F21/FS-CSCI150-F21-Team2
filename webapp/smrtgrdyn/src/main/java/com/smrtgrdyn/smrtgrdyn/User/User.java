@@ -1,23 +1,18 @@
 package com.smrtgrdyn.smrtgrdyn.User;
 
-import com.smrtgrdyn.smrtgrdyn.Garden.GardenInformation;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 public class User {
 
     @Id
     String username;
-    //Permissions permission; super user? regular user? maybe later?
-    List<UUID> gardens; //list of all the connected garden ids for this user
+    String password;
 
-    public User(String username, List<UUID> gardens) {
+    public User(String username, String password) {
         this.username = username;
-        this.gardens = gardens;
+        this.password = password;
     }
 
     public User() {
@@ -31,19 +26,12 @@ public class User {
         this.username = username;
     }
 
-    public List<UUID> getGardens() {
-        return gardens;
+    public String getPassword() {
+        return password;
     }
 
-    public void setGardens(List<UUID> gardens) {
-        this.gardens = gardens;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", gardens=" + gardens +
-                '}';
-    }
 }

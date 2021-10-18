@@ -1,23 +1,28 @@
 package com.smrtgrdyn.smrtgrdyn.Garden;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.net.InetAddress;
 import java.util.UUID;
 
 @Entity
-@Table(name = "garden-information")
-@IdClass(GardenInformationId.class)
+@Table(name = "garden_information")
+//@IdClass(GardenInformationId.class)
 public class GardenInformation {
 
     @Id
     UUID gardenId;
-    @Id
-    String user;
 
+    @NotBlank
+    String user;
+    @NotBlank
     String hostName;
+    @NotBlank
     Integer portNumber;
 
     // List<Sensor> sensorSuite; -- Potential future modification
