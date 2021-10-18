@@ -9,7 +9,7 @@ public class User {
     @Id
     String username;
     String password;
-    //Test comment
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
