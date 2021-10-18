@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.UUID;
 
 @Service
@@ -20,9 +22,20 @@ public class GardenRegistrationService {
         this.userVerificationService = userVerificationService;
     }
 
-    public UUID requestRegistration(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest){
+    public UUID requestRegistration(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest)  {
 
         String ipAddress = servletRequest.getHeader("X-Forwarded-for");
+        if(ipAddress == null) {
+            System.out.println("NUll IP");
+            System.out.println(registrationRequest);
+            try{
+                System.out.println(InetAddress.getLocalHost());
+                System.out.println(InetAddress.getLocalHost().getHostName());
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+            return UUID.randomUUID();
+        }
         if(ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = servletRequest.getHeader("Proxy-Client-IP");
         }

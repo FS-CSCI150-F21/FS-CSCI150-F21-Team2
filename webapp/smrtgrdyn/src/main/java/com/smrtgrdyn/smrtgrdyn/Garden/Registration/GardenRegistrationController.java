@@ -3,10 +3,7 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smrtgrdyn.smrtgrdyn.Garden.GardenInformation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -16,7 +13,7 @@ import java.util.UUID;
 public class GardenRegistrationController {
 
 
-    
+
     private final GardenRegistrationService service;
 
     @Autowired
@@ -25,7 +22,7 @@ public class GardenRegistrationController {
     }
 
     @PostMapping
-    public UUID registrationRequest(HttpServletRequest servletRequest, @JsonProperty GardenRegistrationRequest registrationRequest){
+    public UUID registrationRequest(HttpServletRequest servletRequest, @RequestBody GardenRegistrationRequest registrationRequest){
 
 
         // Save the pairing request pi id and username
@@ -33,7 +30,7 @@ public class GardenRegistrationController {
     }
 
     @GetMapping
-    public String endpointTest(){
-        return "SUCCESS";
+    public GardenRegistrationRequest endpointTest(){
+        return new GardenRegistrationRequest("12312313", "Ryan1Up");
     }
 }
