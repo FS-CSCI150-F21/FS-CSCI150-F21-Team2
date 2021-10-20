@@ -1,25 +1,24 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 
-import com.smrtgrdyn.smrtgrdyn.User.Registration.UserVerificationService;
+import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.UUID;
 
 @Service
 public class GardenRegistrationService {
 
     private final GardenPairingRepository pairingRepository;
-    private final UserVerificationService userVerificationService;
+    private final UserInformationRepository userInformationRepository;
 
     @Autowired
     public GardenRegistrationService(GardenPairingRepository pairingRepository,
-                                     UserVerificationService userVerificationService){
+                                     UserInformationRepository userInformationRepository){
         this.pairingRepository = pairingRepository;
-        this.userVerificationService = userVerificationService;
+        this.userInformationRepository = userInformationRepository;
     }
 
     public UUID requestRegistration(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest)  {
