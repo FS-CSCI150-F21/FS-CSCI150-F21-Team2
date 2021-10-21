@@ -16,4 +16,6 @@ public class GardenDataController {
     public void saveGardenData(@Valid @RequestBody GardenSensorSaveDataRequest gardenSensorSaveDataRequest){
 
     }
+
+
 }

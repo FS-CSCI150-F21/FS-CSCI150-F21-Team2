@@ -15,7 +15,6 @@ import javax.websocket.Session;
 import java.util.Optional;
 
 @RestController
-//@RequestMapping("api/v1/user_session")
 public class UserSessionController {
 
 
@@ -26,7 +25,7 @@ public class UserSessionController {
         this.userInformationRepository = userInformationRepository;
     }
 
-    @RequestMapping("api/v1/user_session/login")
+    @RequestMapping("/api/v1/user_session/login")
     public void userLogin(HttpServletRequest request, @RequestBody User user){
 
         HttpSession session = request.getSession();
@@ -34,7 +33,7 @@ public class UserSessionController {
 
     }
 
-    @RequestMapping("api/v1/user_session/logout")
+    @RequestMapping("/api/v1/user_session/logout")
     public void userLogout(HttpServletRequest request, @RequestBody User user){
 
     }
