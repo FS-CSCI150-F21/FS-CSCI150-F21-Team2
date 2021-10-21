@@ -2,21 +2,24 @@ package com.smrtgrdyn.smrtgrdyn.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class User {
 
     @Id
+    @NotBlank
     String username;
+    @NotBlank
     String password;
-    String storedHash;
+    String storedSalt;
 
 
 
-    public User(String username, String password, String storedHash) {
+    public User(String username, String password, String storedSalt) {
         this.username = username;
         this.password = password;
-        this.storedHash = storedHash;
+        this.storedSalt = storedSalt;
     }
 
     public User() {
@@ -38,12 +41,12 @@ public class User {
         this.password = password;
     }
 
-    public String getStoredHash() {
-        return storedHash;
+    public String getStoredSalt() {
+        return storedSalt;
     }
 
-    public void setStoredHash(String storedHash) {
-        this.storedHash = storedHash;
+    public void setStoredSalt(String storedSalt) {
+        this.storedSalt = storedSalt;
     }
 
 }

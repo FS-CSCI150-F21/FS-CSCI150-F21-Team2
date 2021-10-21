@@ -24,8 +24,8 @@ public class UserRegistrationService {
 
         if(userOptional.isEmpty()){
             //2. Hash password
-            user.setStoredHash(BCrypt.gensalt(10));
-            user.setPassword(BCrypt.hashpw(user.getPassword(), user.getStoredHash()));
+            user.setStoredSalt(BCrypt.gensalt(10));
+            user.setPassword(BCrypt.hashpw(user.getPassword(), user.getStoredSalt()));
             //3. Store password
             userInformationRepository.save(user);
         } else{
