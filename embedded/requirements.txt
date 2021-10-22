@@ -2,3 +2,4 @@ picamera
 opencv-python
 RPi.GPIO
 adafruit-blinka
+pip3 install adafruit-circuitpython-ads1x15
