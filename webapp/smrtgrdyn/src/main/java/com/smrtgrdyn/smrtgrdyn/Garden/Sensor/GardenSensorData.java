@@ -4,7 +4,6 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.util.UUID;
@@ -19,7 +18,7 @@ public class GardenSensorData {
         "temperature" : 45.3,
         "soilmoisture" : 32.1,
         "waterflow" : 43.1,
-        "phbalance" : 7.0,
+        "humidity" : 7.0,
         "timestamp" : "9082304823048"
     }
 
@@ -41,7 +40,7 @@ public class GardenSensorData {
     @Nullable
     double waterFlow;
     @Nullable
-    double phBalance;
+    double humidity;
 
 
     public GardenSensorData(UUID gardenId, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double phBalance, String timestamp) {
@@ -50,7 +49,7 @@ public class GardenSensorData {
         this.temperature = temperature;
         this.soilMoisture = soilMoisture;
         this.waterFlow = waterFlow;
-        this.phBalance = phBalance;
+        this.humidity = phBalance;
         this.timestamp = timestamp;
     }
 
@@ -97,12 +96,12 @@ public class GardenSensorData {
         this.waterFlow = waterFlow;
     }
     
-    public double getPhBalance() {
-        return phBalance;
+    public double getHumidity() {
+        return humidity;
     }
 
-    public void setPhBalance(double phBalance) {
-        this.phBalance = phBalance;
+    public void setHumidity(double humidity) {
+        this.humidity = humidity;
     }
 
     public String getTimestamp() {

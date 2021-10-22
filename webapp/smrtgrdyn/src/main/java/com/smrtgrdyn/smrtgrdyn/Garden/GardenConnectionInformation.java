@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "garden_information")
 //@IdClass(GardenInformationId.class)
-public class GardenInformation {
+public class GardenConnectionInformation {
 
     @Id
     UUID gardenId;
@@ -28,14 +28,14 @@ public class GardenInformation {
     // List<Sensor> sensorSuite; -- Potential future modification
 
 
-    public GardenInformation(UUID gardenId, String user, String hostName, Integer portNumber) {
+    public GardenConnectionInformation(UUID gardenId, String user, String hostName, Integer portNumber) {
         this.gardenId = gardenId;
         this.user = user;
         this.hostName = hostName;
         this.portNumber = portNumber;
     }
 
-    public GardenInformation() {
+    public GardenConnectionInformation() {
     }
 
     public UUID getGardenId() {

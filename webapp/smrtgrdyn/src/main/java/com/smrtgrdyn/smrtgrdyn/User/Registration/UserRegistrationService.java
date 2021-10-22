@@ -2,8 +2,10 @@ package com.smrtgrdyn.smrtgrdyn.User.Registration;
 
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -23,13 +25,12 @@ public class UserRegistrationService {
         Optional<User> userOptional = userInformationRepository.findById(user.getUsername());
 
         if(userOptional.isEmpty()){
-            //2. Hash password
             user.setStoredSalt(BCrypt.gensalt(10));
             user.setPassword(BCrypt.hashpw(user.getPassword(), user.getStoredSalt()));
-            //3. Store password
             userInformationRepository.save(user);
         } else{
-            throw new IllegalStateException("Username is already registered");
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already registered");
         }
 
 
