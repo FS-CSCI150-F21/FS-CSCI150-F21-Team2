@@ -2,6 +2,8 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 
 import com.smrtgrdyn.smrtgrdyn.Garden.GardenConnectionInformation;
 import com.smrtgrdyn.smrtgrdyn.Garden.GardenConnectionInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,24 +19,25 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class GardenRegistrationService implements Runnable{
+public class GardenRegistrationService {
 
     private final GardenRegistrationRequestRepository registrationRequestRepository;
     private final GardenConnectionInformationRepository gardenConnectionInformationRepository;
 
     private GardenConnectionInformation gardenConnectionInformation;
     private GardenRegistrationRequest gardenRegistrationRequest;
-
+    private UserInformationRepository userInformationRepository;
 
     @Autowired
     public GardenRegistrationService(GardenRegistrationRequestRepository pairingRepository,
-                                     GardenConnectionInformationRepository gardenConnectionInformationRepository){
+                                     GardenConnectionInformationRepository gardenConnectionInformationRepository,
+                                     UserInformationRepository userInformationRepository){
         this.registrationRequestRepository = pairingRepository;
         this.gardenConnectionInformationRepository = gardenConnectionInformationRepository;
+        this.userInformationRepository = userInformationRepository;
     }
 
-    public void confirmRegistration(String username, String piId){
-
+    public void confirmRegistration(String username, GardenRegistrationRequest request){
 
         //Check registrationRequest table for request
         //if present pull send UUID to garden and drop request
@@ -43,16 +46,20 @@ public class GardenRegistrationService implements Runnable{
         //send UUID to pi through socket
         //This pulls a registration request from the database based on the piId
         Optional<GardenRegistrationRequest> optionalGardenRegistrationRequest =
-                registrationRequestRepository.findById(piId);
+                registrationRequestRepository.findById(request.getPiId());
 
         //Checks the request against the username
         if(optionalGardenRegistrationRequest.isPresent()){
             if(optionalGardenRegistrationRequest.get().getUsername().equals(username)){
 
-                sendUUIDToPi(optionalGardenRegistrationRequest.get().getGardenId());
-                //then drop the registration request from the db
+             //   sendUUIDToPi(optionalGardenRegistrationRequest.get().getGardenId());
 
-                registrationRequestRepository.delete(optionalGardenRegistrationRequest.get());
+                registerGardenWithUser(optionalGardenRegistrationRequest.get().getUsername(),
+                          optionalGardenRegistrationRequest.get().getGardenId());
+
+                //then drop the registration request from the db
+                registrationRequestRepository.deleteById(optionalGardenRegistrationRequest.get().getPiId());
+                System.out.println("Registration confirmed");
 
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
@@ -109,32 +116,64 @@ public class GardenRegistrationService implements Runnable{
 
         this.gardenConnectionInformation = new GardenConnectionInformation(gardenId, username, host, port);
         this.gardenRegistrationRequest = registrationRequest;
+        this.gardenRegistrationRequest.setGardenId(gardenId);
         //Registration Request should contain all information
         registrationRequestRepository.save(this.gardenRegistrationRequest);
         gardenConnectionInformationRepository.save(gardenConnectionInformation);
 
         //Start timing thread to drop entry once time limit is up
         // Look up a thread or runnable statement
-        this.run();
+        GardenRegistrationServiceThread thread =
+                new GardenRegistrationServiceThread(
+                        gardenRegistrationRequest.getPiId(), gardenId);
+        thread.start();
 
     }
 
-    @Override
-    public void run() {
-        try{
-            Thread.sleep(300000);
+    private void registerGardenWithUser(String username, UUID gardenId){
+        Optional<User> userOptional = userInformationRepository.findById(username);
 
-            Optional<GardenRegistrationRequest> registrationRequestOptional =
-                    registrationRequestRepository.findById(this.gardenRegistrationRequest.getPiId());
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            //   user.addGarden(gardenId);
+            user.getRegisteredGardens().add(gardenId);
+            userInformationRepository.save(user);
 
-            //If it is present, that means registration failed, drop entries from both tables
-            if (registrationRequestOptional.isPresent()){
-                gardenConnectionInformationRepository.deleteById(this.gardenConnectionInformation.getGardenId());
-                registrationRequestRepository.deleteById(this.gardenRegistrationRequest.getPiId());
-            }
-
-        }catch (InterruptedException e) {
-            e.printStackTrace();
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not Registered");
         }
     }
+
+    private class GardenRegistrationServiceThread extends Thread{
+
+        private String piId;
+        UUID gardenId;
+
+        public GardenRegistrationServiceThread(String piId, UUID gardenId) {
+            this.piId = piId;
+            this.gardenId = gardenId;
+        }
+
+        @Override
+        public void run() {
+            try{
+
+                Thread.sleep(300000);
+
+                Optional<GardenRegistrationRequest> registrationRequestOptional =
+                        registrationRequestRepository.findById(this.piId);
+
+                //If it is present, that means registration failed, drop entries from both tables
+                if (registrationRequestOptional.isPresent()){
+                    gardenConnectionInformationRepository.deleteById(this.gardenId);
+                    registrationRequestRepository.deleteById(this.piId);
+                }
+
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

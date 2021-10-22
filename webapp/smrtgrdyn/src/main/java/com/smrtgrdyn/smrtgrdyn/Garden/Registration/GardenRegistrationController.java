@@ -32,24 +32,26 @@ public class GardenRegistrationController {
     @PostMapping
     @RequestMapping("api/v1/garden_registration/user")
     public void registrationConfirmationFromUser(HttpServletRequest servletRequest,
-                                                 @JsonProperty String piId){
+                                                 @RequestBody GardenRegistrationRequest request){
 
         //Get the session
         HttpSession session = servletRequest.getSession(false);
         //If someone logged in, continue to registration confirmation
         if(session != null){
             String username = (String) session.getAttribute("username");
-            service.confirmRegistration(username, piId);
+
+            service.confirmRegistration(username, request);
 
         }else{
             //Otherwise nobody is logged in, throw error
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not logged in");
         }
+    }
 
-
-
-
-
+    @GetMapping
+    @RequestMapping("test")
+    public GardenRegistrationRequest getRegistrationRequest(){
+        return new GardenRegistrationRequest("1234", "Ryan1Up", null);
     }
 
 

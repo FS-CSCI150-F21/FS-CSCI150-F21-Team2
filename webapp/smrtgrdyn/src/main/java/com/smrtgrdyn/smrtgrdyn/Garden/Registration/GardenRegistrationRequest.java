@@ -10,6 +10,7 @@ public class GardenRegistrationRequest {
 
     @Id
     private String piId;
+
     private String username;
     private UUID gardenId;
 

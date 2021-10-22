@@ -1,10 +1,12 @@
 package com.smrtgrdyn.smrtgrdyn.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
+@Table(name = "user_information")
 public class User {
 
     @Id
@@ -14,12 +16,16 @@ public class User {
     String password;
     String storedSalt;
 
+    @ElementCollection(targetClass = UUID.class)
+    List<UUID> registeredGardens;
 
 
-    public User(String username, String password, String storedSalt) {
+
+    public User(String username, String password, String storedSalt, List<UUID> registeredGardens) {
         this.username = username;
         this.password = password;
         this.storedSalt = storedSalt;
+        this.registeredGardens = registeredGardens;
     }
 
     public User() {
@@ -47,6 +53,14 @@ public class User {
 
     public void setStoredSalt(String storedSalt) {
         this.storedSalt = storedSalt;
+    }
+
+    public void setRegisteredGardens(List<UUID> registeredGardens) {
+        this.registeredGardens = registeredGardens;
+    }
+
+    public List<UUID> getRegisteredGardens(){
+        return this.registeredGardens;
     }
 
 }
