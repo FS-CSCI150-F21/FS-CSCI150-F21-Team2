@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "garden_sensor_data")
+@IdClass(GardenSensorDataId.class)
 public class GardenSensorData {
 /*
     {
@@ -27,19 +28,18 @@ public class GardenSensorData {
     @Id
     private UUID gardenId;
 
-   // @Id
-    @NotBlank
+    @Id
     private String timestamp;
 
-   // @Nullable
+    @Nullable
     private boolean waterActive;
-  //  @Nullable
+    @Nullable
     private double temperature;
-  //  @Nullable
+    @Nullable
     private double soilMoisture;
- //   @Nullable
+    @Nullable
     private double waterFlow;
-   // @Nullable
+    @Nullable
     private double humidity;
 
     public GardenSensorData(UUID gardenId, String timestamp, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double humidity) {

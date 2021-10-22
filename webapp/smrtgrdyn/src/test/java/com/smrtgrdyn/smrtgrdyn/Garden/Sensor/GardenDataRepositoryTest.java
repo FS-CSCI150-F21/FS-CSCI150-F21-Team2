@@ -36,9 +36,10 @@ class GardenDataRepositoryTest {
         UUID gardenId = UUID.randomUUID();
         String timestamp = "123456";
         GardenSensorData data = new GardenSensorData(gardenId, timestamp, false, 0, 0,0,0);
+        GardenSensorDataId id = new GardenSensorDataId(gardenId, timestamp);
         //When
         underTest.save(data);
-        Optional<GardenSensorData> gardenSensorDataOptional = underTest.findById(gardenId);
+        Optional<GardenSensorData> gardenSensorDataOptional = underTest.findById(id);
 
         //Then
         assertThat(gardenSensorDataOptional)
@@ -64,7 +65,7 @@ class GardenDataRepositoryTest {
                 });
     }
     @Test
-    void itShouldSaveTwoEntriesFromSaveGarden(){
+    void itShouldSaveTwoEntriesFromTheSameGarden(){
         //Given
         UUID gardenId = UUID.randomUUID();
         String timestamp = "123456";

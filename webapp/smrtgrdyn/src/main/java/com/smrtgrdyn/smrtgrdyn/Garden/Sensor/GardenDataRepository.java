@@ -16,7 +16,7 @@ import java.util.UUID;
 * of specification*/
 
 @Repository
-public interface GardenDataRepository extends CrudRepository<GardenSensorData, UUID> {
+public interface GardenDataRepository extends CrudRepository<GardenSensorData, GardenSensorDataId> {
 
     @Query(value = "SELECT * FROM garden_sensor_data" +
             " where timestamp = :timestamp",
