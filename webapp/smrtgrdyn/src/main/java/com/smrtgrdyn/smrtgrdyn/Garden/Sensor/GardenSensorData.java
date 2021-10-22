@@ -2,10 +2,9 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -26,31 +25,31 @@ public class GardenSensorData {
 */
 
     @Id
-    UUID gardenId;
+    private UUID gardenId;
 
+   // @Id
     @NotBlank
-    String timestamp;
+    private String timestamp;
 
-    @Nullable
-    boolean waterActive;
-    @Nullable
-    double temperature;
-    @Nullable
-    double soilMoisture;
-    @Nullable
-    double waterFlow;
-    @Nullable
-    double humidity;
+   // @Nullable
+    private boolean waterActive;
+  //  @Nullable
+    private double temperature;
+  //  @Nullable
+    private double soilMoisture;
+ //   @Nullable
+    private double waterFlow;
+   // @Nullable
+    private double humidity;
 
-
-    public GardenSensorData(UUID gardenId, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double phBalance, String timestamp) {
+    public GardenSensorData(UUID gardenId, String timestamp, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double humidity) {
         this.gardenId = gardenId;
+        this.timestamp = timestamp;
         this.waterActive = waterActive;
         this.temperature = temperature;
         this.soilMoisture = soilMoisture;
         this.waterFlow = waterFlow;
-        this.humidity = phBalance;
-        this.timestamp = timestamp;
+        this.humidity = humidity;
     }
 
     public GardenSensorData() {
@@ -62,6 +61,14 @@ public class GardenSensorData {
 
     public void setGardenId(UUID gardenId) {
         this.gardenId = gardenId;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public boolean isWaterActive() {
@@ -95,7 +102,7 @@ public class GardenSensorData {
     public void setWaterFlow(double waterFlow) {
         this.waterFlow = waterFlow;
     }
-    
+
     public double getHumidity() {
         return humidity;
     }
@@ -104,23 +111,25 @@ public class GardenSensorData {
         this.humidity = humidity;
     }
 
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
     @Override
     public String toString() {
         return "GardenSensorData{" +
                 "gardenId=" + gardenId +
+                ", timestamp='" + timestamp + '\'' +
                 ", waterActive=" + waterActive +
                 ", temperature=" + temperature +
                 ", soilMoisture=" + soilMoisture +
                 ", waterFlow=" + waterFlow +
-                ", timestamp='" + timestamp + '\'' +
+                ", humidity=" + humidity +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GardenSensorData that = (GardenSensorData) o;
+        return waterActive == that.waterActive && Double.compare(that.temperature, temperature) == 0 && Double.compare(that.soilMoisture, soilMoisture) == 0 && Double.compare(that.waterFlow, waterFlow) == 0 && Double.compare(that.humidity, humidity) == 0 && gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp);
+    }
+
 }

@@ -19,7 +19,7 @@ public class UserRegistrationService {
         this.userInformationRepository = userInformationRepository;
     }
 
-    public void registerUser(User user){
+    public void registerUser(@org.jetbrains.annotations.NotNull User user){
 
         //1. Check to see if username has been already been used
         Optional<User> userOptional = userInformationRepository.findById(user.getUsername());

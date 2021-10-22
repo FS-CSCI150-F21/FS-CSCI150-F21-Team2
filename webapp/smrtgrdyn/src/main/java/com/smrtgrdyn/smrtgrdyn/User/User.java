@@ -2,6 +2,7 @@ package com.smrtgrdyn.smrtgrdyn.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,12 @@ public class User {
         this.username = username;
         this.password = password;
         this.storedSalt = storedSalt;
-        this.registeredGardens = registeredGardens;
+        if(registeredGardens == null){
+            this.registeredGardens = new ArrayList<UUID>();
+        }else{
+            this.registeredGardens = registeredGardens;
+        }
+
     }
 
     public User() {
@@ -56,10 +62,17 @@ public class User {
     }
 
     public void setRegisteredGardens(List<UUID> registeredGardens) {
-        this.registeredGardens = registeredGardens;
+        if(registeredGardens == null){
+            this.registeredGardens = new ArrayList<UUID>();
+        }else{
+            this.registeredGardens = registeredGardens;
+        }
     }
 
     public List<UUID> getRegisteredGardens(){
+        if(this.registeredGardens == null){
+            this.registeredGardens = new ArrayList<UUID>();
+        }
         return this.registeredGardens;
     }
 
