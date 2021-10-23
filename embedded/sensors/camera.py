@@ -11,7 +11,7 @@ def capture_image():
         str: path to image
     """
 
-    _image_folder = str(os.getcwd() + '/.images/')
+    _image_folder = str(os.path.normpath(os.getcwd() + os.sep + os.pardir) + '/sensor_data/images/')
 
     # prevent access attempt of non-existent folder
     if not os.path.isdir(_image_folder):
