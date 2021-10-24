@@ -1,4 +1,4 @@
-package com.smrtgrdyn.smrtgrdyn.Garden;
+package com.smrtgrdyn.smrtgrdyn.Garden.Connection;
 
 import org.springframework.lang.Nullable;
 
@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "garden_information")
-//@IdClass(GardenInformationId.class)
 public class GardenConnectionInformation {
 
     @Id

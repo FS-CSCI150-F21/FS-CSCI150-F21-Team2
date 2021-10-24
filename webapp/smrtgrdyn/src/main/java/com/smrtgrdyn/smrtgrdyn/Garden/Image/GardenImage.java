@@ -1,4 +1,6 @@
-package com.smrtgrdyn.smrtgrdyn.Garden;
+package com.smrtgrdyn.smrtgrdyn.Garden.Image;
+
+import org.joda.time.DateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,12 +11,13 @@ import java.util.UUID;
 public class GardenImage {
 
     @Id
-    UUID gardenId;
+    private UUID gardenId;
 
-    String timestamp;
-    String filepath;
+    private java.sql.Date timestamp;
+    private String filepath;
 
-    public GardenImage(UUID gardenId, String timestamp, String filepath) {
+
+    public GardenImage(UUID gardenId, java.sql.Date timestamp, String filepath) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
         this.filepath = filepath;
@@ -31,11 +34,11 @@ public class GardenImage {
         this.gardenId = gardenId;
     }
 
-    public String getTimestamp() {
+    public java.sql.Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(java.sql.Date timestamp) {
         this.timestamp = timestamp;
     }
 

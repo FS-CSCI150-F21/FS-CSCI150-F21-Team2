@@ -1,7 +1,7 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 
-import com.smrtgrdyn.smrtgrdyn.Garden.GardenConnectionInformation;
-import com.smrtgrdyn.smrtgrdyn.Garden.GardenConnectionInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
+import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class GardenRegistrationService {
         this.userInformationRepository = userInformationRepository;
     }
 
-    public void confirmRegistration(String username, GardenRegistrationRequest request) {
+    public UUID confirmRegistration(String username, GardenRegistrationRequest request) {
 
         Optional<GardenRegistrationRequest> optionalGardenRegistrationRequest =
                 registrationRequestRepository.findById(request.getPiId());
@@ -55,8 +55,9 @@ public class GardenRegistrationService {
 
                 registerGardenWithUser(optionalGardenRegistrationRequest.get().getUsername(),
                         optionalGardenRegistrationRequest.get().getGardenId());
-
+                UUID ret = optionalGardenRegistrationRequest.get().getGardenId();
                 registrationRequestRepository.deleteById(optionalGardenRegistrationRequest.get().getPiId());
+                return ret;
 
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
@@ -64,6 +65,7 @@ public class GardenRegistrationService {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration Request Not Found");
         }
+
     }
 
     private void registerGardenWithUser(String username, UUID gardenId) {
@@ -120,7 +122,7 @@ public class GardenRegistrationService {
         this.gardenConnectionInformation = new GardenConnectionInformation(gardenId, username, host, port);
 
         this.gardenRegistrationRequest = registrationRequest;
-        this.gardenRegistrationRequest.setGardenId(gardenId);
+        this.gardenRegistrationRequest.setGardenId(gardenId.toString());
 
 
         registrationRequestRepository.save(this.gardenRegistrationRequest);

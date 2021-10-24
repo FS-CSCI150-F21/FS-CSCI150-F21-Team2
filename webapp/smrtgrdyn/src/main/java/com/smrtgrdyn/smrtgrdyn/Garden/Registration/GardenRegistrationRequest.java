@@ -14,18 +14,18 @@ public class GardenRegistrationRequest {
     private String username;
     private UUID gardenId;
 
-    public GardenRegistrationRequest(String piId, String username, UUID gardenId) {
+    public GardenRegistrationRequest(String piId, String username, String gardenId) {
         this.piId = piId;
         this.username = username;
-        this.gardenId = gardenId;
+        this.gardenId = UUID.fromString(gardenId);
     }
 
     public UUID getGardenId() {
         return gardenId;
     }
 
-    public void setGardenId(UUID gardenId) {
-        this.gardenId = gardenId;
+    public void setGardenId(String gardenId) {
+        this.gardenId = UUID.fromString(gardenId);
     }
 
     public GardenRegistrationRequest() {

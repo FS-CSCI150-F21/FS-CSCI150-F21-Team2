@@ -3,8 +3,8 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.Objects;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +29,9 @@ public class GardenSensorData {
     private UUID gardenId;
 
     @Id
-    private String timestamp;
+    //@Temporal(TemporalType.DATE)
+    private Timestamp timestamp;
+
 
     @Nullable
     private boolean waterActive;
@@ -42,7 +44,7 @@ public class GardenSensorData {
     @Nullable
     private double humidity;
 
-    public GardenSensorData(UUID gardenId, String timestamp, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double humidity) {
+    public GardenSensorData(UUID gardenId, Timestamp timestamp, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double humidity) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
         this.waterActive = waterActive;
@@ -63,13 +65,16 @@ public class GardenSensorData {
         this.gardenId = gardenId;
     }
 
-    public String getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = new Timestamp(timestamp);
     }
+//    public void setTimestamp(Date timestamp) {
+//        this.timestamp = timestamp;
+//    }
 
     public boolean isWaterActive() {
         return waterActive;
@@ -115,7 +120,7 @@ public class GardenSensorData {
     public String toString() {
         return "GardenSensorData{" +
                 "gardenId=" + gardenId +
-                ", timestamp='" + timestamp + '\'' +
+                ", timestamp='" + timestamp.toString() + '\'' +
                 ", waterActive=" + waterActive +
                 ", temperature=" + temperature +
                 ", soilMoisture=" + soilMoisture +

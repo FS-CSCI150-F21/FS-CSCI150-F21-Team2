@@ -1,4 +1,4 @@
-package com.smrtgrdyn.smrtgrdyn.Garden;
+package com.smrtgrdyn.smrtgrdyn.Garden.Connection;
 
 import org.springframework.data.repository.CrudRepository;
 

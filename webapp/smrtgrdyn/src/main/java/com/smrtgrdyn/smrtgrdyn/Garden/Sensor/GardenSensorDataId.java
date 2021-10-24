@@ -1,18 +1,20 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
 
 public class GardenSensorDataId implements Serializable {
 
     private UUID gardenId;
-    private String timestamp;
+   // @Temporal(TemporalType.DATE)
+    private Timestamp timestamp;
 
     public GardenSensorDataId() {
     }
 
-    public GardenSensorDataId(UUID gardenId, String timestamp) {
+    public GardenSensorDataId(UUID gardenId, Timestamp timestamp) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
     }
@@ -25,11 +27,11 @@ public class GardenSensorDataId implements Serializable {
         this.gardenId = gardenId;
     }
 
-    public String getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 

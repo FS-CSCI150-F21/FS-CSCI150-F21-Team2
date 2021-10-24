@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 @RestController
 public class GardenRegistrationController {
@@ -31,7 +32,7 @@ public class GardenRegistrationController {
 
     @PostMapping
     @RequestMapping("api/v1/garden_registration/user")
-    public void registrationConfirmationFromUser(HttpServletRequest servletRequest,
+    public UUID registrationConfirmationFromUser(HttpServletRequest servletRequest,
                                                  @RequestBody GardenRegistrationRequest request){
 
         //Get the session
@@ -40,7 +41,7 @@ public class GardenRegistrationController {
         if(session != null){
             String username = (String) session.getAttribute("username");
 
-            service.confirmRegistration(username, request);
+            return service.confirmRegistration(username, request);
 
         }else{
             //Otherwise nobody is logged in, throw error

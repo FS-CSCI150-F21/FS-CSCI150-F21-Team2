@@ -1,21 +1,21 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -34,7 +34,7 @@ class GardenDataRepositoryTest {
     void itShouldSaveGarden(){
         //Given
         UUID gardenId = UUID.randomUUID();
-        String timestamp = "123456";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         GardenSensorData data = new GardenSensorData(gardenId, timestamp, false, 0, 0,0,0);
         GardenSensorDataId id = new GardenSensorDataId(gardenId, timestamp);
         //When
@@ -52,7 +52,7 @@ class GardenDataRepositoryTest {
     @Test
     void itShouldSelectGardenByTimestamp(){
         UUID gardenId = UUID.randomUUID();
-        String timestamp = "123456";
+        Timestamp timestamp = Timestamp.valueOf("2012-5-21 15:25:44");
         GardenSensorData data = new GardenSensorData(gardenId, timestamp, false, 0, 0,0,0);
 
         underTest.save(data);
@@ -68,10 +68,11 @@ class GardenDataRepositoryTest {
     void itShouldSaveTwoEntriesFromTheSameGarden(){
         //Given
         UUID gardenId = UUID.randomUUID();
-        String timestamp = "123456";
+        Timestamp timestamp = Timestamp.valueOf("2012-5-21 15:25:44");
         GardenSensorData data = new GardenSensorData(gardenId, timestamp, false, 0, 0,0,0);
 
-        String timestamp2 = "123654";
+        Timestamp timestamp2 = Timestamp.valueOf("2012-6-21 15:25:44");
+
         GardenSensorData data2 = new GardenSensorData(gardenId, timestamp2, false, 0, 0,0,0);
         //When
 

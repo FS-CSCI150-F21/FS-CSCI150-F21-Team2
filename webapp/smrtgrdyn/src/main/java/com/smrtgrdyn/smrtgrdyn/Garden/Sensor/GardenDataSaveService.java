@@ -1,7 +1,8 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
-import com.smrtgrdyn.smrtgrdyn.Garden.GardenConnectionInformation;
-import com.smrtgrdyn.smrtgrdyn.Garden.GardenConnectionInformationRepository;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
+import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,10 @@ public class GardenDataSaveService {
         * 2. Verify Garden is Registered via GardenInformationRepo
         * 3. Store Garden Data*/
 
-        if(isGardenRegistered(sensorData.getGardenId())){
-            gardenDataRepository.save(sensorData);
-        }
+        gardenDataRepository.save(sensorData);
+//        if(isGardenRegistered(sensorData.getGardenId())){
+//            gardenDataRepository.save(sensorData);
+//        }
 
     }
 
