@@ -69,12 +69,9 @@ public class GardenSensorData {
         return timestamp;
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = new Timestamp(timestamp);
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
-//    public void setTimestamp(Date timestamp) {
-//        this.timestamp = timestamp;
-//    }
 
     public boolean isWaterActive() {
         return waterActive;

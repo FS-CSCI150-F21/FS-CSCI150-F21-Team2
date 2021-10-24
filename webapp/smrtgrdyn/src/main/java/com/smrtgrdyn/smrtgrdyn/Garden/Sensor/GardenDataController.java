@@ -22,7 +22,6 @@ public class GardenDataController {
     @PostMapping
     public void saveGardenData(@Valid @RequestBody GardenSensorData gardenSensorData){
 
-        System.out.println(gardenSensorData.toString());
         gardenDataSaveService.saveGardenData(gardenSensorData);
 
     }
