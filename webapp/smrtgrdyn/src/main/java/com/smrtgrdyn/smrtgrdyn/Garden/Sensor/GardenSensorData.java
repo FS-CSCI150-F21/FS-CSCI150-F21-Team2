@@ -1,5 +1,6 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class GardenSensorData {
 /*
     {
-        "gardenid" : "sfdds-fwgw-egv-wgeq", // generated from the server, stored on the pi
+        "gardenid" : "cb6061dc-6d01-436b-b5aa-09d1a758c8cb", // generated from the server, stored on the pi
         "wateractive" : false,
         "temperature" : 45.3,
         "soilmoisture" : 32.1,
@@ -29,7 +30,6 @@ public class GardenSensorData {
     private UUID gardenId;
 
     @Id
-    //@Temporal(TemporalType.DATE)
     private Timestamp timestamp;
 
 

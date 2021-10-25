@@ -34,3 +34,5 @@ build/
 
 application.properties
 webapp/smrtgrdyn/src/main/resources/application.properties
+
+garden-photos/*

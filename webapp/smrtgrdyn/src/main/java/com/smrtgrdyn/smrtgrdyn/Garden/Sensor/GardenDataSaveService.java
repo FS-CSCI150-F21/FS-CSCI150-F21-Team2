@@ -33,7 +33,6 @@ public class GardenDataSaveService {
         * 2. Verify Garden is Registered via GardenInformationRepo
         * 3. Store Garden Data*/
 
-
         if(isGardenRegistered(sensorData.getGardenId())){
             gardenDataRepository.save(sensorData);
         }
