@@ -25,6 +25,7 @@ public class GardenImageController {
     @GetMapping("api/v1/garden_images")
     public ResponseEntity<byte[]> getImage(@ModelAttribute GardenImage gardenImage){
 
+        System.out.println(gardenImage.toString());
         return service.getImage(gardenImage);
     }
 

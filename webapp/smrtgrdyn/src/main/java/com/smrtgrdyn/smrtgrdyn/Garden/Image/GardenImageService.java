@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +20,12 @@ public class GardenImageService {
 
     private final String FILE_PATH_ROOT = "garden-photos/";
 
-    @Autowired
     GardenImageRepository imageRepository;
+
+    @Autowired
+    public GardenImageService(GardenImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
+    }
 
     public void saveImage(GardenImage gardenImage, MultipartFile multipartFile) throws IOException {
 
@@ -45,8 +48,8 @@ public class GardenImageService {
     private void validateImage(GardenImage gardenImage){
 
         //If no timestamp given, generate one
-        if(gardenImage.getTimestamp() == null){
-            gardenImage.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        if(gardenImage.getImage_timestamp() == null){
+            gardenImage.setImage_timestamp(new Timestamp(System.currentTimeMillis()));
         }
 
         // Check the UUID to verify registration
@@ -54,7 +57,7 @@ public class GardenImageService {
 
     public ResponseEntity<byte[]> getImage(GardenImage gardenImage){
 
-        GardenImageId id = new GardenImageId(gardenImage.getGardenId(), gardenImage.getTimestamp());
+        GardenImageId id = new GardenImageId(gardenImage.getGardenId(), gardenImage.getImage_timestamp());
         Optional<GardenImage> optionalGardenImage = imageRepository.findById(id);
 
 

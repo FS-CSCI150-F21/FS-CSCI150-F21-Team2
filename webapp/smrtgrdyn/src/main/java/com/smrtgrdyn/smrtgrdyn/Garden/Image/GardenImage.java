@@ -2,10 +2,7 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
@@ -19,15 +16,15 @@ public class GardenImage {
     @Id
     private UUID gardenId;
     @Id
-    private Timestamp timestamp;
+    private Timestamp image_timestamp;
 
-    @Nullable
+    @Column(nullable = true)
     private String filepath;
 
 
-    public GardenImage(UUID gardenId, Timestamp timestamp, String filepath) {
+    public GardenImage(UUID gardenId, Timestamp image_timestamp, String filepath) {
         this.gardenId = gardenId;
-        this.timestamp = timestamp;
+        this.image_timestamp = image_timestamp;
         this.filepath = filepath;
     }
 
@@ -42,12 +39,12 @@ public class GardenImage {
         this.gardenId = gardenId;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Timestamp getImage_timestamp() {
+        return image_timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setImage_timestamp(Timestamp image_timestamp) {
+        this.image_timestamp = image_timestamp;
     }
 
     public String getFilepath() {
@@ -62,7 +59,7 @@ public class GardenImage {
     public String toString() {
         return "GardenImage{" +
                 "gardenId=" + gardenId +
-                ", timestamp=" + timestamp +
+                ", image_timestamp=" + image_timestamp +
                 ", filepath='" + filepath + '\'' +
                 '}';
     }
@@ -72,11 +69,7 @@ public class GardenImage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GardenImage that = (GardenImage) o;
-        return gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp) && Objects.equals(filepath, that.filepath);
+        return gardenId.equals(that.gardenId) && image_timestamp.equals(that.image_timestamp) && Objects.equals(filepath, that.filepath);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(gardenId, timestamp, filepath);
-    }
 }

@@ -10,14 +10,14 @@ import java.util.UUID;
 public class GardenImageId implements Serializable {
 
     private UUID gardenId;
-    private Timestamp timestamp;
+    private Timestamp image_timestamp;
 
     public GardenImageId() {
     }
 
-    public GardenImageId(UUID gardenId, Timestamp timestamp) {
+    public GardenImageId(UUID gardenId, Timestamp image_timestamp) {
         this.gardenId = gardenId;
-        this.timestamp = timestamp;
+        this.image_timestamp = image_timestamp;
     }
 
     public UUID getGardenId() {
@@ -28,12 +28,12 @@ public class GardenImageId implements Serializable {
         this.gardenId = gardenId;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Timestamp getImage_timestamp() {
+        return image_timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setImage_timestamp(Timestamp image_timestamp) {
+        this.image_timestamp = image_timestamp;
     }
 
     @Override
@@ -41,12 +41,12 @@ public class GardenImageId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GardenImageId that = (GardenImageId) o;
-        return gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp);
+        return gardenId.equals(that.gardenId) && image_timestamp.equals(that.image_timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gardenId, timestamp);
+        return Objects.hash(gardenId, image_timestamp);
     }
 }
 
