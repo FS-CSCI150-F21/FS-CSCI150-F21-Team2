@@ -22,7 +22,8 @@ public class GardenImageController {
         service.saveImage(gardenImage, multipartFile);
     }
 
-    @GetMapping("api/v1/garden_images")
+    //maybe? because its submitted via form data
+    @GetMapping(path = "api/v1/garden_images", consumes = {"multipart/form-data"})
     public ResponseEntity<byte[]> getImage(@ModelAttribute GardenImage gardenImage){
 
         System.out.println(gardenImage.toString());
