@@ -2,20 +2,22 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
 
 import java.io.Serializable;
+
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
 
 public class GardenImageId implements Serializable {
 
     private UUID gardenId;
-    private String filepath;
+    private Timestamp timestamp;
 
     public GardenImageId() {
     }
 
-    public GardenImageId(UUID gardenId, String filepath) {
+    public GardenImageId(UUID gardenId, Timestamp timestamp) {
         this.gardenId = gardenId;
-        this.filepath = filepath;
+        this.timestamp = timestamp;
     }
 
     public UUID getGardenId() {
@@ -26,12 +28,12 @@ public class GardenImageId implements Serializable {
         this.gardenId = gardenId;
     }
 
-    public String getFilepath() {
-        return filepath;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setFilepath(String filepath) {
-        this.filepath = filepath;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -39,11 +41,12 @@ public class GardenImageId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GardenImageId that = (GardenImageId) o;
-        return gardenId.equals(that.gardenId) && filepath.equals(that.filepath);
+        return gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gardenId, filepath);
+        return Objects.hash(gardenId, timestamp);
     }
 }
+

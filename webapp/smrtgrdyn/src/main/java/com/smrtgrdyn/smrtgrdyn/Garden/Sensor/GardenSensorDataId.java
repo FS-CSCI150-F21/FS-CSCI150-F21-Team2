@@ -1,6 +1,5 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -10,8 +9,6 @@ import java.util.UUID;
 public class GardenSensorDataId implements Serializable {
 
     private UUID gardenId;
-   // @Temporal(TemporalType.DATE)
-    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone="UTC")
     private Timestamp timestamp;
 
     public GardenSensorDataId() {

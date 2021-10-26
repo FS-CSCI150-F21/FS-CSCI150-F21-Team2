@@ -41,10 +41,14 @@ public class GardenDataSaveService {
 
     private boolean isGardenRegistered(UUID gardenId){
 
+        // Having Connection Info indicates that it has been registered
+        // or is in the process of being registered
         Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
                 gardenConnectionInformationRepository.findById(gardenId);
 
         if(optionalGardenConnectionInformation.isPresent()){
+            //Verify that the garden is attached to the User account
+            // as this only happens once registration is complete
             String username = optionalGardenConnectionInformation.get().getUser();
             Optional<User> optionalUser = userInformationRepository.findById(username);
 

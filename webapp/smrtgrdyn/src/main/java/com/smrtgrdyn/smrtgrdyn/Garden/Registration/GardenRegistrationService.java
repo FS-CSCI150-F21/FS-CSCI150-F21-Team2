@@ -42,6 +42,7 @@ public class GardenRegistrationService {
         Optional<GardenRegistrationRequest> optionalGardenRegistrationRequest =
                 registrationRequestRepository.findById(request.getPiId());
 
+        // Verify request is by same user
         if (optionalGardenRegistrationRequest.isPresent()) {
             if (optionalGardenRegistrationRequest.get().getUsername().equals(username)) {
 
@@ -53,11 +54,14 @@ public class GardenRegistrationService {
                 * */
                 //   sendUUIDToPi(optionalGardenRegistrationRequest.get().getGardenId());
 
+                // Complete registration with that user
                 registerGardenWithUser(optionalGardenRegistrationRequest.get().getUsername(),
                         optionalGardenRegistrationRequest.get().getGardenId());
-                UUID ret = optionalGardenRegistrationRequest.get().getGardenId();
+
+                // Return the generated gardenId and drop the registration request
+                UUID returnableGardenId = optionalGardenRegistrationRequest.get().getGardenId();
                 registrationRequestRepository.deleteById(optionalGardenRegistrationRequest.get().getPiId());
-                return ret;
+                return returnableGardenId;
 
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
@@ -71,10 +75,16 @@ public class GardenRegistrationService {
     private void registerGardenWithUser(String username, UUID gardenId) {
         Optional<User> userOptional = userInformationRepository.findById(username);
 
+        // Check registration, if already registered throw an error
+        if(isGardenRegistered(gardenId)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Already Registered");
+        }
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            //   user.addGarden(gardenId);
             user.getRegisteredGardens().add(gardenId);
+
+            // Spring Data JPA allows save() to function as update()
             userInformationRepository.save(user);
 
         } else {
@@ -82,6 +92,26 @@ public class GardenRegistrationService {
         }
     }
 
+    private boolean isGardenRegistered(UUID gardenId){
+
+        // Having Connection Info indicates that it has been registered
+        // or is in the process of being registered
+        Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
+                gardenConnectionInformationRepository.findById(gardenId);
+
+        if(optionalGardenConnectionInformation.isPresent()){
+            //Verify that the garden is attached to the User account
+            // as this only happens once registration is complete
+            String username = optionalGardenConnectionInformation.get().getUser();
+            Optional<User> optionalUser = userInformationRepository.findById(username);
+
+            if(optionalUser.isPresent()){
+                return optionalUser.get().getRegisteredGardens().contains(gardenId);
+            }
+        }
+
+        return false;
+    }
     private void sendUUIDToPi(UUID gardenId) {
 
         Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
@@ -114,6 +144,7 @@ public class GardenRegistrationService {
 
     public void requestRegistration(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest) {
 
+
         String host = servletRequest.getHeader(HttpHeaders.HOST);
         Integer port = servletRequest.getServerPort();
         UUID gardenId = UUID.randomUUID();
@@ -122,7 +153,7 @@ public class GardenRegistrationService {
         this.gardenConnectionInformation = new GardenConnectionInformation(gardenId, username, host, port);
 
         this.gardenRegistrationRequest = registrationRequest;
-        this.gardenRegistrationRequest.setGardenId(gardenId.toString());
+        this.gardenRegistrationRequest.setGardenId(gardenId);
 
 
         registrationRequestRepository.save(this.gardenRegistrationRequest);
