@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -131,6 +132,31 @@ class GardenDataRepositoryTest {
                 .hasValueSatisfying(c -> {
                     c.equals(data1);
                 });
+    }
+
+    @Test
+    void itShouldSelectMultipleEntriesForGivenTimeFrameAndId(){
+        UUID gardenId = UUID.randomUUID();
+        Timestamp start = Timestamp.valueOf("2012-1-21 15:25:44");
+        Timestamp end = Timestamp.valueOf("2012-5-22 15:25:44");
+        Timestamp time1 = Timestamp.valueOf("2012-2-22 15:25:44");
+        Timestamp time2 = Timestamp.valueOf("2012-3-22 15:25:44");
+        Timestamp time3 = Timestamp.valueOf("2012-4-22 15:25:44");
+        List<GardenSensorData> list = new ArrayList<>();
+        GardenSensorData g1 = new GardenSensorData(gardenId, time1,true, 22.1, 12.2,55,12 );
+        GardenSensorData g2 = new GardenSensorData(gardenId, time2,true, 22.1, 12.2,55,12 );
+        GardenSensorData g3 = new GardenSensorData(gardenId, time3, true, 22.1, 12.2,55,12 );
+
+
+        underTest.save(g1);
+        underTest.save(g2);
+        underTest.save(g3);
+
+
+        List<GardenSensorData> ret = underTest.findAllDataInRangeById(gardenId, start, end);
+
+        assert(!ret.isEmpty());
+
     }
 
 

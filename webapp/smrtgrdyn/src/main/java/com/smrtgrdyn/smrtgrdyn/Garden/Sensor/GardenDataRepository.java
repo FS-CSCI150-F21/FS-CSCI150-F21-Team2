@@ -1,11 +1,13 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +36,23 @@ public interface GardenDataRepository extends CrudRepository<GardenSensorData, G
         findAll();
         Optional<GardenSensorData> data = findById(new GardenSensorDataId(gardenId,optionalTimestamp.get()));
         return data;
-    };
+    }
+
+
+
+    default List<GardenSensorData> findAllDataInRangeById(UUID gardenId, Timestamp start, Timestamp end){
+        List<GardenSensorData> all = (List<GardenSensorData>) findAll();
+        List<GardenSensorData> list = new ArrayList<>();
+        for(GardenSensorData g : findAll()){
+             if(g.getGardenId().equals(gardenId) && start.before(g.getTimestamp()) && end.after(g.getTimestamp())){
+                 list.add(g);
+             }
+        }
+        return list;
+    }
+
+    //This SHOULD do the same as the above, but returns nothing
+    List<GardenSensorData> findByGardenIdAndTimestampBetween(UUID gardenId, Timestamp start, Timestamp end);
 
 
 }

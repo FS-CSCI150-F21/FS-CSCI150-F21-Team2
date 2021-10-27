@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,9 +64,9 @@ public class GardenDataSaveService {
         return false;
     }
 
-    public GardenSensorData getLatestData(UUID gardenId){
+    public GardenSensorData getLatestData(GardenDataRequest request){
 
-        Optional<GardenSensorData> gardenSensorDataOptional = gardenDataRepository.findLatestByGardenId(gardenId);
+        Optional<GardenSensorData> gardenSensorDataOptional = gardenDataRepository.findLatestByGardenId(request.getGardenId());
 
         if(gardenSensorDataOptional.isPresent()){
             return gardenSensorDataOptional.get();
@@ -74,5 +75,25 @@ public class GardenDataSaveService {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
 
 
+    }
+
+    public List getDataFromRange(GardenDataRequest request){
+
+        System.out.println(request.getStart());
+        System.out.println(request.getEnd());
+
+        gardenDataRepository.findAll();
+        List<GardenSensorData> dataList =
+                gardenDataRepository
+                        .findAllDataInRangeById(request.getGardenId(), request.getStart(), request.getEnd());
+
+
+        if (!dataList.isEmpty()){
+            for(GardenSensorData d : dataList){
+                System.out.println(d.toString());
+            }
+            return List.copyOf(dataList);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
     }
 }

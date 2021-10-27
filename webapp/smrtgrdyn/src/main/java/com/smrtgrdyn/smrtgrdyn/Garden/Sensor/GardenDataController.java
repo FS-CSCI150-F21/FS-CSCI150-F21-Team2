@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/garden_data_collection")
 public class GardenDataController {
 
     private final GardenDataSaveService gardenDataSaveService;
@@ -18,17 +18,23 @@ public class GardenDataController {
         this.gardenDataSaveService = gardenDataSaveService;
     }
 
-    @PostMapping
+    @PostMapping("api/v1/garden_data_collection/save")
     public void saveGardenData(@RequestBody GardenSensorData gardenSensorData){
 
         gardenDataSaveService.saveGardenData(gardenSensorData);
 
     }
 
-    @GetMapping
-    public GardenSensorData getLatestData(@RequestParam UUID gardenId){
+    @GetMapping("api/v1/garden_data_collection/latest")
+    public GardenSensorData getLatestData(@RequestBody GardenDataRequest request){
 
-        return gardenDataSaveService.getLatestData(gardenId);
+        return gardenDataSaveService.getLatestData(request);
+    }
+
+    @GetMapping("api/v1/garden_data_collection/range")
+    public List getDataFromRange(@RequestBody GardenDataRequest request){
+
+        return gardenDataSaveService.getDataFromRange(request);
     }
 
 
