@@ -1,10 +1,6 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -33,15 +29,15 @@ public class GardenSensorData {
     private Timestamp timestamp;
 
 
-    @Nullable
+    @Column(nullable = true)
     private boolean waterActive;
-    @Nullable
+    @Column(nullable = true)
     private double temperature;
-    @Nullable
+    @Column(nullable = true)
     private double soilMoisture;
-    @Nullable
+    @Column(nullable = true)
     private double waterFlow;
-    @Nullable
+    @Column(nullable = true)
     private double humidity;
 
     public GardenSensorData(UUID gardenId, Timestamp timestamp, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double humidity) {
@@ -133,5 +129,6 @@ public class GardenSensorData {
         GardenSensorData that = (GardenSensorData) o;
         return waterActive == that.waterActive && Double.compare(that.temperature, temperature) == 0 && Double.compare(that.soilMoisture, soilMoisture) == 0 && Double.compare(that.waterFlow, waterFlow) == 0 && Double.compare(that.humidity, humidity) == 0 && gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp);
     }
+
 
 }

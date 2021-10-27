@@ -1,7 +1,5 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -16,15 +14,15 @@ public class GardenImage {
     @Id
     private UUID gardenId;
     @Id
-    private Timestamp image_timestamp;
+    private Timestamp timestamp;
 
     @Column(nullable = true)
     private String filepath;
 
 
-    public GardenImage(UUID gardenId, Timestamp image_timestamp, String filepath) {
+    public GardenImage(UUID gardenId, Timestamp timestamp, String filepath) {
         this.gardenId = gardenId;
-        this.image_timestamp = image_timestamp;
+        this.timestamp = timestamp;
         this.filepath = filepath;
     }
 
@@ -39,12 +37,12 @@ public class GardenImage {
         this.gardenId = gardenId;
     }
 
-    public Timestamp getImage_timestamp() {
-        return image_timestamp;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setImage_timestamp(Timestamp image_timestamp) {
-        this.image_timestamp = image_timestamp;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getFilepath() {
@@ -59,7 +57,7 @@ public class GardenImage {
     public String toString() {
         return "GardenImage{" +
                 "gardenId=" + gardenId +
-                ", image_timestamp=" + image_timestamp +
+                ", image_timestamp=" + timestamp +
                 ", filepath='" + filepath + '\'' +
                 '}';
     }
@@ -69,7 +67,7 @@ public class GardenImage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GardenImage that = (GardenImage) o;
-        return gardenId.equals(that.gardenId) && image_timestamp.equals(that.image_timestamp) && Objects.equals(filepath, that.filepath);
+        return gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp) && Objects.equals(filepath, that.filepath);
     }
 
 }

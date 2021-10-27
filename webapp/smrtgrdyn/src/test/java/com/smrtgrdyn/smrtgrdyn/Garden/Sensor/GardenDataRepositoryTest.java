@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,7 +57,7 @@ class GardenDataRepositoryTest {
 
         underTest.save(data);
 
-        Optional<GardenSensorData> optionalData = underTest.selectCustomerByTimestamp(timestamp);
+        Optional<GardenSensorData> optionalData = underTest.selectGardenByTimestamp(timestamp);
         assertThat(optionalData)
                 .isPresent()
                 .hasValueSatisfying(c -> {
@@ -79,8 +80,8 @@ class GardenDataRepositoryTest {
         underTest.save(data2);
 
         //Then
-        Optional<GardenSensorData> optionalGarden1 = underTest.selectCustomerByTimestamp(timestamp);
-        Optional<GardenSensorData> optionalGarden2 = underTest.selectCustomerByTimestamp(timestamp2);
+        Optional<GardenSensorData> optionalGarden1 = underTest.selectGardenByTimestamp(timestamp);
+        Optional<GardenSensorData> optionalGarden2 = underTest.selectGardenByTimestamp(timestamp2);
 
         assertThat(optionalGarden1)
                 .isPresent();
@@ -91,5 +92,47 @@ class GardenDataRepositoryTest {
                     assertThat(optionalGarden1.get()).isNotEqualTo(d);
                  });
     }
+
+    @Test
+    void itShouldSelectTheMostRecentTimeStampPerGardenId(){
+        //Given
+        UUID gardenId = UUID.randomUUID();
+        Timestamp data_timestamp = Timestamp.valueOf("2012-5-21 15:25:44");
+        Timestamp data_timestamp1 = Timestamp.valueOf("2012-5-22 15:25:44");
+        GardenSensorData data = new GardenSensorData(gardenId, data_timestamp, true, 22.1, 12.2,55,12);
+        GardenSensorData data1 = new GardenSensorData(gardenId, data_timestamp1, true, 22.1, 12.2,55,12);
+
+        //When
+        underTest.save(data);
+        underTest.save(data1);
+
+        Optional<Timestamp> optional = underTest.findLatestTimestampByGardenId(gardenId);
+
+        assertThat(optional).isPresent()
+                .hasValueSatisfying(c -> {
+                    c.equals(data_timestamp1);
+                });
+    }
+
+    @Test
+    void itShouldSelectByMostRecentTimeStampAndGardenId(){
+        UUID gardenId = UUID.randomUUID();
+        Timestamp data_timestamp = Timestamp.valueOf("2012-5-21 15:25:44");
+        Timestamp data_timestamp1 = Timestamp.valueOf("2012-5-22 15:25:44");
+        GardenSensorData data = new GardenSensorData(gardenId, data_timestamp, true, 22.1, 12.2,55,12);
+        GardenSensorData data1 = new GardenSensorData(gardenId, data_timestamp1, true, 22.1, 12.2,55,12);
+
+        //When
+        underTest.save(data);
+        underTest.save(data1);
+
+        Optional<GardenSensorData> optionalData = underTest.findLatestByGardenId(gardenId);
+        assertThat(optionalData).isPresent()
+                .hasValueSatisfying(c -> {
+                    c.equals(data1);
+                });
+    }
+
+
 
 }

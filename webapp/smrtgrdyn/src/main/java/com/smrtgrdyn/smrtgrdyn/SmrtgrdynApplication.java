@@ -13,6 +13,7 @@ Current Status: DB disabled to allow launch
 public class SmrtgrdynApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("user.timezone", "UTC");
 		SpringApplication.run(SmrtgrdynApplication.class, args);
 	}
 

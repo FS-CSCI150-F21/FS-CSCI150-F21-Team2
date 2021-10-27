@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,8 +49,8 @@ public class GardenImageService {
     private void validateImage(GardenImage gardenImage){
 
         //If no timestamp given, generate one
-        if(gardenImage.getImage_timestamp() == null){
-            gardenImage.setImage_timestamp(new Timestamp(System.currentTimeMillis()));
+        if(gardenImage.getTimestamp() == null){
+            gardenImage.setTimestamp(new Timestamp(System.currentTimeMillis()));
         }
 
         // Check the UUID to verify registration
@@ -57,7 +58,8 @@ public class GardenImageService {
 
     public ResponseEntity<byte[]> getImage(GardenImage gardenImage){
 
-        GardenImageId id = new GardenImageId(gardenImage.getGardenId(), gardenImage.getImage_timestamp());
+        GardenImageId id = new GardenImageId(gardenImage.getGardenId(), gardenImage.getTimestamp());
+        imageRepository.findAll();
         Optional<GardenImage> optionalGardenImage = imageRepository.findById(id);
 
 
@@ -72,7 +74,7 @@ public class GardenImageService {
                 throw new ImageNotFoundException();
             }
 
-            return ResponseEntity.ok().contentType(MediaType.ALL).body(image);
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
         }
 
         throw new ImageNotFoundException();

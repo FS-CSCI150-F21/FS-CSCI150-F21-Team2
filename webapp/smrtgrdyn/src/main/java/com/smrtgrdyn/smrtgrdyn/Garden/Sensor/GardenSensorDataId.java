@@ -1,6 +1,8 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;

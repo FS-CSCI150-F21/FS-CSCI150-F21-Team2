@@ -1,12 +1,15 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
 import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -32,10 +35,10 @@ public class GardenDataSaveService {
         * 1. Get Garden Sensor Data
         * 2. Verify Garden is Registered via GardenInformationRepo
         * 3. Store Garden Data*/
-
-        if(isGardenRegistered(sensorData.getGardenId())){
-            gardenDataRepository.save(sensorData);
-        }
+        gardenDataRepository.save(sensorData);
+//        if(isGardenRegistered(sensorData.getGardenId())){
+//            gardenDataRepository.save(sensorData);
+//        }
 
     }
 
@@ -58,5 +61,18 @@ public class GardenDataSaveService {
         }
 
         return false;
+    }
+
+    public GardenSensorData getLatestData(UUID gardenId){
+
+        Optional<GardenSensorData> gardenSensorDataOptional = gardenDataRepository.findLatestByGardenId(gardenId);
+
+        if(gardenSensorDataOptional.isPresent()){
+            return gardenSensorDataOptional.get();
+        }
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
+
+
     }
 }
