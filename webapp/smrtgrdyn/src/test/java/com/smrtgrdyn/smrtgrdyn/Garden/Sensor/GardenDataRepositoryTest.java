@@ -1,6 +1,10 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 
+
+import org.junit.jupiter.api.AfterEach;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -25,6 +29,11 @@ class GardenDataRepositoryTest {
 
     @Autowired
     private GardenDataRepository underTest;
+
+    @AfterEach
+    void clearDbAfter(){
+        underTest.deleteAll();
+    }
 
     @Test
     void databaseShouldNotBeNull(){
@@ -64,6 +73,7 @@ class GardenDataRepositoryTest {
                 .hasValueSatisfying(c -> {
                     assertThat(c).isEqualTo(data);
                 });
+
     }
     @Test
     void itShouldSaveTwoEntriesFromTheSameGarden(){
@@ -92,6 +102,8 @@ class GardenDataRepositoryTest {
                     assertThat(optionalGarden1.get().getGardenId()).isEqualTo(d.getGardenId());
                     assertThat(optionalGarden1.get()).isNotEqualTo(d);
                  });
+
+
     }
 
     @Test
@@ -113,15 +125,17 @@ class GardenDataRepositoryTest {
                 .hasValueSatisfying(c -> {
                     c.equals(data_timestamp1);
                 });
+
+
     }
 
     @Test
-    void itShouldSelectByMostRecentTimeStampAndGardenId(){
+    void itShouldSelectByMostRecentTimeStampAndGardenId() {
         UUID gardenId = UUID.randomUUID();
         Timestamp data_timestamp = Timestamp.valueOf("2012-5-21 15:25:44");
         Timestamp data_timestamp1 = Timestamp.valueOf("2012-5-22 15:25:44");
-        GardenSensorData data = new GardenSensorData(gardenId, data_timestamp, true, 22.1, 12.2,55,12);
-        GardenSensorData data1 = new GardenSensorData(gardenId, data_timestamp1, true, 22.1, 12.2,55,12);
+        GardenSensorData data = new GardenSensorData(gardenId, data_timestamp, true, 22.1, 12.2, 55, 12);
+        GardenSensorData data1 = new GardenSensorData(gardenId, data_timestamp1, true, 22.1, 12.2, 55, 12);
 
         //When
         underTest.save(data);
@@ -132,6 +146,8 @@ class GardenDataRepositoryTest {
                 .hasValueSatisfying(c -> {
                     c.equals(data1);
                 });
+
+
     }
 
     @Test
@@ -156,6 +172,8 @@ class GardenDataRepositoryTest {
         List<GardenSensorData> ret = underTest.findAllDataInRangeById(gardenId, start, end);
 
         assert(!ret.isEmpty());
+
+
 
     }
 

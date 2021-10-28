@@ -1,4 +1,4 @@
-package com.smrtgrdyn.smrtgrdyn.Garden.Image;
+package com.smrtgrdyn.smrtgrdyn.Garden.Util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;

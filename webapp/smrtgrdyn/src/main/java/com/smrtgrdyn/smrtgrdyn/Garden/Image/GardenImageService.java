@@ -1,5 +1,6 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
+import com.smrtgrdyn.smrtgrdyn.Garden.Util.FileUploadUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +38,10 @@ public class GardenImageService {
         String uploadDir = FILE_PATH_ROOT + gardenId;
         //Set filepath for image
         gardenImage.setFilepath(uploadDir + "/" + filename);
+
+        //Validate the image, give it a timestamp if it doesnt have one
+        //Verify garden is registered
+        validateImage(gardenImage);
         //Save Image
         imageRepository.save(gardenImage);
 
