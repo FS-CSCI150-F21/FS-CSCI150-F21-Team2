@@ -1,5 +1,7 @@
-package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
+package com.smrtgrdyn.smrtgrdyn.Garden.Repository;
 
+import com.smrtgrdyn.smrtgrdyn.Garden.Sensor.GardenSensorData;
+import com.smrtgrdyn.smrtgrdyn.Garden.Sensor.GardenSensorDataId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

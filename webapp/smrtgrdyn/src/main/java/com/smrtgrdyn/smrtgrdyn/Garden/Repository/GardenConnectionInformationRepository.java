@@ -1,5 +1,6 @@
-package com.smrtgrdyn.smrtgrdyn.Garden.Connection;
+package com.smrtgrdyn.smrtgrdyn.Garden.Repository;
 
+import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

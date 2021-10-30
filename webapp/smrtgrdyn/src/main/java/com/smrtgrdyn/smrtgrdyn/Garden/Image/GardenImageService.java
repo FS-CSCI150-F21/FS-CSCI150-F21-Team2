@@ -1,7 +1,7 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
-import com.smrtgrdyn.smrtgrdyn.Garden.Util.FileUploadUtil;
-import org.apache.commons.io.FileUtils;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Util.SGFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 public class GardenImageService {
 
-    private final String FILE_PATH_ROOT = "garden-photos/";
+
 
     GardenImageRepository imageRepository;
 
@@ -35,7 +35,7 @@ public class GardenImageService {
         //Get the given filename
         String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         //Build uploadDirectory name
-        String uploadDir = FILE_PATH_ROOT + gardenId;
+        String uploadDir = SGFileUtils.buildUploadDir(gardenImage);
         //Set filepath for image
         gardenImage.setFilepath(uploadDir + "/" + filename);
 
@@ -46,7 +46,7 @@ public class GardenImageService {
         imageRepository.save(gardenImage);
 
         //Finish Uploading Image
-        FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+        SGFileUtils.saveFile(uploadDir, filename, multipartFile);
         System.out.println(gardenImage.toString());
     }
 
@@ -73,7 +73,7 @@ public class GardenImageService {
             byte[] image = new byte[0];
 
             try {
-                image = FileUtils.readFileToByteArray(new File(gardenImage1.getFilepath()));
+                image = org.apache.commons.io.FileUtils.readFileToByteArray(new File(gardenImage1.getFilepath()));
             } catch (IOException e) {
                 throw new ImageNotFoundException();
             }

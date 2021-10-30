@@ -1,5 +1,6 @@
 package com.smrtgrdyn.smrtgrdyn.User.Registration;
 
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

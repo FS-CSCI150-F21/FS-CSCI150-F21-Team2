@@ -1,7 +1,6 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
-import com.smrtgrdyn.smrtgrdyn.Garden.Sensor.GardenSensorData;
-import com.smrtgrdyn.smrtgrdyn.Garden.Sensor.GardenSensorDataId;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

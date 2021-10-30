@@ -1,10 +1,10 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
-import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformationRepository;
-import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenDataRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
