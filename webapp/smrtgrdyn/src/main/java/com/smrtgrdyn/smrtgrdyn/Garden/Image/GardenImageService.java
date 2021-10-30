@@ -2,6 +2,7 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Util.SGFileUtils;
+import com.smrtgrdyn.smrtgrdyn.Garden.Util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,7 +42,7 @@ public class GardenImageService {
 
         //Validate the image, give it a timestamp if it doesnt have one
         //Verify garden is registered
-        validateImage(gardenImage);
+        ValidationUtil.validateImage(gardenImage);
         //Save Image
         imageRepository.save(gardenImage);
 
@@ -50,15 +51,6 @@ public class GardenImageService {
         System.out.println(gardenImage.toString());
     }
 
-    private void validateImage(GardenImage gardenImage){
-
-        //If no timestamp given, generate one
-        if(gardenImage.getTimestamp() == null){
-            gardenImage.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        }
-
-        // Check the UUID to verify registration
-    }
 
     public ResponseEntity<byte[]> getImage(GardenImage gardenImage){
 
