@@ -49,35 +49,6 @@ public class GardenImageService {
         }
     }
 
-
-    public ResponseEntity<byte[]> getImage(GardenImage gardenImage){
-
-        GardenImageId id = new GardenImageId(gardenImage.getGardenId(), gardenImage.getTimestamp());
-        imageRepository.findAll();
-        Optional<GardenImage> optionalGardenImage = imageRepository.findById(id);
-
-
-        if (optionalGardenImage.isPresent()){
-
-            GardenImage gardenImage1 = optionalGardenImage.get();
-            byte[] image = new byte[0];
-
-            try {
-                image = org.apache.commons.io.FileUtils.readFileToByteArray(new File(gardenImage1.getFilepath()));
-            } catch (IOException e) {
-                throw new ImageNotFoundException();
-            }
-
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
-        }
-
-        throw new ImageNotFoundException();
-
-    }
-    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Image Not Found")
-    public class ImageNotFoundException extends RuntimeException{
-    }
-
     private void setGardenImageFilepath(GardenImage gardenImage, String filename){
 
         //Get the given filename
@@ -102,6 +73,38 @@ public class GardenImageService {
     private void uploadImage(MultipartFile multipartFile) throws IOException {
         SGFileUtils.saveFile(uploadDir, filename, multipartFile);
     }
+
+
+    public ResponseEntity<byte[]> getImage(GardenImage gardenImage){
+
+        GardenImageId id = new GardenImageId(gardenImage.getGardenId(), gardenImage.getTimestamp());
+        imageRepository.findAll();
+        Optional<GardenImage> optionalGardenImage = imageRepository.findById(id);
+
+
+        if (optionalGardenImage.isPresent()){
+
+            GardenImage gardenImage1 = optionalGardenImage.get();
+            byte[] image = new byte[0];
+
+            try {
+                image = org.apache.commons.io.FileUtils.readFileToByteArray(new File(gardenImage1.getFilepath()));
+
+            } catch (IOException e) {
+
+                throw new ImageNotFoundException();
+            }
+
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+        }
+
+        throw new ImageNotFoundException();
+
+    }
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Image Not Found")
+    public class ImageNotFoundException extends RuntimeException{
+    }
+
 
 
 
