@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+application.properties
+webapp/smrtgrdyn/src/main/resources/application.properties
+
+garden-photos/*
