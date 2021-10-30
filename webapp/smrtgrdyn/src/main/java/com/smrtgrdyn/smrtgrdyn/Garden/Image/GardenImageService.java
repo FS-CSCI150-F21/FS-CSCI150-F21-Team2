@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,34 +20,33 @@ import java.util.Optional;
 @Service
 public class GardenImageService {
 
-
-
     GardenImageRepository imageRepository;
+
+    private String filename;
+    private String uploadDir;
+
 
     @Autowired
     public GardenImageService(GardenImageRepository imageRepository) {
         this.imageRepository = imageRepository;
     }
 
-    public void saveImage(GardenImage gardenImage, MultipartFile multipartFile) throws IOException {
+    public void saveImage(GardenImage gardenImage, MultipartFile multipartFile){
 
-        //GardenId is the folder for this garden
-        String gardenId = gardenImage.getGardenId().toString();
-        //Get the given filename
-        String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        //Build uploadDirectory name
-        String uploadDir = SGFileUtils.buildUploadDir(gardenImage);
-        //Set filepath for image
-        gardenImage.setFilepath(uploadDir + "/" + filename);
+        setGardenImageFilepath(gardenImage, multipartFile.getOriginalFilename());
 
-        //Validate the image, give it a timestamp if it doesn't have one
-        //Verify garden is registered
-        ValidationUtil.validateImage(gardenImage);
-        //Save Image
-        imageRepository.save(gardenImage);
+        storeImageInfo(gardenImage);
 
-        //Finish Uploading Image
-        SGFileUtils.saveFile(uploadDir, filename, multipartFile);
+        try {
+
+            uploadImage(multipartFile);
+
+        } catch (IOException ioe) {
+
+            dropImageInfo(gardenImage);
+
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Unable to save file", ioe);
+        }
     }
 
 
@@ -76,6 +76,31 @@ public class GardenImageService {
     }
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Image Not Found")
     public class ImageNotFoundException extends RuntimeException{
+    }
+
+    private void setGardenImageFilepath(GardenImage gardenImage, String filename){
+
+        //Get the given filename
+        this.filename = StringUtils.cleanPath(filename);
+        //Build uploadDirectory name
+        uploadDir = SGFileUtils.buildUploadDir(gardenImage);
+        //Set filepath for image
+        gardenImage.setFilepath(uploadDir + "/" + filename);
+    }
+
+    private void storeImageInfo(GardenImage gardenImage){
+
+        ValidationUtil.validateImage(gardenImage);
+        //Save Image
+        imageRepository.save(gardenImage);
+    }
+
+    private void dropImageInfo(GardenImage gardenImage){
+        imageRepository.delete(gardenImage);
+    }
+
+    private void uploadImage(MultipartFile multipartFile) throws IOException {
+        SGFileUtils.saveFile(uploadDir, filename, multipartFile);
     }
 
 
