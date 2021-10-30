@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
@@ -40,7 +39,7 @@ public class GardenImageService {
         //Set filepath for image
         gardenImage.setFilepath(uploadDir + "/" + filename);
 
-        //Validate the image, give it a timestamp if it doesnt have one
+        //Validate the image, give it a timestamp if it doesn't have one
         //Verify garden is registered
         ValidationUtil.validateImage(gardenImage);
         //Save Image
@@ -48,7 +47,6 @@ public class GardenImageService {
 
         //Finish Uploading Image
         SGFileUtils.saveFile(uploadDir, filename, multipartFile);
-        System.out.println(gardenImage.toString());
     }
 
 

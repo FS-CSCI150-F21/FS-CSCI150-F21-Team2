@@ -7,12 +7,11 @@ import com.smrtgrdyn.smrtgrdyn.Garden.Registration.GardenRegistrationRequest;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenRegistrationRequestRepository;
-import com.smrtgrdyn.smrtgrdyn.Garden.Repository.UserInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.Timestamp;
+
 import java.util.Optional;
 import java.util.UUID;
 
