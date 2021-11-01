@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -24,15 +25,18 @@ public class GardenImageService {
 
     private String filename;
     private String uploadDir;
+    private ValidationUtil validationUtil;
 
 
     @Autowired
-    public GardenImageService(GardenImageRepository imageRepository) {
+    public GardenImageService(GardenImageRepository imageRepository, ValidationUtil validationUtil) {
         this.imageRepository = imageRepository;
+        this.validationUtil = validationUtil;
     }
 
     public void saveImage(GardenImage gardenImage, MultipartFile multipartFile){
 
+        System.out.println("Saving Image");
         setGardenImageFilepath(gardenImage, multipartFile.getOriginalFilename());
 
         storeImageInfo(gardenImage);
@@ -61,7 +65,9 @@ public class GardenImageService {
 
     private void storeImageInfo(GardenImage gardenImage){
 
-        ValidationUtil.validateImage(gardenImage);
+        System.out.println("Not Validated");
+        validationUtil.validateImage(gardenImage);
+        System.out.println("Validated");
         //Save Image
         imageRepository.save(gardenImage);
     }

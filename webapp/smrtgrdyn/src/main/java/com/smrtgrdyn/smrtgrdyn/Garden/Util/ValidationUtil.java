@@ -8,19 +8,35 @@ import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepo
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenRegistrationRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import java.beans.JavaBean;
 import java.util.Optional;
 import java.util.UUID;
 
+
+/**
+*
+ * Validation Utility Class
+ *
+ * This Validation Utility is used to ensure that all data being stored is "Valid",
+ * eg, It has all fields properly filled out, and will not
+ * interfere with other saved entities.
+ *
+* */
+@Service
 public class ValidationUtil {
 
 
-    private static GardenImageRepository images;
-    private static GardenConnectionInformationRepository gardens;
-    private static GardenRegistrationRequestRepository registrations;
+    private final GardenImageRepository images;
+    private final GardenConnectionInformationRepository gardens;
+    private final GardenRegistrationRequestRepository registrations;
+
+
     @Autowired
     public ValidationUtil(GardenImageRepository images,
                           GardenConnectionInformationRepository gardens,
@@ -40,7 +56,8 @@ public class ValidationUtil {
      *  Valid in this case means, the values are unique with respect to the UUID submitted,
      *  and the UUID that is submitted is also registered
      */
-    public static void validateImage(GardenImage gardenImage){
+    public void validateImage(GardenImage gardenImage){
+
 
        //If no timestamp given, generate one
        if(!isTimestampValid(gardenImage)){
@@ -49,7 +66,7 @@ public class ValidationUtil {
 
        // Check the UUID to verify registration
        if(!isUUIDValid(gardenImage.getGardenId())){
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Timestamp");
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID");
        }
 
        if(!isFilepathValid(gardenImage.getFilepath())){
@@ -58,7 +75,7 @@ public class ValidationUtil {
 
     }
 
-    private static boolean isTimestampValid(GardenImage gardenImage){
+    private boolean isTimestampValid(GardenImage gardenImage){
         if(gardenImage.getTimestamp() == null){
             return false;
         }
@@ -73,7 +90,7 @@ public class ValidationUtil {
      * A valid UUID is a UUID that is saved in the ConnectionInformation Table
      * And is not found in open registration requests
     * */
-    private static boolean isUUIDValid(UUID gardenId){
+    private boolean isUUIDValid(UUID gardenId){
 
         Optional<GardenConnectionInformation> gardenConnection =
                 gardens.findById(gardenId);
@@ -84,7 +101,7 @@ public class ValidationUtil {
         return gardenConnection.isPresent() && registrationRequest.isEmpty();
     }
 
-    private static boolean isFilepathValid(String filepath){
+    private boolean isFilepathValid(String filepath){
         return !SGFileUtils.doesFileExist(filepath);
     }
 }

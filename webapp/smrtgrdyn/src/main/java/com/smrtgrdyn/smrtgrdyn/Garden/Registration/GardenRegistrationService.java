@@ -24,10 +24,12 @@ public class GardenRegistrationService {
 
     private final GardenRegistrationRequestRepository registrationRequestRepository;
     private final GardenConnectionInformationRepository gardenConnectionInformationRepository;
+    private UserInformationRepository userInformationRepository;
+
 
     private GardenConnectionInformation gardenConnectionInformation;
     private GardenRegistrationRequest gardenRegistrationRequest;
-    private UserInformationRepository userInformationRepository;
+
 
     @Autowired
     public GardenRegistrationService(GardenRegistrationRequestRepository pairingRepository,
@@ -48,10 +50,7 @@ public class GardenRegistrationService {
             if (optionalGardenRegistrationRequest.get().getUsername().equals(username)) {
 
                 /*
-                *
                 *  sendUUID to pi will currently NOT work as the server only tests locally
-                *
-                *
                 * */
                 //   sendUUIDToPi(optionalGardenRegistrationRequest.get().getGardenId());
 

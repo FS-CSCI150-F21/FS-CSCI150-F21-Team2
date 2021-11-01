@@ -14,8 +14,13 @@ import java.io.IOException;
 //@RequestMapping
 public class GardenImageController {
 
-    @Autowired
+
     private GardenImageService service;
+
+    @Autowired
+    public GardenImageController(GardenImageService service) {
+        this.service = service;
+    }
 
     @PostMapping(path = "api/v1/garden_images", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public void saveImage(@ModelAttribute GardenImage gardenImage,@RequestParam("image")MultipartFile multipartFile) throws IOException {
