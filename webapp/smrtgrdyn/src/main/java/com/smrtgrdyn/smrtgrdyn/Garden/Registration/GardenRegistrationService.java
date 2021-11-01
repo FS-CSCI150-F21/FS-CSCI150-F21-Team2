@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.Registration;
 import javax.servlet.http.HttpServletRequest;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -142,9 +143,21 @@ public class GardenRegistrationService {
         }
     }
 
-    public void requestRegistration(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest) {
+    public void openRegistrationRequest(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest) {
 
+        // Set connection information
+        setConnectionInformation(servletRequest, registrationRequest);
+        // Set request information
+        setRequestInformation(registrationRequest);
+        // Save Both Entities
+        saveConnectionAndRequestInformation();
+        // Start timer for registration window
+        startRegistrationTimer();
 
+    }
+
+    private void setConnectionInformation(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest){
+        //Extracted Values for clarity
         String host = servletRequest.getHeader(HttpHeaders.HOST);
         Integer port = servletRequest.getServerPort();
         UUID gardenId = UUID.randomUUID();
@@ -152,16 +165,33 @@ public class GardenRegistrationService {
 
         this.gardenConnectionInformation = new GardenConnectionInformation(gardenId, username, host, port);
 
-        this.gardenRegistrationRequest = registrationRequest;
-        this.gardenRegistrationRequest.setGardenId(gardenId);
+    }
 
+    private void setRequestInformation(GardenRegistrationRequest registrationRequest){
+
+        // Set registration Request's gardenId
+        // Extracted for Clarity
+        UUID gardenId = this.gardenConnectionInformation.getGardenId();
+        registrationRequest.setGardenId(gardenId);
+        // Store request
+        this.gardenRegistrationRequest = registrationRequest;
+
+        registrationRequestRepository.save(this.gardenRegistrationRequest);
+
+    }
+
+    private void saveConnectionAndRequestInformation(){
 
         registrationRequestRepository.save(this.gardenRegistrationRequest);
         gardenConnectionInformationRepository.save(this.gardenConnectionInformation);
 
+    }
 
-        new GardenRegistrationServiceThread(gardenRegistrationRequest.getPiId(), gardenId).start();
-
+    private void startRegistrationTimer(){
+        new GardenRegistrationServiceThread(
+                this.gardenRegistrationRequest.getPiId(),
+                this.gardenRegistrationRequest.getGardenId())
+                .start();
     }
 
 
@@ -181,16 +211,20 @@ public class GardenRegistrationService {
                 //Sleep time denotes how long the registration request can stay open
                 Thread.sleep(300000);
 
-                Optional<GardenRegistrationRequest> registrationRequestOptional =
-                        registrationRequestRepository.findById(this.piId);
-
-                if (registrationRequestOptional.isPresent()) {
-                    gardenConnectionInformationRepository.deleteById(this.gardenId);
-                    registrationRequestRepository.deleteById(this.piId);
-                }
+                dropRequest();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+
+        private void dropRequest(){
+            Optional<GardenRegistrationRequest> registrationRequestOptional =
+                    registrationRequestRepository.findById(this.piId);
+
+            if (registrationRequestOptional.isPresent()) {
+                gardenConnectionInformationRepository.deleteById(this.gardenId);
+                registrationRequestRepository.deleteById(this.piId);
             }
         }
     }

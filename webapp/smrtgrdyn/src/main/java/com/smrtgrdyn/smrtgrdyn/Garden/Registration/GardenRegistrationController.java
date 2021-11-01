@@ -24,10 +24,10 @@ public class GardenRegistrationController {
 
     @PostMapping
     @RequestMapping("api/v1/garden_registration/pi")
-    public void registrationRequestFromPi(HttpServletRequest servletRequest, @RequestBody GardenRegistrationRequest registrationRequest){
+    public void openRegistrationRequest(HttpServletRequest servletRequest, @RequestBody GardenRegistrationRequest registrationRequest){
 
         // Save the pairing request pi id and username
-        service.requestRegistration(servletRequest, registrationRequest);
+        service.openRegistrationRequest(servletRequest, registrationRequest);
     }
 
     @PostMapping
@@ -48,12 +48,5 @@ public class GardenRegistrationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not logged in");
         }
     }
-
-    @GetMapping
-    @RequestMapping("test")
-    public GardenRegistrationRequest getRegistrationRequest(){
-        return new GardenRegistrationRequest("1234", "Ryan1Up", null);
-    }
-
-
+    
 }
