@@ -12,9 +12,7 @@ import java.util.UUID;
 
 @RestController
 public class GardenRegistrationController {
-
-
-
+    
     private final GardenRegistrationService service;
 
     @Autowired
@@ -48,5 +46,5 @@ public class GardenRegistrationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not logged in");
         }
     }
-    
+
 }
