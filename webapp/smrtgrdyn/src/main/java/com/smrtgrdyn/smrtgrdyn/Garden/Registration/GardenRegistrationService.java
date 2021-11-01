@@ -35,6 +35,7 @@ public class GardenRegistrationService {
     public GardenRegistrationService(GardenRegistrationRequestRepository pairingRepository,
                                      GardenConnectionInformationRepository gardenConnectionInformationRepository,
                                      UserInformationRepository userInformationRepository) {
+
         this.registrationRequestRepository = pairingRepository;
         this.gardenConnectionInformationRepository = gardenConnectionInformationRepository;
         this.userInformationRepository = userInformationRepository;
@@ -80,7 +81,7 @@ public class GardenRegistrationService {
 
     private void addGardenIdToUsersRegisteredGardens(String username, UUID gardenId){
 
-        if(!gardenAlreadyRegisteredWithUser(username, gardenId)){
+        if(!isGardenAlreadyRegisteredWithUser(username, gardenId)){
             Optional<User> userOptional = userInformationRepository.findById(username);
 
             if(userOptional.isEmpty()){
@@ -91,7 +92,7 @@ public class GardenRegistrationService {
 
     }
 
-    private boolean gardenAlreadyRegisteredWithUser(String username, UUID gardenId){
+    private boolean isGardenAlreadyRegisteredWithUser(String username, UUID gardenId){
         Optional<User> userOptional = userInformationRepository.findById(username);
 
         if(userOptional.isPresent()){
@@ -161,15 +162,16 @@ public class GardenRegistrationService {
 
     private void setRequestInformationWithConnectionInformation(GardenRegistrationRequest registrationRequest){
 
-        // Set registration Request's gardenId
+
         // Extracted for Clarity
         UUID gardenId = this.gardenConnectionInformation.getGardenId();
+
+        // Set registration Request's gardenId
         registrationRequest.setGardenId(gardenId);
+
         // Store request
         this.gardenRegistrationRequest = registrationRequest;
-
-        registrationRequestRepository.save(this.gardenRegistrationRequest);
-
+        
     }
 
     private void saveConnectionAndRequestInformation(){
