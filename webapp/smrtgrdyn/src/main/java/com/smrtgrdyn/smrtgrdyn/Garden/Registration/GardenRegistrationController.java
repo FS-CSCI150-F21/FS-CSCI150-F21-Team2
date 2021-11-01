@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 public class GardenRegistrationController {
-    
+
     private final GardenRegistrationService service;
 
     @Autowired
@@ -30,7 +30,7 @@ public class GardenRegistrationController {
 
     @PostMapping
     @RequestMapping("api/v1/garden_registration/user")
-    public UUID registrationConfirmationFromUser(HttpServletRequest servletRequest,
+    public void registrationConfirmationFromUser(HttpServletRequest servletRequest,
                                                  @RequestBody GardenRegistrationRequest request){
 
         //Get the session
@@ -39,7 +39,7 @@ public class GardenRegistrationController {
         if(session != null){
             String username = (String) session.getAttribute("username");
 
-            return service.confirmRegistration(username, request);
+            service.confirmRegistration(username, request);
 
         }else{
             //Otherwise nobody is logged in, throw error
