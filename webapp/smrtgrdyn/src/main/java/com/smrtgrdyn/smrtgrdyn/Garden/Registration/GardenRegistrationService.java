@@ -169,9 +169,9 @@ public class GardenRegistrationService {
         // Set registration Request's gardenId
         registrationRequest.setGardenId(gardenId);
 
-        // Store request
+        // Set request
         this.gardenRegistrationRequest = registrationRequest;
-        
+
     }
 
     private void saveConnectionAndRequestInformation(){
