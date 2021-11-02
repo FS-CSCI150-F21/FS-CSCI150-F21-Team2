@@ -68,11 +68,11 @@ public class GardenRegistrationService {
 
     private void setupRegistrationConfirmation(String piId){
 
-        if(registrationRequestRepository.findById(piId).isPresent()){
-            gardenRegistrationRequest = registrationRequestRepository.findById(piId).get();
+        if(registrationRequestRepository.findById(piId).isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration Request Not Found");
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration Request Not Found");
-
+       
+        gardenRegistrationRequest = registrationRequestRepository.findById(piId).get();
     }
 
     private String getRequestUsername(String piId){
