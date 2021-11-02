@@ -32,7 +32,6 @@ public interface GardenDataRepository extends CrudRepository<GardenSensorData, G
     Optional<Timestamp> findLatestTimestampByGardenId(@Param("gardenId") UUID gardenId);
 
 
-
     default Optional<GardenSensorData> findLatestByGardenId(@Param("gardenId") UUID gardenId){
         Optional<Timestamp> optionalTimestamp = findLatestTimestampByGardenId(gardenId);
         findAll();
@@ -41,9 +40,8 @@ public interface GardenDataRepository extends CrudRepository<GardenSensorData, G
     }
 
 
-
     default List<GardenSensorData> findAllDataInRangeById(UUID gardenId, Timestamp start, Timestamp end){
-        List<GardenSensorData> all = (List<GardenSensorData>) findAll();
+        findAll();
         List<GardenSensorData> list = new ArrayList<>();
         for(GardenSensorData g : findAll()){
              if(g.getGardenId().equals(gardenId) && start.before(g.getTimestamp()) && end.after(g.getTimestamp())){

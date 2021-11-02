@@ -3,15 +3,19 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Util;
 import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
 import com.smrtgrdyn.smrtgrdyn.Garden.Image.GardenImage;
 import com.smrtgrdyn.smrtgrdyn.Garden.Image.GardenImageId;
+import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.Notification;
+import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.NotificationId;
 import com.smrtgrdyn.smrtgrdyn.Garden.Registration.GardenRegistrationRequest;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenRegistrationRequestRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,15 +36,17 @@ public class ValidationUtil {
     private final GardenImageRepository images;
     private final GardenConnectionInformationRepository gardens;
     private final GardenRegistrationRequestRepository registrations;
-
+    private final NotificationRepository notifications;
 
     @Autowired
     public ValidationUtil(GardenImageRepository images,
                           GardenConnectionInformationRepository gardens,
-                          GardenRegistrationRequestRepository registrations) {
+                          GardenRegistrationRequestRepository registrations,
+                          NotificationRepository notifications) {
         this.images = images;
         this.gardens = gardens;
         this.registrations = registrations;
+        this.notifications = notifications;
     }
 
 
@@ -56,15 +62,16 @@ public class ValidationUtil {
     public void validateImage(GardenImage gardenImage){
 
 
-       //If no timestamp given, generate one
-       if(!isTimestampValid(gardenImage)){
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Timestamp");
-       }
 
        // Check the UUID to verify registration
        if(!isUUIDValid(gardenImage.getGardenId())){
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID");
        }
+
+        //If no timestamp given, generate one
+        if(!isImageTimestampValid(gardenImage)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Timestamp");
+        }
 
        if(!isFilepathValid(gardenImage.getFilepath())){
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Duplicate Images");
@@ -72,21 +79,10 @@ public class ValidationUtil {
 
     }
 
-    private boolean isTimestampValid(GardenImage gardenImage){
-        if(gardenImage.getTimestamp() == null){
-            return false;
-        }
-
-        Optional<GardenImage> optionalGardenImage =
-                images.findById(new GardenImageId(gardenImage.getGardenId(), gardenImage.getTimestamp()));
-
-        return optionalGardenImage.isEmpty();
-    }
-
     /**
      * A valid UUID is a UUID that is saved in the ConnectionInformation Table
      * And is not found in open registration requests
-    * */
+     * */
     private boolean isUUIDValid(UUID gardenId){
 
         Optional<GardenConnectionInformation> gardenConnection =
@@ -98,7 +94,48 @@ public class ValidationUtil {
         return gardenConnection.isPresent() && registrationRequest.isEmpty();
     }
 
+    private boolean isImageTimestampValid(GardenImage gardenImage){
+        if(gardenImage.getTimestamp() == null){
+            return false;
+        }
+
+        Optional<GardenImage> optionalGardenImage =
+                images.findById(new GardenImageId(gardenImage.getGardenId(), gardenImage.getTimestamp()));
+
+        return optionalGardenImage.isEmpty();
+    }
+
+
+
     private boolean isFilepathValid(String filepath){
         return !SGFileUtils.doesFileExist(filepath);
+    }
+
+    public void validateNotification(Notification notification){
+
+        if(!isNotificationTimestampValid(notification)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Timestamp");
+        }
+        if(!isUUIDValid(notification.getGardenId())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID");
+        }
+
+        if(notification.getMessage() == null){
+            notification.generateMessage(notification.getType());
+        }
+    }
+
+    private boolean isNotificationTimestampValid(Notification notification){
+
+        if(notification.getTimestamp() == null){
+            return false;
+        }
+
+        Optional<Notification> optionalNotification =
+                notifications.findById(new NotificationId(notification.getGardenId(), notification.getTimestamp()));
+
+        return optionalNotification.isEmpty();
+
+
     }
 }
