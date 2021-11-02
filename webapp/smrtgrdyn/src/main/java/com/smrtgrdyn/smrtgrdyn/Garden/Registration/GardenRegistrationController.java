@@ -26,6 +26,7 @@ public class GardenRegistrationController {
 
         // Save the pairing request pi id and username
         service.openRegistrationRequest(servletRequest, registrationRequest);
+        System.out.println(registrationRequest.getGardenId());
     }
 
     @PostMapping

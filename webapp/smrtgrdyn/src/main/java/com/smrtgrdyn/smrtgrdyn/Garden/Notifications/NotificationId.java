@@ -10,6 +10,9 @@ public class NotificationId implements Serializable {
     private UUID gardenId;
     private Timestamp timestamp;
 
+    public NotificationId() {
+    }
+
     public NotificationId(UUID gardenId, Timestamp timestamp) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;

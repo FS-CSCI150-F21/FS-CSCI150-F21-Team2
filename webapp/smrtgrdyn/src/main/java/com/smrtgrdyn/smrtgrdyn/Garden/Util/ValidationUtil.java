@@ -85,6 +85,7 @@ public class ValidationUtil {
      * */
     private boolean isUUIDValid(UUID gardenId){
 
+        gardens.findAll();
         Optional<GardenConnectionInformation> gardenConnection =
                 gardens.findById(gardenId);
 
@@ -113,15 +114,17 @@ public class ValidationUtil {
 
     public void validateNotification(Notification notification){
 
-        if(!isNotificationTimestampValid(notification)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Timestamp");
-        }
         if(!isUUIDValid(notification.getGardenId())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID");
         }
 
+        if(!isNotificationTimestampValid(notification)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Timestamp");
+        }
+
         if(notification.getMessage() == null){
-            notification.generateMessage(notification.getType());
+            notification.setMessage(
+                    notification.generateMessage(notification.getType()));
         }
     }
 

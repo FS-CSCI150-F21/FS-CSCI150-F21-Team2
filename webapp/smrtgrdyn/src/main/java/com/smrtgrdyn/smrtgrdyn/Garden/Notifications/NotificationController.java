@@ -19,6 +19,7 @@ public class NotificationController {
 
     @PostMapping
     public void addNotification(@RequestBody Notification notification){
+        
         service.addNotification(notification);
     }
 

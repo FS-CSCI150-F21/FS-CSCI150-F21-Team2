@@ -71,7 +71,7 @@ public class GardenRegistrationService {
         if(registrationRequestRepository.findById(piId).isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration Request Not Found");
         }
-       
+
         gardenRegistrationRequest = registrationRequestRepository.findById(piId).get();
     }
 
