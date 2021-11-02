@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 @Service
@@ -20,7 +21,7 @@ public class UserRegistrationService {
         this.userInformationRepository = userInformationRepository;
     }
 
-    public void registerUser(@org.jetbrains.annotations.NotNull User user){
+    public void registerUser(@NotNull User user){
 
         //1. Check to see if username has been already been used
         Optional<User> userOptional = userInformationRepository.findById(user.getUsername());

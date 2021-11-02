@@ -131,7 +131,7 @@ public class GardenRegistrationService {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not Connect to Pi", e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not Connect to Garden", e);
             }
         }
     }
@@ -161,7 +161,6 @@ public class GardenRegistrationService {
     }
 
     private void setRequestInformationWithConnectionInformation(GardenRegistrationRequest registrationRequest){
-
 
         // Extracted for Clarity
         UUID gardenId = this.gardenConnectionInformation.getGardenId();

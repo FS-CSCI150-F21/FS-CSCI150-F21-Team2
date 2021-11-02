@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class GardenImageService {
 
     private String filename;
     private String uploadDir;
-    private ValidationUtil validationUtil;
+    private final ValidationUtil validationUtil;
 
 
     @Autowired
@@ -65,9 +64,7 @@ public class GardenImageService {
 
     private void storeImageInfo(GardenImage gardenImage){
 
-        System.out.println("Not Validated");
         validationUtil.validateImage(gardenImage);
-        System.out.println("Validated");
         //Save Image
         imageRepository.save(gardenImage);
     }
@@ -91,7 +88,7 @@ public class GardenImageService {
         if (optionalGardenImage.isPresent()){
 
             GardenImage gardenImage1 = optionalGardenImage.get();
-            byte[] image = new byte[0];
+            byte[] image;
 
             try {
                 image = org.apache.commons.io.FileUtils.readFileToByteArray(new File(gardenImage1.getFilepath()));
@@ -108,7 +105,7 @@ public class GardenImageService {
 
     }
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Image Not Found")
-    public class ImageNotFoundException extends RuntimeException{
+    public static class ImageNotFoundException extends RuntimeException{
     }
 
 

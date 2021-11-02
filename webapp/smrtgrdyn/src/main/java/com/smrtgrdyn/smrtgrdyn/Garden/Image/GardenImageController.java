@@ -15,7 +15,7 @@ import java.io.IOException;
 public class GardenImageController {
 
 
-    private GardenImageService service;
+    private final GardenImageService service;
 
     @Autowired
     public GardenImageController(GardenImageService service) {
