@@ -19,12 +19,12 @@ public class NotificationController {
 
     @PostMapping
     public void addNotification(@RequestBody Notification notification){
-        
+
         service.addNotification(notification);
     }
 
     @GetMapping
     public List<Notification> getNotifications(@RequestParam("gardenId") UUID gardenId){
-        return service.getNotifications(gardenId);
+        return List.copyOf(service.getNotifications(gardenId));
     }
 }

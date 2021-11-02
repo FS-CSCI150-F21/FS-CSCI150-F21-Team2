@@ -29,6 +29,7 @@ public class NotificationService {
 
     public List<Notification> getNotifications(UUID gardenId){
 
-        return List.copyOf(notificationRepository.findAllByGardenId(gardenId));
+        notificationRepository.findAll();
+        return notificationRepository.findAllByGardenId(gardenId);
     }
 }
