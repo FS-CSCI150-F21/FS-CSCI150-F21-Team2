@@ -43,6 +43,7 @@ public class UserSessionController {
 
 
     @RequestMapping("api/v1/user_session/logout")
+    @PostMapping
     public void userLogout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
