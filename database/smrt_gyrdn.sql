@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
--- Host: localhost    Database: test
+-- Host: 127.0.0.1    Database: test
 -- ------------------------------------------------------
 -- Server version	8.0.27
 
@@ -50,6 +50,22 @@ CREATE TABLE `garden_images` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `notification_information`
+--
+
+DROP TABLE IF EXISTS `notification_information`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification_information` (
+  `garden_id` varchar(45) NOT NULL,
+  `timestamp` varchar(45) NOT NULL,
+  `notification_type` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`garden_id`,`timestamp`),
+  CONSTRAINT `garden_id_notification_info` FOREIGN KEY (`garden_id`) REFERENCES `connection_information` (`garden_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `registration_request`
 --
 
@@ -77,7 +93,7 @@ CREATE TABLE `sensor_data` (
   `garden_id` varchar(45) NOT NULL,
   `timestamp` timestamp NOT NULL,
   `water_flow` int DEFAULT NULL,
-  `pH_balance` int DEFAULT NULL,
+  `humidity` int DEFAULT NULL,
   `soil_moisture` int DEFAULT NULL,
   `temperature` int DEFAULT NULL,
   `water_active` bit(1) DEFAULT NULL,
@@ -110,4 +126,4 @@ CREATE TABLE `user_information` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-23 16:24:33
+-- Dump completed on 2021-11-03 16:22:30
