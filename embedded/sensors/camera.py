@@ -1,6 +1,9 @@
 from picamera import PiCamera
 from datetime import datetime
+from threading import Thread, Lock
 import os
+
+mutex = Lock()
 
 def capture_image():
     """
@@ -10,6 +13,8 @@ def capture_image():
     returns:
         str: path to image
     """
+
+    mutex.acquire()
 
     _image_folder = str(os.path.normpath(os.path.dirname(__file__) + os.sep + os.pardir) + '/sensor_data/images/')
 
@@ -23,5 +28,7 @@ def capture_image():
 
     camera = PiCamera()
     camera.capture(image_path)
+
+    mutex.release()
 
     return image_path
