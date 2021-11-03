@@ -5,6 +5,7 @@ import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,7 @@ public class UserSessionController {
     }
 
     @RequestMapping("/api/v1/user_session/login")
+    @PostMapping
     public void userLogin(HttpServletRequest request, @RequestBody User user){
 
         try{
