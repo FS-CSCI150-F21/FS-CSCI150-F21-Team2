@@ -70,15 +70,18 @@ public class GardenDataSaveService {
 
 
     public GardenSensorData getLatestData(GardenDataRequest request){
+        if(isGardenRegistered(request.getGardenId())){
+            Optional<GardenSensorData> gardenSensorDataOptional =
+                    gardenDataRepository.findLatestByGardenId(request.getGardenId());
 
-        Optional<GardenSensorData> gardenSensorDataOptional =
-                gardenDataRepository.findLatestByGardenId(request.getGardenId());
+            if(gardenSensorDataOptional.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
+            }
 
-        if(gardenSensorDataOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
+            return gardenSensorDataOptional.get();
         }
 
-        return gardenSensorDataOptional.get();
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Not Registered");
 
     }
 

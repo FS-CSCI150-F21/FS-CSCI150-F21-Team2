@@ -32,12 +32,15 @@ public class UserSessionController {
 
     @RequestMapping("/api/v1/user_session/login")
     @PostMapping
-    public void userLogin(HttpServletRequest request, @RequestBody User user){
+    public void userLogin(HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
 
         try{
             userLoginService.loginUser(request, user);
+            response.sendRedirect(request.getContextPath() + "/dashboard.html");
         }catch(IllegalStateException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid Login", e);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Error on Redirect", e);
         }
     }
 
