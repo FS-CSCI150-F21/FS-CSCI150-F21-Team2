@@ -69,11 +69,11 @@ public class Notification {
 
         switch (type){
             case "animal":
-                sb.append("n animal was detected at")
+                sb.append("n animal was detected at ")
                         .append(new SimpleDateFormat("HH:mm MM/dd/yyyy").format(this.timestamp));
                 break;
             case "leak":
-                sb.append(" leak was detected at")
+                sb.append(" leak was detected at ")
                         .append(new SimpleDateFormat("HH:mm MM/dd/yyyy").format(this.timestamp))
                         .append(" Reason: Water Flow Detected when Water Valve was turned off.");
         }
