@@ -75,7 +75,7 @@ public class Notification {
             case "leak":
                 sb.append(" leak was detected at")
                         .append(new SimpleDateFormat("HH:mm MM/dd/yyyy").format(this.timestamp))
-                        .append("\nReason: Water Flow Detected when Water Valve was turned off.");
+                        .append(" Reason: Water Flow Detected when Water Valve was turned off.");
         }
 
 

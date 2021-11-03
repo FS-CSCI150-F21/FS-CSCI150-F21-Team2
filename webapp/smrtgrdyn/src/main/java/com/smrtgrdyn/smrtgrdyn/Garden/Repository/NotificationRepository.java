@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +15,18 @@ import java.util.UUID;
 public interface NotificationRepository extends CrudRepository<Notification, NotificationId> {
 
 
-    @Query(value = "SELECT * FROM notification_table WHERE "
-                    + "garden_id = :gardenId", nativeQuery = true)
-    List<Notification> findAllByGardenId(@Param("gardenId") UUID gardenId);
+//    @Query(value = "SELECT * FROM notification_table WHERE "
+//                    + "garden_id = :gardenId", nativeQuery = true)
+    // Quick and Dirty Fix to a Null result that shouldn't be null
+    default List<Notification> findAllByGardenId(UUID gardenId){
+        List<Notification> ret = new ArrayList<>();
+        for(Notification n : findAll()){
+            if(n.getGardenId().equals(gardenId)){
+                ret.add(n);
+            }
+        }
+        return ret;
+    }
+
+
 }

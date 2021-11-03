@@ -30,6 +30,9 @@ public class NotificationService {
     public List<Notification> getNotifications(UUID gardenId){
 
         notificationRepository.findAll();
+        for(Notification n : notificationRepository.findAllByGardenId(gardenId)){
+            System.out.println(n.toString());
+        }
         return notificationRepository.findAllByGardenId(gardenId);
     }
 }
