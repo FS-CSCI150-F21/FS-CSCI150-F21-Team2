@@ -27,6 +27,7 @@ CREATE TABLE `connection_information` (
   `garden_id` varchar(45) NOT NULL,
   `host` varchar(45) DEFAULT NULL,
   `port` int DEFAULT NULL,
+  `garden_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`garden_id`),
   KEY `username` (`username`),
   CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `user_information` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -126,4 +127,4 @@ CREATE TABLE `user_information` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-03 16:22:30
+-- Dump completed on 2021-11-03 21:13:43
