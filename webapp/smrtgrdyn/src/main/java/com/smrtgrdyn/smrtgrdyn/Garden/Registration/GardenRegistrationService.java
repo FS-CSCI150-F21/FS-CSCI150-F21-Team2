@@ -156,6 +156,7 @@ public class GardenRegistrationService {
         UUID gardenId = UUID.randomUUID();
         String username = registrationRequest.getUsername();
 
+        // TODO Add check for Username being in a registered account
         this.gardenConnectionInformation = new GardenConnectionInformation(gardenId, username, host, port);
 
     }
