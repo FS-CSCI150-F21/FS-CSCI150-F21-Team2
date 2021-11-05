@@ -19,7 +19,7 @@ import java.util.UUID;
 * And allows multiple entries at the same time without loss
 * of specification*/
 
-@Repository("garden_sensor_data")
+@Repository
 public interface GardenDataRepository extends CrudRepository<GardenSensorData, GardenSensorDataId> {
 
     @Query(value = "SELECT * FROM garden_sensor_data" +
@@ -30,7 +30,6 @@ public interface GardenDataRepository extends CrudRepository<GardenSensorData, G
     @Query( value = "SELECT MAX(timestamp) as timestamp FROM garden_sensor_data WHERE " +
                     "garden_id = :gardenId", nativeQuery = true)
     Optional<Timestamp> findLatestTimestampByGardenId(@Param("gardenId") UUID gardenId);
-
 
     default Optional<GardenSensorData> findLatestByGardenId(@Param("gardenId") UUID gardenId){
         Optional<Timestamp> optionalTimestamp = findLatestTimestampByGardenId(gardenId);
@@ -51,8 +50,7 @@ public interface GardenDataRepository extends CrudRepository<GardenSensorData, G
         return list;
     }
 
-    //This SHOULD do the same as the above, but returns nothing
+    List<GardenSensorData> findAllByGardenId(UUID gardenId);
+
     List<GardenSensorData> findByGardenIdAndTimestampBetween(UUID gardenId, Timestamp start, Timestamp end);
-
-
 }

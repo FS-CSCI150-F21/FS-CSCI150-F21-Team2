@@ -49,17 +49,21 @@ public class GardenDataSaveService {
     }
 
     private String getUsernameFromGardenId(UUID gardenId){
+
+        gardenConnectionInformationRepository.findAll();
         Optional<GardenConnectionInformation> optionalConnection =
                 gardenConnectionInformationRepository.findById(gardenId);
 
         if(optionalConnection.isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Not Registered");
         }
+
         return optionalConnection.get().getUser();
 
     }
 
     private boolean isGardenRegisteredToUser(String username, UUID gardenId){
+
         Optional<User> optionalUser = userInformationRepository.findById(username);
 
         if(optionalUser.isEmpty()){

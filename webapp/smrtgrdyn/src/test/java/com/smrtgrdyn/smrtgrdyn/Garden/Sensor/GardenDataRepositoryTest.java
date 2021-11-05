@@ -153,12 +153,12 @@ class GardenDataRepositoryTest {
     @Test
     void itShouldSelectMultipleEntriesForGivenTimeFrameAndId(){
         UUID gardenId = UUID.randomUUID();
-        Timestamp start = Timestamp.valueOf("2012-1-21 15:25:44");
+        Timestamp start = Timestamp.valueOf("2012-1-22 15:25:44");
         Timestamp end = Timestamp.valueOf("2012-5-22 15:25:44");
         Timestamp time1 = Timestamp.valueOf("2012-2-22 15:25:44");
         Timestamp time2 = Timestamp.valueOf("2012-3-22 15:25:44");
         Timestamp time3 = Timestamp.valueOf("2012-4-22 15:25:44");
-        List<GardenSensorData> list = new ArrayList<>();
+
         GardenSensorData g1 = new GardenSensorData(gardenId, time1,true, 22.1, 12.2,55,12 );
         GardenSensorData g2 = new GardenSensorData(gardenId, time2,true, 22.1, 12.2,55,12 );
         GardenSensorData g3 = new GardenSensorData(gardenId, time3, true, 22.1, 12.2,55,12 );
@@ -169,14 +169,12 @@ class GardenDataRepositoryTest {
         underTest.save(g3);
 
 
-        List<GardenSensorData> ret = underTest.findAllDataInRangeById(gardenId, start, end);
+        underTest.findAll();
+//        List<GardenSensorData> ret = underTest.findAllDataInRangeById(gardenId, start, end);
+        List<GardenSensorData> ret = underTest.findAllByGardenId(gardenId);
+
 
         assert(!ret.isEmpty());
-
-
-
     }
-
-
 
 }
