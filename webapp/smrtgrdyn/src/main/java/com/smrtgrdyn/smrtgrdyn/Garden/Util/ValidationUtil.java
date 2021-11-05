@@ -7,10 +7,8 @@ import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.Notification;
 import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.NotificationId;
 import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.NotificationType;
 import com.smrtgrdyn.smrtgrdyn.Garden.Registration.GardenRegistrationRequest;
-import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
-import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
-import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenRegistrationRequestRepository;
-import com.smrtgrdyn.smrtgrdyn.Garden.Repository.NotificationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.*;
+import com.smrtgrdyn.smrtgrdyn.User.Control.ControlRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,16 +34,18 @@ public class ValidationUtil {
     private final GardenConnectionInformationRepository gardens;
     private final GardenRegistrationRequestRepository registrations;
     private final NotificationRepository notifications;
+    private final UserInformationRepository users;
 
     @Autowired
     public ValidationUtil(GardenImageRepository images,
                           GardenConnectionInformationRepository gardens,
                           GardenRegistrationRequestRepository registrations,
-                          NotificationRepository notifications) {
+                          NotificationRepository notifications, UserInformationRepository users) {
         this.images = images;
         this.gardens = gardens;
         this.registrations = registrations;
         this.notifications = notifications;
+        this.users = users;
     }
 
 
@@ -59,7 +59,6 @@ public class ValidationUtil {
      *  and the UUID that is submitted is also registered
      */
     public void validateImage(GardenImage gardenImage){
-
 
 
        // Check the UUID to verify registration
@@ -84,7 +83,7 @@ public class ValidationUtil {
      * */
     private boolean isUUIDValid(String gardenId){
 
-        gardens.findAll();
+
         Optional<GardenConnectionInformation> gardenConnection =
                 gardens.findById(gardenId);
 
@@ -146,5 +145,24 @@ public class ValidationUtil {
     private boolean isNotificationTypeValid(Notification notification){
 
         return EnumUtils.isValidEnum(NotificationType.class, notification.getType());
+    }
+
+    public boolean validateControlRequest(ControlRequest request, String username){
+        //Validation: gardenId is Registered AND is Saved under User
+        if(!isUUIDValid(request.getGardenId())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID");
+        }
+
+        if(!isUUIDRegisteredToUser(request.getGardenId(), username)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Registration");
+        }
+
+        return true;
+    }
+
+    private boolean isUUIDRegisteredToUser(String gardenId, String username){
+
+        return gardens.findById(gardenId).get().getUser().equals(username) &&
+                users.findById(username).get().getRegisteredGardens().contains(gardenId);
     }
 }
