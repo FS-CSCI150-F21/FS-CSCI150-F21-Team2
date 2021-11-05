@@ -10,7 +10,7 @@ public class NotificationUtil {
 
     private final NotificationRepository notifications;
     private final ValidationUtil validationUtil;
-    
+
     @Autowired
     public NotificationUtil(NotificationRepository notifications, ValidationUtil validationUtil) {
         this.notifications = notifications;
