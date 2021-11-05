@@ -2,7 +2,6 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Entity
 @Table(name = "garden_sensor_data")
@@ -23,7 +22,7 @@ public class GardenSensorData {
 */
 
     @Id
-    private UUID gardenId;
+    private String gardenId;
 
     @Id
     private Timestamp timestamp;
@@ -40,7 +39,7 @@ public class GardenSensorData {
     @Column(nullable = true)
     private double humidity;
 
-    public GardenSensorData(UUID gardenId, Timestamp timestamp, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double humidity) {
+    public GardenSensorData(String gardenId, Timestamp timestamp, boolean waterActive, double temperature, double soilMoisture, double waterFlow, double humidity) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
         this.waterActive = waterActive;
@@ -53,11 +52,11 @@ public class GardenSensorData {
     public GardenSensorData() {
     }
 
-    public UUID getGardenId() {
+    public String getGardenId() {
         return gardenId;
     }
 
-    public void setGardenId(UUID gardenId) {
+    public void setGardenId(String gardenId) {
         this.gardenId = gardenId;
     }
 

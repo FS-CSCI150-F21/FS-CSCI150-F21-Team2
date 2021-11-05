@@ -3,7 +3,7 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.UUID;
+
 
 //Garden Image table
 @Entity
@@ -12,7 +12,7 @@ import java.util.UUID;
 public class GardenImage {
 
     @Id
-    private UUID gardenId;
+    private String gardenId;
     @Id
     private Timestamp timestamp;
 
@@ -20,7 +20,7 @@ public class GardenImage {
     private String filepath;
 
 
-    public GardenImage(UUID gardenId, Timestamp timestamp, String filepath) {
+    public GardenImage(String gardenId, Timestamp timestamp, String filepath) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
         this.filepath = filepath;
@@ -29,11 +29,11 @@ public class GardenImage {
     public GardenImage() {
     }
 
-    public UUID getGardenId() {
+    public String getGardenId() {
         return gardenId;
     }
 
-    public void setGardenId(UUID gardenId) {
+    public void setGardenId(String gardenId) {
         this.gardenId = gardenId;
     }
 

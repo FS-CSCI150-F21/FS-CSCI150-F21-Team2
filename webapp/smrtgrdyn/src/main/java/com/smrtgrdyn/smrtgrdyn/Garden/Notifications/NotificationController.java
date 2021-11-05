@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/notifications")
@@ -24,7 +23,7 @@ public class NotificationController {
     }
 
     @GetMapping
-    public List<Notification> getNotifications(@RequestParam("gardenId") UUID gardenId){
+    public List<Notification> getNotifications(@RequestParam("gardenId") String gardenId){
         return List.copyOf(service.getNotifications(gardenId));
     }
 }

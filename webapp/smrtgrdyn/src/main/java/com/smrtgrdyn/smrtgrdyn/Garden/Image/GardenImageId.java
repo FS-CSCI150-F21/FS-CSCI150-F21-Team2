@@ -5,26 +5,26 @@ import java.io.Serializable;
 
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.UUID;
+
 
 public class GardenImageId implements Serializable {
 
-    private UUID gardenId;
+    private String gardenId;
     private Timestamp timestamp;
 
     public GardenImageId() {
     }
 
-    public GardenImageId(UUID gardenId, Timestamp timestamp) {
+    public GardenImageId(String gardenId, Timestamp timestamp) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
     }
 
-    public UUID getGardenId() {
+    public String getGardenId() {
         return gardenId;
     }
 
-    public void setGardenId(UUID gardenId) {
+    public void setGardenId(String gardenId) {
         this.gardenId = gardenId;
     }
 

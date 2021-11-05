@@ -27,7 +27,7 @@ public class ConnectionTest {
     @Test
     void itShouldFindEntryById(){
         //Given
-        UUID gardenId = UUID.randomUUID();
+        String gardenId = UUID.randomUUID().toString();
 
         GardenConnectionInformation data = new GardenConnectionInformation(gardenId, "Ryan1Up", "10.0.0.1", 80);
 

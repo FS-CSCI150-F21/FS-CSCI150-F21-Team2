@@ -1,5 +1,7 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Image;
 
+import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.NotificationType;
+import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.NotificationUtil;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Util.SGFileUtils;
 import com.smrtgrdyn.smrtgrdyn.Garden.Util.ValidationUtil;
@@ -25,25 +27,24 @@ public class GardenImageService {
     private String filename;
     private String uploadDir;
     private final ValidationUtil validationUtil;
-
+    private final NotificationUtil notificationUtil;
 
     @Autowired
-    public GardenImageService(GardenImageRepository imageRepository, ValidationUtil validationUtil) {
+    public GardenImageService(GardenImageRepository imageRepository, ValidationUtil validationUtil, NotificationUtil notificationUtil) {
         this.imageRepository = imageRepository;
         this.validationUtil = validationUtil;
+        this.notificationUtil = notificationUtil;
     }
 
     public void saveImage(GardenImage gardenImage, MultipartFile multipartFile){
 
-        System.out.println("Saving Image");
         setGardenImageFilepath(gardenImage, multipartFile.getOriginalFilename());
 
         storeImageInfo(gardenImage);
 
         try {
-
             uploadImage(multipartFile);
-
+            generateNotification(gardenImage);
         } catch (IOException ioe) {
 
             dropImageInfo(gardenImage);
@@ -69,6 +70,11 @@ public class GardenImageService {
         imageRepository.save(gardenImage);
     }
 
+    private void generateNotification(GardenImage gardenImage){
+        //Notification: GardenId, Timestamp, Type
+        notificationUtil.generateNotification(gardenImage.getGardenId(), gardenImage.getTimestamp(), NotificationType.ANIMAL);
+
+    }
     private void dropImageInfo(GardenImage gardenImage){
         imageRepository.delete(gardenImage);
     }

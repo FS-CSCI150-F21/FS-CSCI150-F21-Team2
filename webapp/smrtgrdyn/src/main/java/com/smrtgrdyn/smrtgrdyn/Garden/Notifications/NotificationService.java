@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class NotificationService {
@@ -27,8 +26,8 @@ public class NotificationService {
 
     }
 
-    public List<Notification> getNotifications(UUID gardenId){
+    public List<Notification> getNotifications(String gardenId){
 
-        return notificationRepository.findAllByGardenId(gardenId);
+        return notificationRepository.findByGardenId(gardenId);
     }
 }

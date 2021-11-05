@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class GardenDataSaveService {
@@ -40,7 +39,7 @@ public class GardenDataSaveService {
 
     }
 
-    private boolean isGardenRegistered(UUID gardenId){
+    private boolean isGardenRegistered(String gardenId){
 
         String username = getUsernameFromGardenId(gardenId);
 
@@ -48,7 +47,7 @@ public class GardenDataSaveService {
 
     }
 
-    private String getUsernameFromGardenId(UUID gardenId){
+    private String getUsernameFromGardenId(String gardenId){
 
         gardenConnectionInformationRepository.findAll();
         Optional<GardenConnectionInformation> optionalConnection =
@@ -62,7 +61,7 @@ public class GardenDataSaveService {
 
     }
 
-    private boolean isGardenRegisteredToUser(String username, UUID gardenId){
+    private boolean isGardenRegisteredToUser(String username, String gardenId){
 
         Optional<User> optionalUser = userInformationRepository.findById(username);
 
@@ -76,7 +75,7 @@ public class GardenDataSaveService {
     public GardenSensorData getLatestData(GardenDataRequest request){
         if(isGardenRegistered(request.getGardenId())){
             Optional<GardenSensorData> gardenSensorDataOptional =
-                    gardenDataRepository.findLatestByGardenId(request.getGardenId());
+                    gardenDataRepository.findLatestEntryByGardenId(request.getGardenId());
 
             if(gardenSensorDataOptional.isEmpty()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
@@ -99,8 +98,8 @@ public class GardenDataSaveService {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
     }
 
-    private List<GardenSensorData> getListOfGardenData(UUID gardenId, Timestamp start, Timestamp end){
+    private List<GardenSensorData> getListOfGardenData(String gardenId, Timestamp start, Timestamp end){
         gardenDataRepository.findAll();
-        return  (List<GardenSensorData>) gardenDataRepository.findAllDataInRangeById(gardenId, start, end);
+        return  (List<GardenSensorData>) gardenDataRepository.findByGardenIdAndTimestampBetween(gardenId, start, end);
     }
 }

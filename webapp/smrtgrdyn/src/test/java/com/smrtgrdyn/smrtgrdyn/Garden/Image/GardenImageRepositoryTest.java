@@ -31,7 +31,7 @@ class GardenImageRepositoryTest {
     @Test
     void databaseShouldSaveImage(){
         //Given
-        UUID gardenId = UUID.randomUUID();
+        String gardenId = UUID.randomUUID().toString();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         GardenImage data = new GardenImage(gardenId, timestamp, "1231321321");
         GardenImageId id = new GardenImageId(gardenId, timestamp);

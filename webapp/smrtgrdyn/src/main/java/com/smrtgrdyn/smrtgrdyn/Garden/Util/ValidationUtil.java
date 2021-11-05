@@ -5,6 +5,7 @@ import com.smrtgrdyn.smrtgrdyn.Garden.Image.GardenImage;
 import com.smrtgrdyn.smrtgrdyn.Garden.Image.GardenImageId;
 import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.Notification;
 import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.NotificationId;
+import com.smrtgrdyn.smrtgrdyn.Garden.Notifications.NotificationType;
 import com.smrtgrdyn.smrtgrdyn.Garden.Registration.GardenRegistrationRequest;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
@@ -14,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.sql.Timestamp;
+import org.apache.commons.lang3.EnumUtils;
 import java.util.Optional;
-import java.util.UUID;
 
 
 /**
@@ -83,7 +82,7 @@ public class ValidationUtil {
      * A valid UUID is a UUID that is saved in the ConnectionInformation Table
      * And is not found in open registration requests
      * */
-    private boolean isUUIDValid(UUID gardenId){
+    private boolean isUUIDValid(String gardenId){
 
         gardens.findAll();
         Optional<GardenConnectionInformation> gardenConnection =
@@ -122,9 +121,11 @@ public class ValidationUtil {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Timestamp");
         }
 
+        if(!isNotificationTypeValid(notification)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Type");
+        }
         if(notification.getMessage() == null){
-            notification.setMessage(
-                    notification.generateMessage(notification.getType()));
+            notification.setMessageByType();
         }
     }
 
@@ -135,10 +136,15 @@ public class ValidationUtil {
         }
 
         Optional<Notification> optionalNotification =
-                notifications.findById(new NotificationId(notification.getGardenId(), notification.getTimestamp()));
+                notifications.findById(new NotificationId(notification.getGardenId(), notification.getTimestamp(), notification.getType()));
 
         return optionalNotification.isEmpty();
 
 
+    }
+
+    private boolean isNotificationTypeValid(Notification notification){
+
+        return EnumUtils.isValidEnum(NotificationType.class, notification.getType());
     }
 }

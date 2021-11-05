@@ -2,8 +2,6 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.rmi.server.UID;
-import java.util.UUID;
 
 @Entity
 public class GardenRegistrationRequest {
@@ -12,19 +10,19 @@ public class GardenRegistrationRequest {
     private String piId;
 
     private String username;
-    private UUID gardenId;
+    private String gardenId;
 
-    public GardenRegistrationRequest(String piId, String username, UUID gardenId) {
+    public GardenRegistrationRequest(String piId, String username, String gardenId) {
         this.piId = piId;
         this.username = username;
         this.gardenId = gardenId;
     }
 
-    public UUID getGardenId() {
+    public String getGardenId() {
         return gardenId;
     }
 
-    public void setGardenId(UUID gardenId) {
+    public void setGardenId(String gardenId) {
         this.gardenId = gardenId;
     }
 

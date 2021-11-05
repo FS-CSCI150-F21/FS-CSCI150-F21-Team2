@@ -79,7 +79,7 @@ public class GardenRegistrationService {
         return gardenRegistrationRequest.getUsername();
     }
 
-    private void addGardenIdToUsersRegisteredGardens(String username, UUID gardenId){
+    private void addGardenIdToUsersRegisteredGardens(String username, String gardenId){
 
         if(!isGardenAlreadyRegisteredWithUser(username, gardenId)){
             Optional<User> userOptional = userInformationRepository.findById(username);
@@ -92,7 +92,7 @@ public class GardenRegistrationService {
 
     }
 
-    private boolean isGardenAlreadyRegisteredWithUser(String username, UUID gardenId){
+    private boolean isGardenAlreadyRegisteredWithUser(String username, String gardenId){
         Optional<User> userOptional = userInformationRepository.findById(username);
 
         if(userOptional.isPresent()){
@@ -106,7 +106,7 @@ public class GardenRegistrationService {
         registrationRequestRepository.delete(gardenRegistrationRequest);
     }
 
-    private void sendUUIDToPi(UUID gardenId) {
+    private void sendUUIDToPi(String gardenId) {
 
         Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
                 gardenConnectionInformationRepository.findById(gardenId);
@@ -153,18 +153,25 @@ public class GardenRegistrationService {
         //Extracted Values for clarity
         String host = servletRequest.getHeader(HttpHeaders.HOST);
         Integer port = servletRequest.getServerPort();
-        UUID gardenId = UUID.randomUUID();
+        UUID id = UUID.randomUUID();
+        String gardenId = id.toString();
         String username = registrationRequest.getUsername();
 
-        // TODO Add check for Username being in a registered account
+        if(!isUsernameRegistered(username)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Username");
+        }
+
         this.gardenConnectionInformation = new GardenConnectionInformation(gardenId, username, host, port);
 
     }
 
+    private boolean isUsernameRegistered(String username){
+        return userInformationRepository.existsById(username);
+    }
     private void setRequestInformationWithConnectionInformation(GardenRegistrationRequest registrationRequest){
 
         // Extracted for Clarity
-        UUID gardenId = this.gardenConnectionInformation.getGardenId();
+        String gardenId = this.gardenConnectionInformation.getGardenId();
 
         // Set registration Request's gardenId
         registrationRequest.setGardenId(gardenId);
@@ -192,9 +199,9 @@ public class GardenRegistrationService {
     private class GardenRegistrationServiceThread extends Thread {
 
         private final String piId;
-        private final UUID gardenId;
+        private final String gardenId;
 
-        public GardenRegistrationServiceThread(String piId, UUID gardenId) {
+        public GardenRegistrationServiceThread(String piId, String gardenId) {
             this.piId = piId;
             this.gardenId = gardenId;
         }

@@ -1,29 +1,28 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 import java.sql.Timestamp;
-import java.util.UUID;
 
 public class GardenDataRequest {
 
-    private UUID gardenId;
+    private String gardenId;
     private Timestamp start;
     private Timestamp end;
 
-    public GardenDataRequest(UUID gardenId) {
+    public GardenDataRequest(String gardenId) {
         this.gardenId = gardenId;
     }
 
-    public GardenDataRequest(UUID gardenId, Timestamp start, Timestamp end) {
+    public GardenDataRequest(String gardenId, Timestamp start, Timestamp end) {
         this.gardenId = gardenId;
         this.start = start;
         this.end = end;
     }
 
-    public UUID getGardenId() {
+    public String getGardenId() {
         return gardenId;
     }
 
-    public void setGardenId(UUID gardenId) {
+    public void setGardenId(String gardenId) {
         this.gardenId = gardenId;
     }
 

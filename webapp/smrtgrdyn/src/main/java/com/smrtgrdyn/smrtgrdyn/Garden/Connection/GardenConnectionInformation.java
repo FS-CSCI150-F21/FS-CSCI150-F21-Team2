@@ -4,18 +4,17 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
+
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import java.net.InetAddress;
-import java.util.UUID;
+
 
 @Entity
 @Table(name = "garden_information")
 public class GardenConnectionInformation {
 
     @Id
-    UUID gardenId;
+    String gardenId;
 
     @NotBlank
     String user;
@@ -27,7 +26,7 @@ public class GardenConnectionInformation {
     // List<Sensor> sensorSuite; -- Potential future modification
 
 
-    public GardenConnectionInformation(UUID gardenId, String user, String hostName, Integer portNumber) {
+    public GardenConnectionInformation(String gardenId, String user, String hostName, Integer portNumber) {
         this.gardenId = gardenId;
         this.user = user;
         this.hostName = hostName;
@@ -37,11 +36,11 @@ public class GardenConnectionInformation {
     public GardenConnectionInformation() {
     }
 
-    public UUID getGardenId() {
+    public String getGardenId() {
         return gardenId;
     }
 
-    public void setGardenId(UUID gardenId) {
+    public void setGardenId(String gardenId) {
         this.gardenId = gardenId;
     }
 
