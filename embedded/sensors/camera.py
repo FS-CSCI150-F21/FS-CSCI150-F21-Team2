@@ -27,6 +27,7 @@ def capture_image():
     image_path = str(_image_folder + timestamp + '.jpeg')
 
     camera = PiCamera()
+    camera.resolution = (1024,1024)
     camera.capture(image_path)
 
     mutex.release()
