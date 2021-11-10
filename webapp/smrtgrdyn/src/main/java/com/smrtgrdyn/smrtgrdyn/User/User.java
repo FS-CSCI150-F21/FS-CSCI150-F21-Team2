@@ -12,17 +12,19 @@ public class User {
 
     @Id
     @NotBlank
-    String username;
+    private String username;
     @NotBlank
-    String password;
-    String storedSalt;
+    private String password;
+    private String storedSalt;
+
 
     @ElementCollection(targetClass = String.class)
-    List<String> registeredGardens;
+    private List<String> registeredGardens;
+
+    private String defaultGarden;
 
 
-
-    public User(String username, String password, String storedSalt, List<String> registeredGardens) {
+    public User(String username, String password, String storedSalt, List<String> registeredGardens, String defaultGarden) {
         this.username = username;
         this.password = password;
         this.storedSalt = storedSalt;
@@ -31,6 +33,7 @@ public class User {
         }else{
             this.registeredGardens = registeredGardens;
         }
+        this.defaultGarden = defaultGarden;
 
     }
 
@@ -76,4 +79,11 @@ public class User {
         return this.registeredGardens;
     }
 
+    public String getDefaultGarden() {
+        return defaultGarden;
+    }
+
+    public void setDefaultGarden(String defaultGarden) {
+        this.defaultGarden = defaultGarden;
+    }
 }

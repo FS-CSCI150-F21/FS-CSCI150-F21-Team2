@@ -26,7 +26,6 @@ public class UserControlService {
 
     public void sendControlSignal(ControlRequest request, String username){
 
-
         if(validationUtil.validateControlRequest(request, username)){
             connectAndSendSignal(request);
         }

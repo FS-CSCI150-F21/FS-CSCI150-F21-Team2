@@ -13,13 +13,13 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Service
-public class UserLoginService {
+public class UserSessionService {
 
 
     private final UserInformationRepository userInformationRepository;
 
     @Autowired
-    public UserLoginService(UserInformationRepository userInformationRepository) {
+    public UserSessionService(UserInformationRepository userInformationRepository) {
         this.userInformationRepository = userInformationRepository;
     }
 
@@ -57,6 +57,31 @@ public class UserLoginService {
         }else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Someone is already Logged In");
         }
+    }
+
+    public void setDefaultGarden(String gardenId, String username){
+
+        Optional<User> optionalUser = userInformationRepository.findById(username);
+
+        if(optionalUser.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Not Found");
+        }
+
+        if(optionalUser.get().getRegisteredGardens().contains(gardenId)){
+            User user = optionalUser.get();
+            user.setDefaultGarden(gardenId);
+            userInformationRepository.save(user);
+        }
+    }
+
+    public String getDefaultGarden(String username){
+        Optional<User> optionalUser = userInformationRepository.findById(username);
+
+        if(optionalUser.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Not Found");
+        }
+
+        return optionalUser.get().getDefaultGarden();
     }
 
 }
