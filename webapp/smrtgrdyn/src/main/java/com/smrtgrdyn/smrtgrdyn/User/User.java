@@ -20,7 +20,7 @@ public class User {
 
     @ElementCollection(targetClass = String.class)
     private List<String> registeredGardens;
-
+    @Column(nullable = true)
     private String defaultGarden;
 
 

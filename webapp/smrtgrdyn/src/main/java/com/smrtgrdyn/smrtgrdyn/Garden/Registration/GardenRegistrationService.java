@@ -87,7 +87,14 @@ public class GardenRegistrationService {
             if(userOptional.isEmpty()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
             }
-            userOptional.get().getRegisteredGardens().add(gardenId);
+            User user = userOptional.get();
+
+            user.getRegisteredGardens().add(gardenId);
+            if(user.getDefaultGarden() == null){
+                user.setDefaultGarden(gardenId);
+            }
+
+            userInformationRepository.save(user);
         }
 
     }
