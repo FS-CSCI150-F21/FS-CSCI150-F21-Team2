@@ -1,33 +1,180 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
+</head>
+<link rel="stylesheet" href="DashStyle.css">
 <div class="grid-container">
-    <link rel="stylesheet" href="DashStyle.css">
     <div class="menu-icon">
         <i class="fas fa-bars header__menu"></i>
     </div>
 
-    <header class="header">
+    <div class="header">
         <div class="Account_Avatar">Profile</div>
-    </header>
+    </div>
 
-    <aside class="sidenav">
+    <div class="sidenav">
         <div class="sidenav__close-icon">
             <i class="fas fa-times sidenav__brand-close"></i>
         </div>
         <ul class="sidenav__list">
-            <li class="sidenav__list-item">Temperature</li>
-            <li class="sidenav__list-item">Humidity</li>
-            <li class="sidenav__list-item">Ph</li>
-            <li class="sidenav__list-item">Dont remember</li>
+            <li class="sidenav__list-item"> <a href="tempGraph.html">Temperature</a></li>
+            <li class="sidenav__list-item"><a href="humidityGraph.html">Humidity</a></li>
+            <li class="sidenav__list-item"><a href="phGraph.html">Ph balance</a></li>
+            <li class="sidenav__list-item"><a href="waterLevels.html">Water Level</a></li>
             <li class="sidenav__list-item">Somthing?</li>
         </ul>
-    </aside>
+    </div>
 
     <main class="main">
-        <div class="main-header">
+        <div class="row">
+            <div class="column">
+                <canvas id="tempChart" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
 
+                <script>
+                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+
+                    new Chart("tempChart", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                fill: false,
+                                lineTension: 0,
+                                backgroundColor: "rgba(0,0,255,1.0)",
+                                borderColor: "rgba(0,0,255,0.1)",
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            legend: { display: false },
+                            scales: {
+                                yAxes: [{ ticks: { min: 6, max: 16 } }],
+                            }
+                        }
+                    });
+                </script>
+
+            </div>
+            <div class="column">
+                <canvas id="tempChart1" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
+
+                <script>
+                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+
+                    new Chart("tempChart1", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                fill: false,
+                                lineTension: 0,
+                                backgroundColor: "rgba(0,0,255,1.0)",
+                                borderColor: "rgba(0,0,255,0.1)",
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            legend: { display: false },
+                            scales: {
+                                yAxes: [{ ticks: { min: 6, max: 16 } }],
+                            }
+                        }
+                    });
+                </script>
+            </div>
+            <div class="column">
+                <canvas id="tempChart2" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
+
+                <script>
+                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+
+                    new Chart("tempChart2", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                fill: false,
+                                lineTension: 0,
+                                backgroundColor: "rgba(0,0,255,1.0)",
+                                borderColor: "rgba(0,0,255,0.1)",
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            legend: { display: false },
+                            scales: {
+                                yAxes: [{ ticks: { min: 6, max: 16 } }],
+                            }
+                        }
+                    });
+                </script>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="column2">
+                <canvas id="tempChart3" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
+
+                <script>
+                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+
+                    new Chart("tempChart3", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                fill: false,
+                                lineTension: 0,
+                                backgroundColor: "rgba(0,0,255,1.0)",
+                                borderColor: "rgba(0,0,255,0.1)",
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            legend: { display: false },
+                            scales: {
+                                yAxes: [{ ticks: { min: 6, max: 16 } }],
+                            }
+                        }
+                    });
+                </script>
+            </div>
+            <div class="column2">
+                <canvas id="tempChart4" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
+
+                <script>
+                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+
+                    new Chart("tempChart4", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                fill: false,
+                                lineTension: 0,
+                                backgroundColor: "rgba(0,0,255,1.0)",
+                                borderColor: "rgba(0,0,255,0.1)",
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            legend: { display: false },
+                            scales: {
+                                yAxes: [{ ticks: { min: 6, max: 16 } }],
+                            }
+                        }
+                    });
+                </script>
+
+            </div>
+           
         </div>
 
-        <div class="main-overview">
-        </div>
     </main>
 
     <footer class="footer">
