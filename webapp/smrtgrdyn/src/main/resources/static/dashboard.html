@@ -31,19 +31,20 @@
                 <canvas id="tempChart" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
 
                 <script>
-                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
+                    var yValues = ["30F", "40F", "50F", "60F", "70F", "80F", "90F", "100F", "110F"];
 
                     new Chart("tempChart", {
                         type: "line",
                         data: {
                             labels: xValues,
                             datasets: [{
+                                label:"Temperature",
                                 fill: false,
                                 lineTension: 0,
                                 backgroundColor: "rgba(0,0,255,1.0)",
                                 borderColor: "rgba(0,0,255,0.1)",
-                                data: yValues
+                                data:[30,40,50,30,60,70,110]
                             }]
                         },
                         options: {
@@ -60,19 +61,20 @@
                 <canvas id="tempChart1" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
 
                 <script>
-                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
+                    var yValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 
                     new Chart("tempChart1", {
                         type: "line",
                         data: {
                             labels: xValues,
                             datasets: [{
+                                label: "Ph balance",
                                 fill: false,
                                 lineTension: 0,
                                 backgroundColor: "rgba(0,0,255,1.0)",
                                 borderColor: "rgba(0,0,255,0.1)",
-                                data: yValues
+                                data: [1,4,6,8,5,7,5]
                             }]
                         },
                         options: {
@@ -88,7 +90,7 @@
                 <canvas id="tempChart2" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
 
                 <script>
-                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
                     var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
                     new Chart("tempChart2", {
@@ -119,7 +121,7 @@
                 <canvas id="tempChart3" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
 
                 <script>
-                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
                     var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
                     new Chart("tempChart3", {
@@ -147,7 +149,7 @@
                 <canvas id="tempChart4" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
 
                 <script>
-                    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
                     var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
                     new Chart("tempChart4", {
@@ -180,3 +182,4 @@
     <footer class="footer">
     </footer>
 </div>
+
