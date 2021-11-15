@@ -2,3 +2,4 @@ picamera
 opencv-python
 RPi.GPIO
 adafruit-blinka
+tensorflow
