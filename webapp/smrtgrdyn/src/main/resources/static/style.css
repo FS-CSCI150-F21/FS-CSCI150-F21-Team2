@@ -212,3 +212,12 @@ form .btn {
         font-weight: 500;
         cursor: pointer;
     }
+
+.errorMsg{
+    padding-top: 10px;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    color: red;
+    align-items: center;
+}

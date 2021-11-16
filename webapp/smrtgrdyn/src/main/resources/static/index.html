@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Login and Registration Form in HTML</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -22,6 +23,7 @@
             <input type="radio" name="slide" id="signup">
             <label for="login" class="slide login">Login</label>
             <label for="signup" class="slide signup">Sign Up</label>
+
             <div class="slider-tab"></div>
         </div>
         <div class="form-inner">
@@ -37,48 +39,31 @@
                 </div>
                 <div class="field btn">
                     <div class="btn-layer"></div>
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Login" id="loginSubmit">
                 </div>
                 <div class="signup-link">
                     Not a member? <a href="">Signup now</a>
                 </div>
             </form>
-            <form action="#" class="signup">
+            <form action="api/v1/user_registration" class="signup" id="signUpForm">
                 <div class="field">
-                    <input type="text" placeholder="Email Address" required>
+                    <input type="text" placeholder="Username" name="uname" required>
                 </div>
                 <div class="field">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" placeholder="Password" name="pWord" required>
                 </div>
                 <div class="field">
-                    <input type="password" placeholder="Confirm password" required>
+                    <input type="password" placeholder="Confirm password" name="confPword" required>
                 </div>
+                <div id="errorDiv"></div>
                 <div class="field btn">
                     <div class="btn-layer"></div>
-                    <input type="submit" value="Signup">
+                    <input type="submit" value="Signup" >
                 </div>
             </form>
         </div>
     </div>
 </div>
-<script>
-         const loginText = document.querySelector(".title-text .login");
-         const loginForm = document.querySelector("form.login");
-         const loginBtn = document.querySelector("label.login");
-         const signupBtn = document.querySelector("label.signup");
-         const signupLink = document.querySelector("form .signup-link a");
-         signupBtn.onclick = (()=>{
-           loginForm.style.marginLeft = "-50%";
-           loginText.style.marginLeft = "-50%";
-         });
-         loginBtn.onclick = (()=>{
-           loginForm.style.marginLeft = "0%";
-           loginText.style.marginLeft = "0%";
-         });
-         signupLink.onclick = (()=>{
-           signupBtn.click();
-           return false;
-         });
-    </script>
+<script src="script.js"></script>
 </body>
 </html>

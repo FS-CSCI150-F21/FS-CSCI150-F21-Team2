@@ -3,7 +3,6 @@ package com.smrtgrdyn.smrtgrdyn.User.Session;
 
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,8 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import java.io.IOException;
 
 
 @RestController
@@ -32,11 +29,9 @@ public class UserSessionController {
 
         try{
             userSessionService.loginUser(request, user);
-            response.sendRedirect(request.getContextPath() + "/dashboard.html");
+            return;
         }catch(IllegalStateException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid Login", e);
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Error on Redirect", e);
         }
     }
 
