@@ -27,20 +27,22 @@
             <div class="slider-tab"></div>
         </div>
         <div class="form-inner">
-            <form action="#" class="login">
+            <form action="api/v1/user_session/login" class="login" id="loginForm">
                 <div class="field">
-                    <input type="text" placeholder="Username" required>
+                    <input type="text" placeholder="Username" name="uname" required>
                 </div>
                 <div class="field">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" placeholder="Password" name="pWord" required>
                 </div>
                 <div class="pass-link">
                     <a href="#">Forgot password?</a>
                 </div>
+                <div id="login_error"></div>
                 <div class="field btn">
                     <div class="btn-layer"></div>
                     <input type="submit" value="Login" id="loginSubmit">
                 </div>
+
                 <div class="signup-link">
                     Not a member? <a href="">Signup now</a>
                 </div>
@@ -55,7 +57,7 @@
                 <div class="field">
                     <input type="password" placeholder="Confirm password" name="confPword" required>
                 </div>
-                <div id="errorDiv"></div>
+                <div id="registration_error"></div>
                 <div class="field btn">
                     <div class="btn-layer"></div>
                     <input type="submit" value="Signup" >

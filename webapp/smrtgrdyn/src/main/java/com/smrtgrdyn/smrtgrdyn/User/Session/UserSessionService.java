@@ -43,7 +43,7 @@ public class UserSessionService {
             }
         }
 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Login");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Username or Password");
 
     }
 

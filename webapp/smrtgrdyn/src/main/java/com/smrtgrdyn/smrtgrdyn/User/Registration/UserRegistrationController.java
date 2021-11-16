@@ -31,8 +31,8 @@ public class UserRegistrationController {
             userRegistrationService.registerUser(user);
             HttpSession session = request.getSession();
             session.setAttribute("username", user.getUsername());
-            response.setStatus(200);
-            return;
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
