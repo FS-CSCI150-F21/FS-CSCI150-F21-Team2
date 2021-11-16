@@ -43,12 +43,13 @@ $( "#signUpForm" ).submit(function( event ) {
                         type: 'post',
                         url: murl,
                         data: JSON.stringify(SendInfo),
-                        dataType: 'json',
                         contentType: "application/json; charset=utf-8",
-                        traditional: true,
-                    }).done(function(response){
-                        console.log("Done")
-                        window.location.replace(window.location.href + "dashboard.html");
+                        success: function(){
+                            console.log("Done");
+                            window.sessionStorage.setItem("user", uname);
+                            window.location.replace(window.location.href + "dashboard.html");
+                        },
+                        traditional: true
                     }).fail(function(response){
                         if(response.responseJSON){
                             showErrorMessage(response.responseJSON.message);
@@ -58,9 +59,7 @@ $( "#signUpForm" ).submit(function( event ) {
                             console.log("error");
                         }
                     });
-    const user = uname;
-    window.sessionStorage.setItem("user", uname);
-  window.location.replace(window.location.href + "dashboard.html");
+
 
 });
 
