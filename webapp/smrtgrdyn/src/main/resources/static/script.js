@@ -29,38 +29,27 @@ $( "#signUpForm" ).submit(function( event ) {
     uname = $form.find( "input[name='uname']" ).val(),
     pword = $form.find( "input[name='pWord']" ).val();
     pconf = $form.find( "input[name='confPword']" ).val();
-    murl = window.location.href + $form.attr( "action" );
 
   if(pword !== pconf){
       showErrorMessage("Passwords Do Not Match");
       return;
   }
-  // Send the data using post
-
+  // Info to send
   var SendInfo =  { "username": uname, "password": pword};
-
+//Build and Send an Ajax Post Request
   var posting = $.ajax({
                         type: 'post',
-                        url: murl,
+                        url: $form.attr( "action" ),
                         data: JSON.stringify(SendInfo),
                         contentType: "application/json; charset=utf-8",
                         success: function(){
-                            console.log("Done");
                             window.sessionStorage.setItem("user", uname);
                             window.location.replace(window.location.href + "dashboard.html");
                         },
-                        traditional: true
-                    }).fail(function(response){
-                        if(response.responseJSON){
-                            showErrorMessage(response.responseJSON.message);
-                            return;
-                        }
-                        else{
-                            console.log("error");
-                        }
-                    });
-
-
+                        error : function(xhr, status, error) {
+                            showErrorMessage(xhr.responseJSON.message);
+                       }
+                  });
 });
 
 
