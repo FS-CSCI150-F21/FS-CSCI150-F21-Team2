@@ -29,6 +29,7 @@ def capture_image():
     camera = PiCamera()
     camera.resolution = (1920, 1920)
     camera.capture(image_path)
+    camera.close()
 
     mutex.release()
 
