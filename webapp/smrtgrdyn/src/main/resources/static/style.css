@@ -218,3 +218,29 @@ a {
     cursor: pointer;
     text-decoration: none;
     }
+
+
+form .btn input[type="submit"] {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  position: relative;
+  background: none;
+  border: none;
+  color: #fff;
+  padding-left: 0;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.errorMsg{
+    padding-top: 10px;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    color: red;
+    align-items: center;
+}
+

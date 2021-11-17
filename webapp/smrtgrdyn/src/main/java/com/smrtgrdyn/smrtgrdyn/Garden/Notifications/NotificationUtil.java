@@ -3,9 +3,11 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Notifications;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.NotificationRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 
+@Service
 public class NotificationUtil {
 
     private final NotificationRepository notifications;

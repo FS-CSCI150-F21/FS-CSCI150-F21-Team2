@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -21,15 +22,21 @@ public class UserRegistrationService {
         this.userInformationRepository = userInformationRepository;
     }
 
-    public void registerUser(@NotNull User user){
+    public void registerUser(@NotNull User user) throws IOException {
 
         //1. Check to see if username has been already been used
         Optional<User> userOptional = userInformationRepository.findById(user.getUsername());
-
-        if(userOptional.isEmpty()){
+        if(userInformationRepository.existsById(user.getUsername())){
+            System.out.println("Exists");
+        }
+        else{
+            System.out.println("Doesn't Exist");
+        }
+        if(!userInformationRepository.existsById(user.getUsername())){
             user.setStoredSalt(BCrypt.gensalt(10));
             user.setPassword(BCrypt.hashpw(user.getPassword(), user.getStoredSalt()));
             userInformationRepository.save(user);
+
         } else{
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already registered");

@@ -87,7 +87,7 @@ public class GardenImageService {
     public ResponseEntity<byte[]> getImage(GardenImage gardenImage){
 
         GardenImageId id = new GardenImageId(gardenImage.getGardenId(), gardenImage.getTimestamp());
-        imageRepository.findAll();
+
         Optional<GardenImage> optionalGardenImage = imageRepository.findById(id);
 
 
