@@ -45,7 +45,7 @@ $( "#signUpForm" ).submit(function( event ) {
                         contentType: "application/json; charset=utf-8",
                         success: function(){
                             window.sessionStorage.setItem("user", uname);
-                            //window.location.replace(window.location.href + "dashboard.html");
+                            window.location.replace(window.location.href + "dashboard.html");
                         },
                         error : function(xhr, status, error) {
                             showErrorMessage(divId, xhr.responseJSON.message);
@@ -74,7 +74,7 @@ $( "#loginForm" ).submit(function( event ) {
                         contentType: "application/json; charset=utf-8",
                         success: function(){
                             window.sessionStorage.setItem("user", uname);
-                            //window.location.replace(window.location.href + "dashboard.html");
+                            window.location.replace(window.location.href + "dashboard.html");
                         },
                         error : function(xhr, status, error) {
                             showErrorMessage(divId, xhr.responseJSON.message);
