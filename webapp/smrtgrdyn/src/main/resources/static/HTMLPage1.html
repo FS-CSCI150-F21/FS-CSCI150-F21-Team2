@@ -1,35 +1,29 @@
-﻿<div class="grid-container">
-    <link rel="stylesheet" href="DashStyle.css">
-    <div class="menu-icon">
-        <i class="fas fa-bars header__menu"></i>
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="StyleSheet1.css">
+  <script defer src="login-page.js"></script>
+</head>
+
+<body>
+  <main id="main-holder">
+    <h1 id="login-header">Login</h1>
+    
+    <div id="login-error-msg-holder">
+      <p id="login-error-msg">Invalid username <span id="error-msg-second-line">and/or password</span></p>
     </div>
+    
+    <form id="login-form">
+      <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username">
+      <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">
+      <input type="submit" value="Login" id="login-form-submit">
+    </form>
+  
+  </main>
+</body>
 
-    <header class="header">
-        <div class="Account_Avatar">Profile</div>
-    </header>
-
-    <aside class="sidenav">
-        <div class="sidenav__close-icon">
-            <i class="fas fa-times sidenav__brand-close"></i>
-        </div>
-        <ul class="sidenav__list">
-            <li class="sidenav__list-item">Temperature</li>
-            <li class="sidenav__list-item">Humidity</li>
-            <li class="sidenav__list-item">Ph</li>
-            <li class="sidenav__list-item">Dont remember</li>
-            <li class="sidenav__list-item">Somthing?</li>
-        </ul>
-    </aside>
-
-    <main class="main">
-        <div class="main-header">
-
-        </div>
-
-        <div class="main-overview">
-        </div>
-    </main>
-
-    <footer class="footer">
-    </footer>
-</div>
+</html>

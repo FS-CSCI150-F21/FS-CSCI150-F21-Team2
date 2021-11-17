@@ -5,9 +5,13 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{78DB2F94-3373-46CE-9830-178FCF49E1DC}"
 	ProjectSection(SolutionItems) = preProject
+		dashBoard.html = dashBoard.html
 		DashStyle.css = DashStyle.css
-		HTMLPage1.html = HTMLPage1.html
+		humidityGraph.html = humidityGraph.html
+		phGraph.html = phGraph.html
 		Script1.js = Script1.js
+		tempGraph.html = tempGraph.html
+		waterLevels.html = waterLevels.html
 	EndProjectSection
 EndProject
 Global
