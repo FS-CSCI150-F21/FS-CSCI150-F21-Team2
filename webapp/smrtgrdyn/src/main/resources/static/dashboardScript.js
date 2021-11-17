@@ -38,10 +38,11 @@ function getLatest(){
     var gettingRange = $.ajax({
         type: 'GET',
         url: 'api/v1/farden_data_collection/range',
-        data: 'json',
+        dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            var current = jQuery.parseJSON(data);
+            //var current = jQuery.parseJSON(data);
+            var values = data;
             console.log(obj);
         },
         error: function (xhr, status, error) {
@@ -70,4 +71,9 @@ function translateTemp(timeData) {
         timeData = timeData + "am";
     }
     return time.push(timeData);
+}
+
+function celToFaren(temperature) {
+    var faren = (temperature * (9 / 5)) + 32
+    return faren;
 }
