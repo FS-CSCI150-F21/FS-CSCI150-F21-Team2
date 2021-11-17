@@ -1,5 +1,6 @@
 # Models
-tf_models
+tf_models/
+models/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
