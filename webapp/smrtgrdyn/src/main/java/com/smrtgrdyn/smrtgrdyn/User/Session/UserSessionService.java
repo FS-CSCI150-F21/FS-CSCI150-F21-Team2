@@ -50,8 +50,9 @@ public class UserSessionService {
     private void startSession(HttpServletRequest request, String username){
 
         HttpSession session = request.getSession(false);
+
         //a null session denotes that nobody is logged in yet
-        if(session == null){
+        if(session == null || session.getAttribute("username") != ""){
             session = request.getSession();
             session.setAttribute("username", username);
         }else{

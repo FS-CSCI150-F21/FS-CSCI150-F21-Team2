@@ -42,7 +42,9 @@ public class UserSessionController {
         HttpSession session = request.getSession(false);
 
         if(session != null){
-             session.invalidate();
+            session.setAttribute("username", "");
+            session.invalidate();
+
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No User Logged In");
         }
