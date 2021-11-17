@@ -25,6 +25,8 @@ function makeChart(type){
 
         case 'Temperature':
             //call makeTempGraph
+            var tempArray[];
+            tempArray.push(faren);
             break;
         case 'Humidity' :
             // call makeHumidGraph
@@ -59,18 +61,17 @@ function getLast13hours(){
     // get request with a body
 }
 
-function translateTemp(timeData) {
-    const time[];
-    if (timeData == 12) {
-        timeData = timeData + "pm";
+function translateTemp(timeStamp) {
+    if (timeStamp == 12) {
+        timeStamp = timeStamp + "pm";
     }
-    else if (timeData > 12) {
-        timeData = (timeData - 12) + "pm";
+    else if (timeStamp > 12) {
+        timeStamp = (timeStamp - 12) + "pm";
     }
     else () {
-        timeData = timeData + "am";
+        timeStamp = timeStamp + "am";
     }
-    return time.push(timeData);
+    return time.push(timeStamp);
 }
 
 function celToFaren(temperature) {
