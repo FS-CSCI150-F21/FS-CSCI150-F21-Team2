@@ -1,5 +1,5 @@
-package com.smrtgrdyn.smrtgrdyn.Garden.Image;
-
+package com.smrtgrdyn.smrtgrdyn.Garden.Connection;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenImageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,36 +18,29 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class GardenImageRepositoryTest {
+public class ConnectionTest {
 
     @Autowired
-    GardenImageRepository underTest;
+    GardenConnectionInformationRepository underTest;
+
 
     @Test
-    void databaseShouldNotBeNull(){
-        assertThat(underTest).isNotNull();
-    }
-
-    @Test
-    void databaseShouldSaveImage(){
+    void itShouldFindEntryById(){
         //Given
         String gardenId = UUID.randomUUID().toString();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        GardenImage data = new GardenImage(gardenId, timestamp, "1231321321");
-        GardenImageId id = new GardenImageId(gardenId, timestamp);
+
+        GardenConnectionInformation data = new GardenConnectionInformation(gardenId, "Ryan1Up", "10.0.0.1", 80);
+
         //When
         underTest.save(data);
-        Optional<GardenImage> gardenImageOptional = underTest.findById(id);
-
         //Then
-        assertThat(gardenImageOptional)
-                .isPresent()
-                .hasValueSatisfying(c -> {
-                    assertThat(c).isEqualTo(data);
-                });
+
+        Optional<GardenConnectionInformation> optional = underTest.findById(gardenId);
 
 
-
+        assertThat(optional).isPresent().hasValueSatisfying(c -> {
+            c.equals(data);
+        });
     }
 
 }

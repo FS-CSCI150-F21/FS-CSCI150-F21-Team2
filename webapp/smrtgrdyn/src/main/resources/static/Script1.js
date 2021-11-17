@@ -1,16 +1,22 @@
-const loginForm = document.getElementById("login-form");
-const loginButton = document.getElementById("login-form-submit");
-const loginErrorMsg = document.getElementById("login-error-msg");
+const menuIconEl = $('.menu-icon');
+const sidenavEl = $('.sidenav');
+const sidenavCloseEl = $('.sidenav__close-icon');
 
-loginButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    const username = loginForm.username.value;
-    const password = loginForm.password.value;
-
-    if (username === "user" && password === "web_dev") {
-        alert("You have successfully logged in.");
-        location.reload();
+// Add and remove provided class names
+function toggleClassName(el, className) {
+    if (el.hasClass(className)) {
+        el.removeClass(className);
     } else {
-        loginErrorMsg.style.opacity = 1;
+        el.addClass(className);
     }
-})
+}
+
+// Open the side nav on click
+menuIconEl.on('click', function () {
+    toggleClassName(sidenavEl, 'active');
+});
+
+// Close the side nav on click
+sidenavCloseEl.on('click', function () {
+    toggleClassName(sidenavEl, 'active');
+});

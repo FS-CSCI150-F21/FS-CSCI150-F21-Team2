@@ -1,8 +1,9 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 
 import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
-import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformationRepository;
-import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenRegistrationRequestRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,95 +25,95 @@ public class GardenRegistrationService {
     private final GardenRegistrationRequestRepository registrationRequestRepository;
     private final GardenConnectionInformationRepository gardenConnectionInformationRepository;
 
+    private final UserInformationRepository userInformationRepository;
+
     private GardenConnectionInformation gardenConnectionInformation;
     private GardenRegistrationRequest gardenRegistrationRequest;
-    private UserInformationRepository userInformationRepository;
+
 
     @Autowired
     public GardenRegistrationService(GardenRegistrationRequestRepository pairingRepository,
                                      GardenConnectionInformationRepository gardenConnectionInformationRepository,
                                      UserInformationRepository userInformationRepository) {
+
         this.registrationRequestRepository = pairingRepository;
         this.gardenConnectionInformationRepository = gardenConnectionInformationRepository;
         this.userInformationRepository = userInformationRepository;
     }
 
-    public UUID confirmRegistration(String username, GardenRegistrationRequest request) {
+    public void confirmRegistration(String username, GardenRegistrationRequest request) {
 
-        Optional<GardenRegistrationRequest> optionalGardenRegistrationRequest =
-                registrationRequestRepository.findById(request.getPiId());
+        // Verify Username is the same one on the corresponding request
+        setupRegistrationConfirmation(request.getPiId());
 
-        // Verify request is by same user
-        if (optionalGardenRegistrationRequest.isPresent()) {
-            if (optionalGardenRegistrationRequest.get().getUsername().equals(username)) {
+        if(username.equals(
+                getRequestUsername(request.getPiId()))){
 
-                /*
-                *
-                *  sendUUID to pi will currently NOT work as the server only tests locally
-                *
-                *
-                * */
-                //   sendUUIDToPi(optionalGardenRegistrationRequest.get().getGardenId());
+            // add garden to users information
+            addGardenIdToUsersRegisteredGardens(
+                    username,
+                    gardenRegistrationRequest.getGardenId());
 
-                // Complete registration with that user
-                registerGardenWithUser(optionalGardenRegistrationRequest.get().getUsername(),
-                        optionalGardenRegistrationRequest.get().getGardenId());
+            // send UUID to Pi
+            /*
+             *  sendUUID to pi will currently NOT work as the server only tests locally
+             * */
+            //   sendUUIDToPi(optionalGardenRegistrationRequest.get().getGardenId());
 
-                // Return the generated gardenId and drop the registration request
-                UUID returnableGardenId = optionalGardenRegistrationRequest.get().getGardenId();
-                registrationRequestRepository.deleteById(optionalGardenRegistrationRequest.get().getPiId());
-                return returnableGardenId;
+            // Drop request
+            dropRequest();
+        }
 
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
-            }
-        } else {
+    }
+
+    private void setupRegistrationConfirmation(String piId){
+
+        if(registrationRequestRepository.findById(piId).isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration Request Not Found");
         }
 
+        gardenRegistrationRequest = registrationRequestRepository.findById(piId).get();
     }
 
-    private void registerGardenWithUser(String username, UUID gardenId) {
+    private String getRequestUsername(String piId){
+        return gardenRegistrationRequest.getUsername();
+    }
+
+    private void addGardenIdToUsersRegisteredGardens(String username, String gardenId){
+
+        if(!isGardenAlreadyRegisteredWithUser(username, gardenId)){
+            Optional<User> userOptional = userInformationRepository.findById(username);
+
+            if(userOptional.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+            }
+            User user = userOptional.get();
+
+            user.getRegisteredGardens().add(gardenId);
+            if(user.getDefaultGarden() == null){
+                user.setDefaultGarden(gardenId);
+            }
+
+            userInformationRepository.save(user);
+        }
+
+    }
+
+    private boolean isGardenAlreadyRegisteredWithUser(String username, String gardenId){
         Optional<User> userOptional = userInformationRepository.findById(username);
 
-        // Check registration, if already registered throw an error
-        if(isGardenRegistered(gardenId)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Already Registered");
+        if(userOptional.isPresent()){
+            return userOptional.get().getRegisteredGardens().contains(gardenId);
         }
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.getRegisteredGardens().add(gardenId);
-
-            // Spring Data JPA allows save() to function as update()
-            userInformationRepository.save(user);
-
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not Registered");
-        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
     }
 
-    private boolean isGardenRegistered(UUID gardenId){
-
-        // Having Connection Info indicates that it has been registered
-        // or is in the process of being registered
-        Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
-                gardenConnectionInformationRepository.findById(gardenId);
-
-        if(optionalGardenConnectionInformation.isPresent()){
-            //Verify that the garden is attached to the User account
-            // as this only happens once registration is complete
-            String username = optionalGardenConnectionInformation.get().getUser();
-            Optional<User> optionalUser = userInformationRepository.findById(username);
-
-            if(optionalUser.isPresent()){
-                return optionalUser.get().getRegisteredGardens().contains(gardenId);
-            }
-        }
-
-        return false;
+    private void dropRequest(){
+        registrationRequestRepository.delete(gardenRegistrationRequest);
     }
-    private void sendUUIDToPi(UUID gardenId) {
+
+    private void sendUUIDToPi(String gardenId) {
 
         Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
                 gardenConnectionInformationRepository.findById(gardenId);
@@ -137,40 +138,77 @@ public class GardenRegistrationService {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not Connect to Pi", e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not Connect to Garden", e);
             }
         }
     }
 
-    public void requestRegistration(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest) {
+    public void openRegistrationRequest(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest) {
 
+        // Set connection information
+        setConnectionInformation(servletRequest, registrationRequest);
+        // Set request information
+        setRequestInformationWithConnectionInformation(registrationRequest);
+        // Save Both Entities
+        saveConnectionAndRequestInformation();
+        // Start timer for registration window
+        startRegistrationTimer();
 
+    }
+
+    private void setConnectionInformation(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest){
+        //Extracted Values for clarity
         String host = servletRequest.getHeader(HttpHeaders.HOST);
         Integer port = servletRequest.getServerPort();
-        UUID gardenId = UUID.randomUUID();
+        UUID id = UUID.randomUUID();
+        String gardenId = id.toString();
         String username = registrationRequest.getUsername();
+
+        if(!isUsernameRegistered(username)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Username");
+        }
 
         this.gardenConnectionInformation = new GardenConnectionInformation(gardenId, username, host, port);
 
-        this.gardenRegistrationRequest = registrationRequest;
-        this.gardenRegistrationRequest.setGardenId(gardenId);
+    }
 
+    private boolean isUsernameRegistered(String username){
+        return userInformationRepository.existsById(username);
+    }
+    private void setRequestInformationWithConnectionInformation(GardenRegistrationRequest registrationRequest){
+
+        // Extracted for Clarity
+        String gardenId = this.gardenConnectionInformation.getGardenId();
+
+        // Set registration Request's gardenId
+        registrationRequest.setGardenId(gardenId);
+
+        // Set request
+        this.gardenRegistrationRequest = registrationRequest;
+
+    }
+
+    private void saveConnectionAndRequestInformation(){
 
         registrationRequestRepository.save(this.gardenRegistrationRequest);
         gardenConnectionInformationRepository.save(this.gardenConnectionInformation);
 
+    }
 
-        new GardenRegistrationServiceThread(gardenRegistrationRequest.getPiId(), gardenId).start();
-
+    private void startRegistrationTimer(){
+        new GardenRegistrationServiceThread(
+                this.gardenRegistrationRequest.getPiId(),
+                this.gardenRegistrationRequest.getGardenId())
+                .start();
     }
 
 
     private class GardenRegistrationServiceThread extends Thread {
 
-        private String piId;
-        UUID gardenId;
+        private final String piId;
+        private final String gardenId;
 
-        public GardenRegistrationServiceThread(String piId, UUID gardenId) {
+        public GardenRegistrationServiceThread(String piId, String gardenId) {
             this.piId = piId;
             this.gardenId = gardenId;
         }
@@ -181,16 +219,20 @@ public class GardenRegistrationService {
                 //Sleep time denotes how long the registration request can stay open
                 Thread.sleep(300000);
 
-                Optional<GardenRegistrationRequest> registrationRequestOptional =
-                        registrationRequestRepository.findById(this.piId);
-
-                if (registrationRequestOptional.isPresent()) {
-                    gardenConnectionInformationRepository.deleteById(this.gardenId);
-                    registrationRequestRepository.deleteById(this.piId);
-                }
+                dropRequest();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+
+        private void dropRequest(){
+            Optional<GardenRegistrationRequest> registrationRequestOptional =
+                    registrationRequestRepository.findById(this.piId);
+
+            if (registrationRequestOptional.isPresent()) {
+                gardenConnectionInformationRepository.deleteById(this.gardenId);
+                registrationRequestRepository.deleteById(this.piId);
             }
         }
     }

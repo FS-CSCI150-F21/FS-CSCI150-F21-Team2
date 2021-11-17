@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Entity
 @Table(name = "user_information")
@@ -12,25 +12,28 @@ public class User {
 
     @Id
     @NotBlank
-    String username;
+    private String username;
     @NotBlank
-    String password;
-    String storedSalt;
-
-    @ElementCollection(targetClass = UUID.class)
-    List<UUID> registeredGardens;
+    private String password;
+    private String storedSalt;
 
 
+    @ElementCollection(targetClass = String.class)
+    private List<String> registeredGardens;
+    @Column(nullable = true)
+    private String defaultGarden;
 
-    public User(String username, String password, String storedSalt, List<UUID> registeredGardens) {
+
+    public User(String username, String password, String storedSalt, List<String> registeredGardens, String defaultGarden) {
         this.username = username;
         this.password = password;
         this.storedSalt = storedSalt;
         if(registeredGardens == null){
-            this.registeredGardens = new ArrayList<UUID>();
+            this.registeredGardens = new ArrayList<String>();
         }else{
             this.registeredGardens = registeredGardens;
         }
+        this.defaultGarden = defaultGarden;
 
     }
 
@@ -61,19 +64,26 @@ public class User {
         this.storedSalt = storedSalt;
     }
 
-    public void setRegisteredGardens(List<UUID> registeredGardens) {
+    public void setRegisteredGardens(List<String> registeredGardens) {
         if(registeredGardens == null){
-            this.registeredGardens = new ArrayList<UUID>();
+            this.registeredGardens = new ArrayList<String>();
         }else{
             this.registeredGardens = registeredGardens;
         }
     }
 
-    public List<UUID> getRegisteredGardens(){
+    public List<String> getRegisteredGardens(){
         if(this.registeredGardens == null){
-            this.registeredGardens = new ArrayList<UUID>();
+            this.registeredGardens = new ArrayList<String>();
         }
         return this.registeredGardens;
     }
 
+    public String getDefaultGarden() {
+        return defaultGarden;
+    }
+
+    public void setDefaultGarden(String defaultGarden) {
+        this.defaultGarden = defaultGarden;
+    }
 }

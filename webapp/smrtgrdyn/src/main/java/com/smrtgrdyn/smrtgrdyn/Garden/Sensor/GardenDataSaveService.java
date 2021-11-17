@@ -1,19 +1,19 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
-import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformationRepository;
-import com.smrtgrdyn.smrtgrdyn.User.Registration.UserInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenDataRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class GardenDataSaveService {
@@ -22,7 +22,7 @@ public class GardenDataSaveService {
     private final GardenConnectionInformationRepository gardenConnectionInformationRepository;
     private final UserInformationRepository userInformationRepository;
 
-    @Autowired //This allows a dependency injection so we don't have to instantiate the repo
+    @Autowired
     public GardenDataSaveService(GardenDataRepository gardenDataRepository,
                                  GardenConnectionInformationRepository gardenConnectionInformationRepository,
                                  UserInformationRepository userInformationRepository){
@@ -32,67 +32,74 @@ public class GardenDataSaveService {
     }
 
     public void saveGardenData(GardenSensorData sensorData){
-        /*
-        * 1. Get Garden Sensor Data
-        * 2. Verify Garden is Registered via GardenInformationRepo
-        * 3. Store Garden Data*/
+
         if(isGardenRegistered(sensorData.getGardenId())){
             gardenDataRepository.save(sensorData);
         }
 
     }
 
-    private boolean isGardenRegistered(UUID gardenId){
+    private boolean isGardenRegistered(String gardenId){
 
-        // Having Connection Info indicates that it has been registered
-        // or is in the process of being registered
-        Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
-                gardenConnectionInformationRepository.findById(gardenId);
+        String username = getUsernameFromGardenId(gardenId);
 
-        if(optionalGardenConnectionInformation.isPresent()){
-            //Verify that the garden is attached to the User account
-            // as this only happens once registration is complete
-            String username = optionalGardenConnectionInformation.get().getUser();
-            Optional<User> optionalUser = userInformationRepository.findById(username);
+        return isGardenRegisteredToUser(username, gardenId);
 
-            if(optionalUser.isPresent()){
-                return optionalUser.get().getRegisteredGardens().contains(gardenId);
-            }
-        }
-
-        return false;
     }
 
+    private String getUsernameFromGardenId(String gardenId){
+
+        gardenConnectionInformationRepository.findAll();
+        Optional<GardenConnectionInformation> optionalConnection =
+                gardenConnectionInformationRepository.findById(gardenId);
+
+        if(optionalConnection.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Not Registered");
+        }
+
+        return optionalConnection.get().getUser();
+
+    }
+
+    private boolean isGardenRegisteredToUser(String username, String gardenId){
+
+        Optional<User> optionalUser = userInformationRepository.findById(username);
+
+        if(optionalUser.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
+        }
+        return optionalUser.get().getRegisteredGardens().contains(gardenId);
+    }
+
+
     public GardenSensorData getLatestData(GardenDataRequest request){
+        if(isGardenRegistered(request.getGardenId())){
+            Optional<GardenSensorData> gardenSensorDataOptional =
+                    gardenDataRepository.findLatestEntryByGardenId(request.getGardenId());
 
-        Optional<GardenSensorData> gardenSensorDataOptional = gardenDataRepository.findLatestByGardenId(request.getGardenId());
+            if(gardenSensorDataOptional.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
+            }
 
-        if(gardenSensorDataOptional.isPresent()){
             return gardenSensorDataOptional.get();
         }
 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
-
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Not Registered");
 
     }
 
-    public List getDataFromRange(GardenDataRequest request){
+    public List<GardenSensorData> getDataFromRange(GardenDataRequest request){
 
-        System.out.println(request.getStart());
-        System.out.println(request.getEnd());
-
-        gardenDataRepository.findAll();
-        List<GardenSensorData> dataList =
-                gardenDataRepository
-                        .findAllDataInRangeById(request.getGardenId(), request.getStart(), request.getEnd());
-
+        List<GardenSensorData> dataList = getListOfGardenData(request.getGardenId(), request.getStart(), request.getEnd());
 
         if (!dataList.isEmpty()){
-            for(GardenSensorData d : dataList){
-                System.out.println(d.toString());
-            }
             return List.copyOf(dataList);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
+    }
+
+    private List<GardenSensorData> getListOfGardenData(String gardenId, Timestamp start, Timestamp end){
+        gardenDataRepository.findAll();
+        return  (List<GardenSensorData>) gardenDataRepository.findByGardenIdAndTimestampBetween(gardenId, start, end);
     }
 }

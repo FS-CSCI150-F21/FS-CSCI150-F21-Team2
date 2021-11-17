@@ -1,4 +1,4 @@
-package com.smrtgrdyn.smrtgrdyn.User.Registration;
+package com.smrtgrdyn.smrtgrdyn.Garden.Repository;
 
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.data.repository.CrudRepository;
