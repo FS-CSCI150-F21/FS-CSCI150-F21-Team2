@@ -35,9 +35,22 @@ function makeChart(type){
 }
 
 function getLatest(){
+    var gettingRange = $.ajax({
+        type: 'GET',
+        url: 'api/v1/farden_data_collection/range',
+        data: 'json',
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            var current = jQuery.parseJSON(data);
+            console.log(obj);
+        },
+        error: function (xhr, status, error) {
 
+        }
+    });
     //get request to a api string
     // store data
+    return gettingRange;
 }
 
 function getLast13hours(){
@@ -45,3 +58,16 @@ function getLast13hours(){
     // get request with a body
 }
 
+function translateTemp(timeData) {
+    const time[];
+    if (timeData == 12) {
+        timeData = timeData + "pm";
+    }
+    else if (timeData > 12) {
+        timeData = (timeData - 12) + "pm";
+    }
+    else () {
+        timeData = timeData + "am";
+    }
+    return time.push(timeData);
+}
