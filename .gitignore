@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-application.properties
+#application.properties
 #webapp/smrtgrdyn/src/main/resources/application.properties
 
 garden-photos/*
