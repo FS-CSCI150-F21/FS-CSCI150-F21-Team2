@@ -23,11 +23,17 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String gardenId, Timestamp timestamp, String type) {
+    public Notification(String gardenId, Timestamp timestamp, String type, String message) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
         this.type = type;
-        this.message = generateMessage(this.type);
+        if(message == null || message.equals(""))
+        {
+            this.message = generateMessage(this.type);
+        }
+        else {
+            this.message = message;
+        }
     }
 
     public String getGardenId() {

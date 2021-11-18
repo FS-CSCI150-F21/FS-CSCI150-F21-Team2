@@ -18,7 +18,6 @@ $('document').ready(
 )
 
 
-
 function makeChart(type){
 
     switch(type) {
@@ -37,6 +36,10 @@ function makeChart(type){
 }
 
 function getLatest(){
+<<<<<<< HEAD
+
+    // get request to a api string
+=======
     var gettingRange = $.ajax({
         type: 'GET',
         url: 'api/v1/farden_data_collection/range',
@@ -52,6 +55,7 @@ function getLatest(){
         }
     });
     //get request to a api string
+>>>>>>> 6c5220229d25f9dc4fa8b3a6d88191f4efe05f88
     // store data
     return gettingRange;
 }

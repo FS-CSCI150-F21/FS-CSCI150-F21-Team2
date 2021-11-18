@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -58,7 +59,7 @@ public class GardenRegistrationService {
             /*
              *  sendUUID to pi will currently NOT work as the server only tests locally
              * */
-            //   sendUUIDToPi(optionalGardenRegistrationRequest.get().getGardenId());
+             sendUUIDToPi(gardenRegistrationRequest.getGardenId());
 
             // Drop request
             dropRequest();
@@ -157,9 +158,10 @@ public class GardenRegistrationService {
     }
 
     private void setConnectionInformation(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest){
+
         //Extracted Values for clarity
-        String host = servletRequest.getHeader(HttpHeaders.HOST);
-        Integer port = servletRequest.getServerPort();
+        String host = servletRequest.getRemoteHost();
+        Integer port = servletRequest.getRemotePort();
         UUID id = UUID.randomUUID();
         String gardenId = id.toString();
         String username = registrationRequest.getUsername();
