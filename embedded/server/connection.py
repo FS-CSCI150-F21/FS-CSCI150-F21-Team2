@@ -7,9 +7,8 @@ import os
 from utils.logging import log
 from utils.interaction import get_yn_response
 import server.json_bodies as body
-from endpoints import Endpoint
+from server.endpoints import Endpoint
 
-# Global variables for file
 __server_folder = os.path.normpath(os.path.dirname(__file__) + os.sep)
 __registration_file = str(__server_folder + '/.registration')
 
@@ -101,7 +100,7 @@ def register(timeout: int = 300000):
 
     # Generate POST request body and send post request
     registration_body = body.PiRegistration(username, pairing_code).__dict__
-    uuid = requests.post(Endpoint.REGISTRATION_ENDPOINT, json=registration_body)
+    uuid = requests.post(url=Endpoint.REGISTRATION_ENDPOINT, json=registration_body)
     gardenID = uuid.content.decode('utf-8')
     
     # Write new credential to registration file
@@ -109,6 +108,6 @@ def register(timeout: int = 300000):
         FILE.write(f'{__username_pref}{username}\n')
         FILE.write(f'{__gardenID_pref}{gardenID}')
 
-    log(f'Pi registered under ID: {gardenID} to username {username}')
+    log(f'Pi registered under ID: {gardenID} to username {username}!')
 
 
