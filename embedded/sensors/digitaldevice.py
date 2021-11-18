@@ -130,24 +130,30 @@ class DigitalDevice:
         Lock().release()
 
     def read_input(self):
+        Lock().acquire()
         if self.direction == "OUT":
             raise ValueError("Pin is set to output. Reading is invalid")
+        Lock().release()
         return self.board_dio.value
 
     def get_device_status(self):
         return self.status
 
     def pin_off(self):
+        Lock().acquire()
         if self.direction == "IN":
             raise ValueError("Can't set input pin to output value")
         self.status = False
         self.board_dio.value = False
+        Lock().release()
 
     def pin_on(self):
+        Lock().acquire()
         if self.direction == "IN":
             raise ValueError("Can't set input pin to output value")
         self.status = False
         self.board_dio.value = False
+        Lock().release()
 
     def get_device_id(self):
         return self.device_id
