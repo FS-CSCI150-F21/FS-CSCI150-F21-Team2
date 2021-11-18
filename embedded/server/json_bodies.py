@@ -3,7 +3,7 @@ class PiRegistration:
         self.username = username
         self.piId = piId
 
-class Notification:
+class Warning:
     def __init__(self, garden_id, timestamp, type):
         self.garden_id = garden_id
         self.timestamp = timestamp
