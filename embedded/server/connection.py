@@ -1,15 +1,29 @@
 import time
-from utils.logging import log
-from utils.interaction import get_yn_response
+import requests
+import json
 from random import seed, randint
 import os
+
+from utils.logging import log
+from utils.interaction import get_yn_response
+import server.json_bodies as body
 
 # Global variables for file
 __server_folder = os.path.normpath(os.path.dirname(__file__) + os.sep)
 __registration_file = str(__server_folder + '/.registration')
 
+# Base URL
+__base_url : any
+with open(str(__server_folder + '/.url'), 'r') as FILE:
+    __base_url = FILE.readline()
+# API Endpoints
+__garden_registration_endpoint = str(__base_url + 'api/v1/garden_registration/pi')
+__garden_image_endpoint = str(__base_url + 'api/v1/images')
+__garden_notification_endpoint = str(__base_url + 'api/v1/notifications')
+
 __username_pref = 'username='
 __gardenID_pref = 'gardenID='
+
 
 def generate_pairing_code() -> str:
     """
@@ -92,9 +106,15 @@ def register(timeout: int = 300000):
     pairing_code = generate_pairing_code()
     log(f'Your pairing code is [{pairing_code}], you have {timeout/60} minutes before it expires!')
 
-    gardenID = None
+    registration_body = body.PiRegistration(username, pairing_code).__dict__
+    uuid = requests.post(__garden_registration_endpoint, json=registration_body)
+    gardenID = uuid.content.decode('utf-8')
+    
     # Write new credential to registration file
     with open(__registration_file, 'w') as FILE:
         FILE.write(f'{__username_pref}{username}\n')
         FILE.write(f'{__gardenID_pref}{gardenID}')
+
+    log(f'Pi registered under ID: {gardenID} to username {username}')
+
 
