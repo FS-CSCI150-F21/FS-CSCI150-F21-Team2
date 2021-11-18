@@ -66,6 +66,8 @@ def register(timeout: int = 300000):
         None
 
     """
+
+    timeout = float(timeout / 1000)
     
     # Check for pre-existing registration
     if os.path.exists(__registration_file):
@@ -76,7 +78,7 @@ def register(timeout: int = 300000):
         if username and gardenID:
             # let user decide whether or not to overwrite previous well-formed registration
             log(f'Previous registration found belonging to {username}, gardenID: {gardenID}!')
-            log('Would you like to overwrite previous registration? (y/n):')
+            log('Would you like to overwrite previous registration? (y/n):', end=' ')
             if not get_yn_response():
                 return
         else:
@@ -85,10 +87,10 @@ def register(timeout: int = 300000):
         log('No registration found...creating new registration.')
 
     # Get username to initiate pairing using pairing code        
-    log('Please enter your username:')
+    log('Please enter your username:', end=' ')
     username = input()
     pairing_code = generate_pairing_code()
-    log(f'Your pairing code is [{pairing_code}], you have {timeout} seconds before it expires!')
+    log(f'Your pairing code is [{pairing_code}], you have {timeout/60} minutes before it expires!')
 
     gardenID = None
     # Write new credential to registration file
