@@ -19,11 +19,22 @@ public class GardenImage {
     @Column(nullable = true)
     private String filepath;
 
+    @Transient
+    private String message;
+
+
+    public GardenImage(String gardenId, Timestamp timestamp, String filepath, String message) {
+        this.gardenId = gardenId;
+        this.timestamp = timestamp;
+        this.filepath = filepath;
+        this.message = message;
+    }
 
     public GardenImage(String gardenId, Timestamp timestamp, String filepath) {
         this.gardenId = gardenId;
         this.timestamp = timestamp;
         this.filepath = filepath;
+
     }
 
     public GardenImage() {
@@ -53,12 +64,21 @@ public class GardenImage {
         this.filepath = filepath;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return "GardenImage{" +
-                "gardenId=" + gardenId +
-                ", image_timestamp=" + timestamp +
+                "gardenId='" + gardenId + '\'' +
+                ", timestamp=" + timestamp +
                 ", filepath='" + filepath + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 
@@ -67,7 +87,11 @@ public class GardenImage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GardenImage that = (GardenImage) o;
-        return gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp) && Objects.equals(filepath, that.filepath);
+        return gardenId.equals(that.gardenId) && timestamp.equals(that.timestamp) && filepath.equals(that.filepath) && Objects.equals(message, that.message);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(gardenId, timestamp, filepath, message);
+    }
 }
