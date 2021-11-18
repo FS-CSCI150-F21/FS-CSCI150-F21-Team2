@@ -6,7 +6,7 @@ import os
 
 # Global variables for file
 __server_folder = os.path.normpath(os.path.dirname(__file__) + os.sep)
-__registration_file = str(__server_folder + '.registration')
+__registration_file = str(__server_folder + '/.registration')
 
 __username_pref = 'username='
 __gardenID_pref = 'gardenID='
