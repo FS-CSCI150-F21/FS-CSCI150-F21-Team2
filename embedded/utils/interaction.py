@@ -12,4 +12,4 @@ def get_yn_response() -> bool:
         if response == 'n':
             return False
         response = ''
-        log('Please enter y/n: ')
+        log('Please enter y/n:', end=' ')
