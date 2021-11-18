@@ -36,11 +36,12 @@ def get_registration():
         (str, str): Returns username and garden id in a tuple, returns (None, None) if either are malformed
     """
 
+    # Read in registration file
     imported_reg: any
-
     with open(__registration_file, 'r') as FILE:
             imported_reg = FILE.read().splitlines()
     
+    # Parse registration file
     username = None
     gardenID = None
     for line in imported_reg:
@@ -49,9 +50,12 @@ def get_registration():
         elif __gardenID_pref in line:
             gardenID = line.lstrip(__gardenID_pref)
 
+    # Return username and gardenID only if they are well-formed
     if not (username and gardenID):
         return (None, None)
     else:
         return (username, gardenID) 
+
+
 
 
