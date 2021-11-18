@@ -18,7 +18,6 @@ $('document').ready(
 )
 
 
-
 function makeChart(type){
 
     switch(type) {
@@ -36,7 +35,7 @@ function makeChart(type){
 
 function getLatest(){
 
-    //get request to a api string
+    // get request to a api string
     // store data
 }
 
