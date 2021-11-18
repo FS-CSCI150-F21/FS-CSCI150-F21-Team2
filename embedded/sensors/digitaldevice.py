@@ -38,6 +38,7 @@ class DigitalDevice:
         self.board_dio = None
         self.status = False
 
+        # Note: not all pins are available as they are reserved for i2c and other protocols
         # check digital pin to see if it is occupied
         if DigitalDevice.digital_occupied is not None and DigitalDevice.digital_occupied[self.pin]:
             raise ValueError("Pin is already assigned")
@@ -61,37 +62,37 @@ class DigitalDevice:
             self.board_dio = digitalio.DigitalInOut(board.D11)  # map the light to GPIO 11 on the rpi
             self.__io_direction__()
         elif self.pin == 5:
-            self.board_dio = digitalio.DigitalInOut(board.D5)  # map the light to GPIO 10 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D5)  # map the light to GPIO 5 on the rpi
             self.__io_direction__()
         elif self.pin == 6:
-            self.board_dio = digitalio.DigitalInOut(board.D6)  # map the light to GPIO 9 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D6)  # map the light to GPIO 6 on the rpi
             self.__io_direction__()
         elif self.pin == 19:
-            self.board_dio = digitalio.DigitalInOut(board.D19)  # map the light to GPIO 11 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D19)  # map the light to GPIO 19 on the rpi
             self.__io_direction__()
         elif self.pin == 26:
-            self.board_dio = digitalio.DigitalInOut(board.D26)  # map the light to GPIO 10 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D26)  # map the light to GPIO 26 on the rpi
             self.__io_direction__()
         elif self.pin == 23:
-            self.board_dio = digitalio.DigitalInOut(board.D23)  # map the light to GPIO 9 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D23)  # map the light to GPIO 23 on the rpi
             self.__io_direction__()
         elif self.pin == 24:
-            self.board_dio = digitalio.DigitalInOut(board.D24)  # map the light to GPIO 11 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D24)  # map the light to GPIO 24 on the rpi
             self.__io_direction__()
         elif self.pin == 25:
-            self.board_dio = digitalio.DigitalInOut(board.D25)  # map the light to GPIO 10 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D25)  # map the light to GPIO 25 on the rpi
             self.__io_direction__()
         elif self.pin == 8:
-            self.board_dio = digitalio.DigitalInOut(board.D8)  # map the light to GPIO 9 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D8)  # map the light to GPIO 8 on the rpi
             self.__io_direction__()
         elif self.pin == 7:
-            self.board_dio = digitalio.DigitalInOut(board.D7)  # map the light to GPIO 11 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D7)  # map the light to GPIO 7 on the rpi
             self.__io_direction__()
         elif self.pin == 16:
-            self.board_dio = digitalio.DigitalInOut(board.D16)  # map the light to GPIO 11 on the rpi
+            self.board_dio = digitalio.DigitalInOut(board.D16)  # map the light to GPIO 16 on the rpi
             self.__io_direction__()
         else:
-            raise ValueError("Invalid in use")
+            raise ValueError("Invalid pin in use")  # user entered the incorrect pin
 
         status = False
 
@@ -99,13 +100,15 @@ class DigitalDevice:
         if self.direction == 'OUT':
             self.board_dio.direction = digitalio.Direction.OUTPUT  # set gpio as a digital output
         elif self.direction == 'IN':
-            self.board_dio.direction = digitalio.Direction.INPUT  # set gpio as a digital output
+            self.board_dio.direction = digitalio.Direction.INPUT  # set gpio as a digital input
         else:
             raise ValueError("Invalid IO Direction")
 
     def output_pattern(self, list_pattern):
 
         Lock().acquire()
+        if self.direction == "IN":
+            raise ValueError("Can't set input pin to output value")
         timeout = time.time() + 60 * 5  # 5 minutes from now
         pattern_index = 0
         self.status = True
@@ -126,5 +129,43 @@ class DigitalDevice:
 
         Lock().release()
 
-    def device_status(self):
+    def read_input(self):
+        if self.direction == "OUT":
+            raise ValueError("Pin is set to output. Reading is invalid")
+        return self.board_dio.value
+
+    def get_device_status(self):
         return self.status
+
+    def pin_off(self):
+        if self.direction == "IN":
+            raise ValueError("Can't set input pin to output value")
+        self.status = False
+        self.board_dio.value = False
+
+    def pin_on(self):
+        if self.direction == "IN":
+            raise ValueError("Can't set input pin to output value")
+        self.status = False
+        self.board_dio.value = False
+
+    def get_device_id(self):
+        return self.device_id
+
+
+def play_sound_pattern(_speaker, _list):
+    return _speaker.output_pattern(_speaker, _list)
+
+
+def get_speaker_status(_speaker):
+    return _speaker.status
+
+
+# convention for main
+if __name__ == "__main__":
+    speaker = DigitalDevice("speaker", "OUT", 23)
+    play_sound_pattern(speaker, list)
+    get_speaker_status(speaker)
+
+    solenoid = DigitalDevice("solenoid", "OUT", 17)
+    solenoid_status = solenoid.status
