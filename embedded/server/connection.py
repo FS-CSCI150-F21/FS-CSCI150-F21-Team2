@@ -22,8 +22,8 @@ def generate_pairing_code() -> str:
     code = ''
     seed(time.time())
     for i in range(3):
-        code += chr(randint() % 26 + 65)
-        code += str(randint() % 10)
+        code += chr(randint(65, 90))
+        code += str(randint(0, 9))
 
     return code
 
@@ -88,10 +88,11 @@ def register(timeout: int = 300000):
     log('Please enter your username:')
     username = input()
     pairing_code = generate_pairing_code()
-    log(f'Your pairing code is [{pairing_code}], you have {timeout} seconds before it expires')
+    log(f'Your pairing code is [{pairing_code}], you have {timeout} seconds before it expires!')
 
+    gardenID = None
     # Write new credential to registration file
     with open(__registration_file, 'w') as FILE:
-        FILE.write(f'username={username}')
-        FILE.write()
+        FILE.write(f'{__username_pref}{username}\n')
+        FILE.write(f'{__gardenID_pref}{gardenID}')
 
