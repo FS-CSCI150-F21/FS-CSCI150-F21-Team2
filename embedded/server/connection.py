@@ -56,6 +56,42 @@ def get_registration():
     else:
         return (username, gardenID) 
 
+def register(timeout: int = 300000):
+    """
+    Register raspberry pi with server
+    Args:
+        timeout: int (default = 300000)
+            Timeout for registration of raspberry pi in milliseconds
+    Returns:
+        None
 
+    """
+    
+    # Check for pre-existing registration
+    if os.path.exists(__registration_file):
+        log('Parsing existing registation...')
+        # get prior registration if it exists
+        username, gardenID = get_registration()
 
+        if username and gardenID:
+            # let user decide whether or not to overwrite previous well-formed registration
+            log(f'Previous registration found belonging to {username}, gardenID: {gardenID}!')
+            log('Would you like to overwrite previous registration? (y/n):')
+            if not get_yn_response():
+                return
+        else:
+            log('Malformed registration file, registration required...')
+    else:
+        log('No registration found...creating new registration.')
+
+    # Get username to initiate pairing using pairing code        
+    log('Please enter your username:')
+    username = input()
+    pairing_code = generate_pairing_code()
+    log(f'Your pairing code is [{pairing_code}], you have {timeout} seconds before it expires')
+
+    # Write new credential to registration file
+    with open(__registration_file, 'w') as FILE:
+        FILE.write(f'username={username}')
+        FILE.write()
 
