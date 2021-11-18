@@ -4,6 +4,7 @@ models/
 
 # Registration
 .registration
+.url
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
