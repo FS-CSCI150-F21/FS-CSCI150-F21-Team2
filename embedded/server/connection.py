@@ -27,5 +27,31 @@ def generate_pairing_code() -> str:
 
     return code
 
+def get_registration():
+    """
+    Check registration file for credentials
+    Agrs:
+        None
+    Returns:
+        (str, str): Returns username and garden id in a tuple, returns (None, None) if either are malformed
+    """
+
+    imported_reg: any
+
+    with open(__registration_file, 'r') as FILE:
+            imported_reg = FILE.read().splitlines()
+    
+    username = None
+    gardenID = None
+    for line in imported_reg:
+        if __username_pref in line:
+            username = line.lstrip(__username_pref)
+        elif __gardenID_pref in line:
+            gardenID = line.lstrip(__gardenID_pref)
+
+    if not (username and gardenID):
+        return (None, None)
+    else:
+        return (username, gardenID) 
 
 
