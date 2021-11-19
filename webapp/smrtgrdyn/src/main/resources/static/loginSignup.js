@@ -94,5 +94,5 @@ function showErrorMessage(divId, msg) {
 
 function logout() {
     fetch("api/v1/user_session/logout");
-    sessionStorage.clear();
+    window.sessionStorage.clear();
 }
