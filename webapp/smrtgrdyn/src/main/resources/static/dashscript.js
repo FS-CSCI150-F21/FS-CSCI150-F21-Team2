@@ -177,12 +177,17 @@ function setTimeValues(local, utc){
     var utcHour = utc.getHours();
 
     for( var i = 0; i < 13; i++){
+
+        console.log(localHour - i)
         timeLabels.push(appendMeriem(localHour - i));
+
+
         if(utcHour - i < 0){
             timeValues.push((utcHour - i) + 24);
         }else {
             timeValues.push(utcHour - i);
         }
+
     }
     timeValues = timeValues.reverse();
     timeLabels = timeLabels.reverse();
@@ -191,36 +196,57 @@ function setTimeValues(local, utc){
 }
 
 function appendMeriem(hour){
+    var meriem = 'am';
     if(hour > 12){
-        return (hour - 12) + 'pm';
-    }else if(hour == 12) {
-        return hour + 'pm';
+        hour -= 12;
+        meriem = 'pm'
+    }else if(hour < 0){
+        hour += 12
+        if(hour == 0){
+            hour = 12
+        }
+         meriem = 'pm'
+    }else if(hour == 0){
+        hour = 12
+        meriem = 'am'
     }
-    else{
-        return hour + 'am';
-    }
+
+    return hour + meriem;
 
 }
 
-t = []; //temperature
-h = []; // humidity
-m = []; //moisture
-w = []; //water flow
-s = []; //watering status
+var tempYVals = []
+var humidYVals = []
+var moistureYVals = []
+var waterflowYVals = []
+var waterstatusYVals = []
+
+
 function getAveragesPerHour(){
 
 
     var hourIndex = 0;
     var currentHour = timeValues[hourIndex];
 
-    gardenDataLast13.forEach(data => function(){
+        t = [0]; //temperature
+        h = [0]; // humidity
+        m = [0]; //moisture
+        w = [0]; //water flow
+        s = [0]; //watering status
 
+    for(var index = 0; index < timeValues.length; index++){
 
+        gardenDataLast13.forEach(function(data) {
 
+            var dataHour = new Date(Date.parse(data.timestamp)).getHours();
+            if(dataHour == timeValues[index]){
+                console.log(timeLabels[index])
+                console.log(data);
+            }
+        })
 
+    }
 
-
-    })
 
 
 }
@@ -340,6 +366,7 @@ function populateGardenList() {
     }
     })
 }
+
 //modularizing the previous
 function generateOption(gardenId, gardenName) {
     //gardenId determines the gardenName for the dropdown menu in dashboard.html
@@ -358,8 +385,6 @@ $('document').ready(function () {
 
 async function logout() {
     var response = await fetch("api/v1/user_session/logout");
-
-
 
     document.location.href="/";
     window.sessionStorage.clear();
