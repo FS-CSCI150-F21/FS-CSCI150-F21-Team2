@@ -24,6 +24,8 @@ function makeChart(type){
 
         case 'Temperature':
             //call makeTempGraph
+            var tempArray[];
+            tempArray.push(faren);
             break;
         case 'Humidity' :
             // call makeHumidGraph
@@ -33,6 +35,8 @@ function makeChart(type){
 
 }
 
+const latest = {};
+
 function getLatest(){
 <<<<<<< HEAD
 
@@ -40,12 +44,12 @@ function getLatest(){
 =======
     var gettingRange = $.ajax({
         type: 'GET',
-        url: 'api/v1/farden_data_collection/range',
+        url: 'api/v1/farden_data_collection/latest',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        success: function (data) {
+        success: function (response) {
             //var current = jQuery.parseJSON(data);
-            var values = data;
+            latest = response.responseJSON;
             console.log(obj);
         },
         error: function (xhr, status, error) {
@@ -63,18 +67,17 @@ function getLast13hours(){
     // get request with a body
 }
 
-function translateTemp(timeData) {
-    const time[];
-    if (timeData == 12) {
-        timeData = timeData + "pm";
+function translateTime(timeStamp) {
+    if (timeStamp == 12) {
+        timeStamp = timeStamp + "pm";
     }
-    else if (timeData > 12) {
-        timeData = (timeData - 12) + "pm";
+    else if (timeStamp > 12) {
+        timeStamp = (timeStamp - 12) + "pm";
     }
     else () {
-        timeData = timeData + "am";
+        timeStamp = timeStamp + "am";
     }
-    return time.push(timeData);
+    return time.push(timeStamp);
 }
 
 function celToFaren(temperature) {

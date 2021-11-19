@@ -88,6 +88,16 @@ function newChart(ctx, dlabel, xVals, yVals){
 
 }
 
+const latest = {};
+const defaultGarden = {};
+//asynchronous function executes while doing its own thing
+async function getDefaultGarden() {
+    window.sessionStorage.getItem("user", uname);
+    //gets username
+    var user = window.sessionStorage.getItem("user");
+    defaultGarden =await fetch("api/v1/user_session/default_garden?username=" + user)
+}
+
 function getLatest(){
 
     var gettingRange = $.ajax({
@@ -97,6 +107,7 @@ function getLatest(){
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(body),
         success: function (response) {
+            latest = response;
             var values = response;
             console.log(values);
         },
@@ -104,4 +115,5 @@ function getLatest(){
 
         }
     });
+
 }
