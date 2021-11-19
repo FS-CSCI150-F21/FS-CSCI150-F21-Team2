@@ -102,7 +102,7 @@ def register(timeout: int = 300000):
     registration_body = body.PiRegistration(username, pairing_code).__dict__
     uuid: any
     try:
-        uuid = requests.post(url=Endpoint.REGISTRATION_ENDPOINT, json=registration_body)
+        uuid = requests.post(url=Endpoint.REGISTRATION_ENDPOINT, json=registration_body, timeout=timeout)
     except requests.exceptions.RequestException as e:
         log('Connection ERROR: Please try again later.')
         log(f'ERROR Details: {e}')
