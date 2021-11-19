@@ -151,3 +151,8 @@ function generateOption(gardenId, gardenName) {
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
 
+$('document').ready(function () {
+    getDefaultGarden();
+    getAllGardens();
+    populateGardenList();
+})
