@@ -104,8 +104,9 @@ def register(timeout: int = 300000):
     try:
         uuid = requests.post(url=Endpoint.REGISTRATION_ENDPOINT, json=registration_body, timeout=timeout)
     except requests.exceptions.RequestException as e:
-        log('Connection ERROR: Please try again later.')
+        log('Connection ERROR, Please try again later.')
         log(f'ERROR Details: {e}')
+        raise Exception('Failed to register raspberry pi!')
     gardenID = uuid.content.decode('utf-8')
     
     # Write new credential to registration file
