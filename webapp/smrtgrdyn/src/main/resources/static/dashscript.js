@@ -138,6 +138,12 @@ function getLatest(){
 
 function populateGardenList() {
     var list = document.getElementById("gardenId");
-    list.innerHTML = '<option value="' + defaultGarden.gardenId + '">' + defaultGarden.gardenName + '</option>';
+    //editing 
+    list.innerHTML = generateOption(defaultGarden.gardenId, defaultGarden.gardenName);
 
 }
+
+function generateOption(gardenId, gardenName) {
+    return '<option value="' + gardenId + '">' + gardenName + '</option>';
+}
+
