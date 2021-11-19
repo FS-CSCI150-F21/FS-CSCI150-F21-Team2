@@ -95,8 +95,10 @@ async function getDefaultGarden() {
 
     //gets username
     var user = window.sessionStorage.getItem("username");
-    defaultGarden =await fetch("api/v1/user_session/default_garden?username=" + user)
+    response = await fetch("api/v1/user_session/default_garden?username=" + user)
+    defaultGarden = await response.responseJSON;
     console.log(defaultGarden);
+
 }
 
 function getLatest(){
