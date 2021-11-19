@@ -108,17 +108,13 @@ var gardens = [];
 async function getAllGardens(){
     var user = window.sessionStorage.getItem("username");
 
-        fetch("api/v1/user_session/get_gardens?username=" + user)
-          .then(response => response.json())
-          .then(data => data.forEach(garden => gardens.push(garden)))
-<<<<<<< HEAD
-          .then(gardens.forEach(gardenP => console.log(gardenP)));
+    fetch("api/v1/user_session/get_gardens?username=" + user)
+        .then(response => response.json())
+        .then(data => data.forEach(garden => gardens.push(garden)));
 
 
-=======
-        
->>>>>>> a418a6ebfe960bbeebd954eb32cb7d1df60c2291
 }
+
 
 function getLatest(){
 
@@ -131,7 +127,6 @@ function getLatest(){
         success: function (response) {
             latest = response;
             var values = response;
-            console.log(values);
         },
         error: function (xhr, status, error) {
 
@@ -142,16 +137,16 @@ function getLatest(){
 
 function populateGardenList() {
     var list = document.getElementById("gardenId");
-    //editing the otpions to dynamically add the name of the garden, based on ID of the garden
+    //editing the options to dynamically add the name of the garden, based on ID of the garden
     list.innerHTML = generateOption(defaultGarden.gardenId, defaultGarden.gardenName);
     gardens.forEach(garden => function () {
         if (garden.gardenId !== defaultGarden.gardenId) {
-            //makes sure default garden isnt in there twice by chekcing its id
+            //makes sure default garden isnt in there twice by checking its id
             list.innerHTML += generateOption(garden.gardenId, garden.gardenName)
     }
     })
 }
-//modularizing the previouse 
+//modularizing the previous
 function generateOption(gardenId, gardenName) {
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
