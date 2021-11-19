@@ -153,6 +153,6 @@ function generateOption(gardenId, gardenName) {
 
 $('document').ready(function () {
     getDefaultGarden().then(response => getAllGardens()).then(repsonse2 => populateGardenList());
-    getAllGardens();
-    populateGardenList();
+    //getAllGardens();
+  //  populateGardenList();
 })
