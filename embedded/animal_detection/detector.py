@@ -5,6 +5,7 @@ import os
 
 # local imports
 from utils.logging import log
+import server.warning as sw
 import sensors.camera as camera
 
 def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
@@ -61,10 +62,14 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
         class_ids = prediction["detection_classes"][0]
         detection_scores = prediction["detection_scores"][0]
 
-        animal_detected = False
+        animals_detected = []
         for score, id in zip(detection_scores, class_ids):
             if score > 0.50 and id in _animal_labels:
-                animal_detected = True
-                log(f'{_animal_labels[id]} detected with {score*100}% certainty.')
+                cur_animal = _animal_labels[id]
+                animals_detected.append(cur_animal)
+                log(f'{cur_animal} detected with {score*100}% certainty.')
+
+        if animals_detected:
+            sw.generate_warning(type=sw.WarningType, msg=f'Animals detected: {str(animals_detected)[1:-1]}')
 
         sleep(float(frequency))
