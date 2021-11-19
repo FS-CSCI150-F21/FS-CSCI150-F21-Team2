@@ -88,7 +88,7 @@ function newChart(ctx, dlabel, xVals, yVals){
 
 }
 
-const latest = {};
+var latest = {};
 var defaultGarden = {};
 //asynchronous function executes while doing its own thing
 async function getDefaultGarden() {
@@ -116,8 +116,8 @@ async function getAllGardens(){
 }
 
 
-function getLatest(){
-
+function getLatest() {
+    var body = { "gardenId": defaultGarden.gardenId };
     var gettingRange = $.ajax({
         type: 'post',
         url: 'api/v1/garden_data_collection/latest',
@@ -126,6 +126,7 @@ function getLatest(){
         data: JSON.stringify(body),
         success: function (response) {
             latest = response;
+            console.log(latest);
             var values = response;
         },
         error: function (xhr, status, error) {
@@ -148,6 +149,7 @@ function populateGardenList() {
 }
 //modularizing the previous
 function generateOption(gardenId, gardenName) {
+    //gardenId determiens the gardenName for the dropdown menu in dashboard.html
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
 
