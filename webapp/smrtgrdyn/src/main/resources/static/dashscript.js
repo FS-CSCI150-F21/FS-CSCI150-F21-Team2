@@ -87,6 +87,49 @@ function newChart(ctx, dlabel, xVals, yVals){
         });
 
 }
+//===============================================================================chart data==============================================================
+function getInstanceData(fieldName) {
+    var field = document.getElementById(fieldName);
+    switch (fieldName) {
+        case 'temp-data':
+            setTempData(field);
+            break;
+        case "humid-data":
+            setHumidData(field);
+            break;
+        case "waterflow-data":
+            setwaterFlowData(field);
+            break;
+        case "soil-data":
+            setSoilData(field);
+            break;
+        case "waterstatus-data":
+            setwaterstatusData(field);
+            break;
+        default:
+            break;
+    }
+}
+
+//setting data for graphs
+function setTempData(field) {
+    field.innerHTML = latest.temperature;
+}
+function setHumidData(field) {
+    field.innerHTML = latest.humidity;
+}
+function setwaterFlowData(field) {
+    field.innerHTML = latest.waterFlow;
+
+}
+function setSoilData(field) {
+    field.innerHTML = latest.soilMoisture;
+}
+function setwaterstatusData(field) {
+    field.innerHTML = latest.waterActive;
+}
+
+//=====================================================================chart data==========================================================================
 
 var latest = {};
 var defaultGarden = {};

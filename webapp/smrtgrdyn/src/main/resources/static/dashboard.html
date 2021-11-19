@@ -50,10 +50,13 @@
                             <canvas id="tempChart"></canvas>
                             <script> getChart("temp") </script>
                         </div>
-                        <div class="rotate switch">
-                            <input type="radio" name="temp-btn">
+                        <div class="instance data">
+                            <div id="temp-data"></div>
+                            <script> getInstanceData("temp-data")</script>
+                        
                         </div>
                     </div>
+
                 </div>
                 <div class="card " id="humidity-card">
                     <div class="card-grid">
@@ -62,8 +65,10 @@
                             <canvas id="humidChart" ></canvas>
                             <script>getChart("humid")</script>
                         </div>
-                        <div class="rotate switch">
-                            <input type="radio" name="humid-btn">
+                        <div class="instance data">
+                            <div id="humid-data"></div>
+                            <script>getInstanceData("humid-data")</script>
+
                         </div>
                     </div>
                 </div>
@@ -74,8 +79,10 @@
                             <canvas id="waterFlowChart"></canvas>
                             <script>getChart("waterflow")</script>
                         </div>
-                        <div class="rotate switch">
-                            <input type="radio" name="waterflow-btn">
+                        <div class="instance data">
+                            <div id="waterflow-data"></div>
+                            <script>getInstanceData("waterflow-data")</script>
+
                         </div>
                     </div>
                 </div>
@@ -88,8 +95,10 @@
                             <canvas id="moistureChart" ></canvas>
                             <script>getChart("moisture")</script>
                         </div>
-                        <div class="rotate switch">
-                            <input type="radio" name="soil-btn">
+                        <div class="instance data">
+                            <div id="soil-data"></div>
+                            <script>getInstanceData("soil-data")</script>
+
                         </div>
                     </div>
                 </div>
@@ -99,7 +108,10 @@
                         <canvas id="waterStatusChart"></canvas>
                         <script>getChart("waterstatus")</script>
                     </div>
-                    <div class="rotate switch">
+                    <div class="instance switch">
+                        <div id="waterstatus-data"></div>
+                        <script>getInstanceData("waterstatus-data")</script>
+
                         <input type="radio" name="waterstatus-btn">
                     </div>
                     <!-- This is where a big on/off switch will be -->
