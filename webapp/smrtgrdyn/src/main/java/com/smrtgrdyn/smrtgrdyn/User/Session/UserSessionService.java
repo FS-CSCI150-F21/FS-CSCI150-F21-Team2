@@ -58,7 +58,7 @@ public class UserSessionService {
         HttpSession session = request.getSession(false);
 
         //a null session denotes that nobody is logged in yet
-        if(session == null || session.getAttribute("username") == ""){
+        if(session != null || session.getAttribute("username") == ""){
             session = request.getSession();
             session.setAttribute("username", username);
         }else{

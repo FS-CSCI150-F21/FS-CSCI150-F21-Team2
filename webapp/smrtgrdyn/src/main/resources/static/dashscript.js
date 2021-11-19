@@ -27,20 +27,20 @@ function getTempChart(){
     var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
     var yVals = [30, 40, 80, 60, 70, 80, 60, 110, 80];
 
-    return newChart("tempChart", "temperature", xVals, yVals);
+    return newChart("tempChart", "Temperature", xVals, yVals);
 }
 
 function getHumidChart(){
 
-    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
-    var yVals = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm"];
+    var yVals = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 
     return newChart("humidChart", "Humidity", xVals, yVals);
 }
 
 function getWaterFlowChart(){
 
-    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
+    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm"];
     var yVals = [1,2,3,4,5,6,7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
     return newChart("waterFlowChart", "Water Usage", xVals, yVals);
@@ -68,7 +68,7 @@ function newChart(ctx, dlabel, xVals, yVals){
     new Chart(ctx, {
             type: "bar",
             data: {
-                labels: xVals,
+                labels: timeLabels,
                 datasets: [{
                     label:dlabel,
                     fill: false,
@@ -85,6 +85,124 @@ function newChart(ctx, dlabel, xVals, yVals){
                 }
             }
         });
+
+}
+
+
+var gardenDataLast13 = [];
+
+function getLast13Hours(){
+
+    var end = new Date();
+    var local = end;
+    var utc = toUTC(end);
+    console.log(utc)
+    var start = new Date();
+
+    start.setHours(end.getHours() - 13);
+    end = toUTC(end);
+    start = toUTC(start);
+    console.log(start)
+    console.log(end)
+    start = pITAFormatting(start);
+    end = pITAFormatting(end);
+
+     var body = { "gardenId": defaultGarden.gardenId, start: start, end: end };
+     var gettingRange = $.ajax({
+         type: 'post',
+         url: 'api/v1/garden_data_collection/range',
+         dataType: 'json',
+         contentType: "application/json; charset=utf-8",
+         data: JSON.stringify(body),
+         success: function (response) {
+             gardenDataLast13 = response;
+             setGraphData(local, utc);
+         },
+         error: function (xhr, status, error) {
+
+         }
+     });
+
+    console.log(start);
+    console.log(end);
+
+}
+
+function toUTC(date){
+    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
+                            date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(),
+                            date.getUTCMilliseconds());
+}
+
+function pITAFormatting(date){
+
+    var year = prependZero(date.getFullYear());
+    var month = prependZero(date.getMonth());
+    var day = prependZero(date.getDate());
+
+    var hour = prependZero(date.getHours());
+    var minutes = prependZero(date.getMinutes());
+    var seconds = prependZero(date.getSeconds());
+    var milli = date.getMilliseconds();
+
+
+    var dateString = year + '-'+ month + '-' + day + 'T' + hour + ':' + minutes + ':' + seconds + '.' + milli ;
+
+    return dateString;
+}
+
+function prependZero(time){
+
+    if(time < 10){
+        time = '0' + time;
+    }
+    return time;
+}
+
+var graphFields = ["temp", "humid", "waterflow", "moisture", "waterstatus"];
+
+function setGraphData(local, utc){
+
+    setTimeValues(local, utc);
+
+    graphFields.forEach(field => getChart(field));
+//    graphFields.forEach(buildAndFillGraphData(field));
+}
+
+var timeValues = [];
+var timeLabels = [];
+
+function setTimeValues(local, utc){
+
+    var localHour = local.getHours();
+    var utcHour = utc.getHours();
+
+    for( var i = 0; i < 13; i++){
+        timeLabels.push(appendMeriem(localHour - i));
+        if(utcHour - i < 0){
+            timeValues.push((utcHour - i) + 24);
+        }else {
+            timeValues.push(utcHour - i);
+        }
+    }
+    timeValues = timeValues.reverse();
+    timeLabels = timeLabels.reverse();
+
+
+}
+
+function appendMeriem(hour){
+    if(hour > 12){
+        return (hour - 12) + 'pm';
+    }else if(hour == 12) {
+        return hour + 'pm';
+    }
+    else{
+        return hour + 'am';
+    }
+
+}
+function setAveragesPerHour(){
 
 }
 //===============================================================================chart data==============================================================
@@ -140,6 +258,9 @@ function setAllData(){
      dataFields.forEach(field => getInstanceData(field));
 }
 
+
+
+
 //=====================================================================chart data==========================================================================
 
 var latest = {};
@@ -187,6 +308,7 @@ function getLatest() {
 
 }
 
+
 function populateGardenList() {
     var list = document.getElementById("gardenId");
     //editing the options to dynamically add the name of the garden, based on ID of the garden
@@ -209,6 +331,17 @@ $('document').ready(function () {
     getDefaultGarden()
         .then(response => getAllGardens())
         .then(response2 => populateGardenList())
-        .then(res3 => getLatest());
+        .then(res3 => getLatest())
+        .then(res4 => getLast13Hours());
 
 })
+
+function logout() {
+    fetch("api/v1/user_session/logout").then(response => function(){
+        document.location.href="/";
+        window.sessionStorage.clear();
+    });
+
+    document.location.href="/";
+    window.sessionStorage.clear();
+}

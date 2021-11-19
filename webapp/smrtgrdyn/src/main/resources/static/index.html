@@ -8,6 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<script>
+    if(window.sessionStorage.getItem("username")){
+        document.location.href="/dashboard.html";
+    }
+</script>
     <div class="wrapper">
         <div class="title-text">
             <div class="title login">
