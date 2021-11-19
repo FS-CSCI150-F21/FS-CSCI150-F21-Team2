@@ -149,7 +149,7 @@ function populateGardenList() {
 }
 //modularizing the previous
 function generateOption(gardenId, gardenName) {
-    //gardenId determiens the gardenName for the dropdown menu in dashboard.html
+    //gardenId determines the gardenName for the dropdown menu in dashboard.html
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
 
