@@ -11,17 +11,21 @@ class WarningType(str, Enum):
     ANIMAL_DETECTED = 'animal'
     WATER_LEAK = 'leak'
 
-def generate_animal_warning(msg: str = ''):
+def generate_warning(type: str, msg: str = ''):
     """
-    Send animal warning to server
-    Args: 
+    Send warning to server
+    Args:
+        msg: str
+            Custom message to send to server
+    Returns:
+        None
     """
-    log('Generating warning for detected animal.')
+    log(f'Generating warning: [{type}].')
 
     # Get registration
     _, uuid = get_registration()
     # Write warning
-    warning_body = body.Warning(gardenId=uuid, timestamp=time(), type=WarningType.ANIMAL_DETECTED, message=msg).__dict__
+    warning_body = body.Warning(gardenId=uuid, timestamp=time(), type=type, message=msg).__dict__
     # Attempt to send warning
     warn: any
     try:
@@ -32,7 +36,3 @@ def generate_animal_warning(msg: str = ''):
         raise Exception('Warning could not be sent to the server!')
 
     log('Warning sent to server.')
-
-
-def generate_leak_warning(timestamp: int):
-    log('Generating warning for detected leak')
