@@ -90,8 +90,7 @@ function newChart(ctx, dlabel, xVals, yVals){
 
 function getLatest(){
 
-    var gardenId = defaultGarden.
-    var body = {"gardenId": gardenId};
+    
 
     var gettingRange = $.ajax({
         type: 'post',
