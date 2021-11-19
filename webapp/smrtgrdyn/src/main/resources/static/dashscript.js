@@ -90,8 +90,6 @@ function newChart(ctx, dlabel, xVals, yVals){
 
 function getLatest(){
 
-    
-
     var gettingRange = $.ajax({
         type: 'post',
         url: 'api/v1/garden_data_collection/latest',
