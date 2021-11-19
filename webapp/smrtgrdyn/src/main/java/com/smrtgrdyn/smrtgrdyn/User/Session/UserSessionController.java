@@ -39,21 +39,16 @@ public class UserSessionController {
 
 
     @RequestMapping("api/v1/user_session/logout")
-    @PostMapping
+    @GetMapping
     public void userLogout(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
-
         if(session != null){
             session.setAttribute("username", "");
-            session = null;
-
-        }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No User Logged In");
+            session.invalidate();
         }
-
-
     }
+
 
     @RequestMapping("api/v1/user_session/setDefault")
     @PostMapping

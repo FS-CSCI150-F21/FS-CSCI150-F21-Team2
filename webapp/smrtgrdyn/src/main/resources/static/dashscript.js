@@ -24,45 +24,44 @@ function getChart(chartName){
 
 function getTempChart(){
 
-    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
     var yVals = [30, 40, 80, 60, 70, 80, 60, 110, 80];
 
-    return newChart("tempChart", "Temperature", xVals, yVals);
+    return newChart("tempChart", "Temperature", yVals);
 }
 
 function getHumidChart(){
 
-    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm"];
-    var yVals = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 
-    return newChart("humidChart", "Humidity", xVals, yVals);
+    var yVals = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+
+    return newChart("humidChart", "Humidity", yVals);
 }
 
 function getWaterFlowChart(){
 
-    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm"];
+
     var yVals = [1,2,3,4,5,6,7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
-    return newChart("waterFlowChart", "Water Usage", xVals, yVals);
+    return newChart("waterFlowChart", "Water Usage", yVals);
 }
 
 function getMoistureChart(){
 
-    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
+
     var yVals = [1,2,3,4,5,6,7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
-    return newChart("moistureChart", "Soil Moisture", xVals, yVals)
+    return newChart("moistureChart", "Soil Moisture", yVals)
 }
 
 function getwaterStatusChart(){
 
-    var xVals = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
+
     var yVals = [0,1,1,1,0,0,0,1,0,1,0,1,1,0,0,0,1];
 
-    return newChart("waterStatusChart", "Watering Status", xVals, yVals)
+    return newChart("waterStatusChart", "Watering Status", yVals)
 }
 
-function newChart(ctx, dlabel, xVals, yVals){
+function newChart(ctx, dlabel, yVals){
 
 
     new Chart(ctx, {
@@ -202,7 +201,27 @@ function appendMeriem(hour){
     }
 
 }
-function setAveragesPerHour(){
+
+t = []; //temperature
+h = []; // humidity
+m = []; //moisture
+w = []; //water flow
+s = []; //watering status
+function getAveragesPerHour(){
+
+
+    var hourIndex = 0;
+    var currentHour = timeValues[hourIndex];
+
+    gardenDataLast13.forEach(data => function(){
+
+
+
+
+
+
+    })
+
 
 }
 //===============================================================================chart data==============================================================
@@ -282,7 +301,8 @@ async function getAllGardens(){
 
     fetch("api/v1/user_session/get_gardens?username=" + user)
         .then(response => response.json())
-        .then(data => data.forEach(garden => gardens.push(garden)));
+        .then(data => console.log(data))
+//        .then(data => data.forEach(garden => gardens.push(garden)));
 
 
 }
@@ -336,11 +356,10 @@ $('document').ready(function () {
 
 })
 
-function logout() {
-    fetch("api/v1/user_session/logout").then(response => function(){
-        document.location.href="/";
-        window.sessionStorage.clear();
-    });
+async function logout() {
+    var response = await fetch("api/v1/user_session/logout");
+
+
 
     document.location.href="/";
     window.sessionStorage.clear();

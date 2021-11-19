@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -61,10 +64,25 @@ public class GardenRegistrationService {
 
             // Drop request
             dropRequest();
+
+            addDefaultGardenName();
             return gardenRegistrationRequest.getGardenId();
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
+    }
+
+    private void addDefaultGardenName(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        String defaultName = gardenRegistrationRequest.getUsername() + "'s Garden " + formatter.format(date);
+        GardenName name = new GardenName(gardenRegistrationRequest.getGardenId(),
+                gardenRegistrationRequest.getUsername() + "'s Garden ", gardenRegistrationRequest.getUsername());
+
+        if(!gardenNameRepository.existsById(gardenRegistrationRequest.getGardenId())){
+            gardenNameRepository.save(name);
+        }
+
     }
 
     private void setupRegistrationConfirmation(String piId){
@@ -117,6 +135,12 @@ public class GardenRegistrationService {
     public void setGardenName(GardenName gardenName){
 
         if(isGardenAlreadyRegisteredWithUser(gardenName.getUsername(), gardenName.getGardenId())){
+            if(gardenNameRepository.existsById(gardenName.getGardenId())){
+                GardenName newName = gardenNameRepository.findById(gardenName.getGardenId()).get();
+                newName.setGardenName(gardenName.getGardenName());
+                gardenNameRepository.save(newName);
+                return;
+            }
             gardenNameRepository.save(gardenName);
             return;
         }

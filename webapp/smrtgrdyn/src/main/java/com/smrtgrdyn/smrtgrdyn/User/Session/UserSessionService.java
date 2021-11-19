@@ -57,13 +57,18 @@ public class UserSessionService {
 
         HttpSession session = request.getSession(false);
 
-        //a null session denotes that nobody is logged in yet
-        if(session != null || session.getAttribute("username") == ""){
-            session = request.getSession();
-            session.setAttribute("username", username);
-        }else{
+        //Only a null session or username = "" constitutes starting a valid session.
+        if(session != null){
+//            if( session.getAttribute("username") != "" ){
+            System.out.println(session.getAttribute("username"));
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Someone is already Logged In");
         }
+
+        session = request.getSession();
+        session.setAttribute("username", username);
+
+
+
     }
 
     public void setDefaultGarden(String gardenId, String username){
