@@ -117,6 +117,7 @@ async function getAllGardens(){
 
 
 function getLatest() {
+    console.log(defaultGarden.gardenId);
     var body = { "gardenId": defaultGarden.gardenId };
     var gettingRange = $.ajax({
         type: 'post',
@@ -155,6 +156,6 @@ function generateOption(gardenId, gardenName) {
 
 $('document').ready(function () {
   //do this for async functions, basically to wait for them to finish execution since they make fetch calls
-    getDefaultGarden().then(response => getAllGardens()).then(repsonse2 => populateGardenList());
-    getLatest();
+    getDefaultGarden().then(response => getAllGardens()).then(repsonse2 => populateGardenList()).then(res3 => getLatest());
+
 })
