@@ -22,43 +22,34 @@ function getChart(chartName){
 }
 
 
+
+var waterstatusYVals = []
+
+
+
 function getTempChart(){
 
-    var yVals = [30, 40, 80, 60, 70, 80, 60, 110, 80];
-
-    return newChart("tempChart", "Temperature", yVals);
+    return newChart("tempChart", "Temperature", tempYVals);
 }
 
 function getHumidChart(){
 
-
-    var yVals = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
-
-    return newChart("humidChart", "Humidity", yVals);
+    return newChart("humidChart", "Humidity", humidYVals);
 }
 
 function getWaterFlowChart(){
 
-
-    var yVals = [1,2,3,4,5,6,7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
-
-    return newChart("waterFlowChart", "Water Usage", yVals);
+    return newChart("waterFlowChart", "Water Usage", waterflowYVals);
 }
 
 function getMoistureChart(){
 
-
-    var yVals = [1,2,3,4,5,6,7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
-
-    return newChart("moistureChart", "Soil Moisture", yVals)
+    return newChart("moistureChart", "Soil Moisture", moistureYVals)
 }
 
 function getwaterStatusChart(){
 
-
-    var yVals = [0,1,1,1,0,0,0,1,0,1,0,1,1,0,0,0,1];
-
-    return newChart("waterStatusChart", "Watering Status", yVals)
+    return newChart("waterStatusChart", "Watering Status", waterstatusYVals)
 }
 
 function newChart(ctx, dlabel, yVals){
@@ -95,14 +86,13 @@ function getLast13Hours(){
     var end = new Date();
     var local = end;
     var utc = toUTC(end);
-    console.log(utc)
+
     var start = new Date();
 
     start.setHours(end.getHours() - 13);
     end = toUTC(end);
     start = toUTC(start);
-    console.log(start)
-    console.log(end)
+
     start = pITAFormatting(start);
     end = pITAFormatting(end);
 
@@ -122,8 +112,7 @@ function getLast13Hours(){
          }
      });
 
-    console.log(start);
-    console.log(end);
+
 
 }
 
@@ -163,7 +152,7 @@ var graphFields = ["temp", "humid", "waterflow", "moisture", "waterstatus"];
 function setGraphData(local, utc){
 
     setTimeValues(local, utc);
-
+    getAveragesPerHour();
     graphFields.forEach(field => getChart(field));
 //    graphFields.forEach(buildAndFillGraphData(field));
 }
@@ -177,11 +166,7 @@ function setTimeValues(local, utc){
     var utcHour = utc.getHours();
 
     for( var i = 0; i < 13; i++){
-
-        console.log(localHour - i)
         timeLabels.push(appendMeriem(localHour - i));
-
-
         if(utcHour - i < 0){
             timeValues.push((utcHour - i) + 24);
         }else {
@@ -240,14 +225,45 @@ function getAveragesPerHour(){
 
             var dataHour = new Date(Date.parse(data.timestamp)).getHours();
             if(dataHour == timeValues[index]){
-                console.log(timeLabels[index])
-                console.log(data);
+
+
+                // Push data into temp arrays
+                t.push(data.temperature);
+                h.push(data.humidity);
+                m.push(data.soilMoisture);
+                w.push(data.waterFlow);
+                s.push(+data.waterActive);
+
             }
         })
 
+        //Push averages into YVal arrays
+        tempYVals.push(getAverageOfArrayLengthMinus1(t));
+        humidYVals.push(getAverageOfArrayLengthMinus1(h));
+        moistureYVals.push(getAverageOfArrayLengthMinus1(m));
+        waterflowYVals.push(getAverageOfArrayLengthMinus1(w));
+        waterstatusYVals.push(getAverageOfArrayLengthMinus1(s));
+
+        //Reset temp arrays
+        t = [0]; //temperature
+        h = [0]; // humidity
+        m = [0]; //moisture
+        w = [0]; //water flow
+        s = [0]; //watering status
+
     }
 
+}
 
+function getAverageOfArrayLengthMinus1(array){
+
+   var ret = array.reduce(function(acc, x){return acc + x}) / (array.length - 1)
+
+   if(isNaN(ret)){
+        return 0;
+   }else {
+        return ret;
+   }
 
 }
 //===============================================================================chart data==============================================================
@@ -300,11 +316,8 @@ function setwaterstatusData(field) {
 }
 
 function setAllData(){
-     dataFields.forEach(field => getInstanceData(field));
+     dataFields.forEach(getInstanceData(field));
 }
-
-
-
 
 //=====================================================================chart data==========================================================================
 
@@ -327,8 +340,7 @@ async function getAllGardens(){
 
     fetch("api/v1/user_session/get_gardens?username=" + user)
         .then(response => response.json())
-        .then(data => console.log(data))
-//        .then(data => data.forEach(garden => gardens.push(garden)));
+        .then(data => data.forEach(garden => gardens.push(garden)));
 
 
 }
