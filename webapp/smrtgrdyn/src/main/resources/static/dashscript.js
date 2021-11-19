@@ -116,7 +116,7 @@ function getInstanceData(fieldName) {
 
 //setting data for graphs
 function setTempData(field) {
-    field.innerHTML = "Latest Reading: "+ latest.temperature;
+    field.innerHTML = "Latest Reading: "+ latest.temperature + "F";
 }
 function setHumidData(field) {
     field.innerHTML = "Latest Reading: " + latest.humidity;
@@ -129,7 +129,11 @@ function setSoilData(field) {
     field.innerHTML = "Latest Reading: " + latest.soilMoisture;
 }
 function setwaterstatusData(field) {
-    field.innerHTML = "Status: " + latest.waterActive;
+    var msg = "Off";
+    if (latest.waterActive) {
+        msg = "On";
+    }
+    field.innerHTML = "Status: " + msg;
 }
 
 function setAllData(){
