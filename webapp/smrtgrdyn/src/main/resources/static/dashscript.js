@@ -88,6 +88,9 @@ function newChart(ctx, dlabel, xVals, yVals){
 
 }
 //===============================================================================chart data==============================================================
+
+var dataFields = ["temp-data", "humid-data", "waterflow-data", "soil-data", "waterstatus-data"];
+
 function getInstanceData(fieldName) {
     var field = document.getElementById(fieldName);
     switch (fieldName) {
@@ -129,6 +132,10 @@ function setwaterstatusData(field) {
     field.innerHTML = latest.waterActive;
 }
 
+function setAllData(){
+     dataFields.forEach(field => getInstanceData(field));
+}
+
 //=====================================================================chart data==========================================================================
 
 var latest = {};
@@ -141,9 +148,6 @@ async function getDefaultGarden() {
 
     response = await fetch("api/v1/user_session/default_garden?username=" + user)
     defaultGarden = await response.json();
-
-    console.log(defaultGarden);
-
 }
 
 var gardens = [];
@@ -160,7 +164,7 @@ async function getAllGardens(){
 
 
 function getLatest() {
-    console.log(defaultGarden.gardenId);
+
     var body = { "gardenId": defaultGarden.gardenId };
     var gettingRange = $.ajax({
         type: 'post',
@@ -170,8 +174,7 @@ function getLatest() {
         data: JSON.stringify(body),
         success: function (response) {
             latest = response;
-            console.log(latest);
-            var values = response;
+            setAllData();
         },
         error: function (xhr, status, error) {
 
@@ -197,12 +200,11 @@ function generateOption(gardenId, gardenName) {
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
 
-/*$('document').ready(function () {
+$('document').ready(function () {
   //do this for async functions, basically to wait for them to finish execution since they make fetch calls
-    getDefaultGarden().then(response => getAllGardens()).then(repsonse2 => populateGardenList()).then(res3 => getLatest());
+    getDefaultGarden()
+        .then(response => getAllGardens())
+        .then(response2 => populateGardenList())
+        .then(res3 => getLatest());
 
-})*/
-function onPageLoad() {
-    getDefaultGarden().then(response => getAllGardens()).then(repsonse2 => populateGardenList()).then(res3 => getLatest());
-
-}
+})
