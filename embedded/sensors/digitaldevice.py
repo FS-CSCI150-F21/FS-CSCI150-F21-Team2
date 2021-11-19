@@ -1,7 +1,7 @@
 import time
 import board
 import digitalio
-from threading import Thread, Lock
+from threading import Lock
 
 
 class DigitalDevice:
@@ -113,9 +113,9 @@ class DigitalDevice:
         pattern_index = 0
         self.status = True
 
-        while True:  # run through
+        while True:  # run through the whole list and restart until time has passed
             if pattern_index > len(list_pattern):
-                pass
+                pattern_index = 0
 
             self.board_dio.value = True
             time.sleep(list_pattern[pattern_index])
@@ -129,7 +129,7 @@ class DigitalDevice:
 
         Lock().release()
 
-    def read_input(self):
+    def read_input(self):  # read data from a digital input
         Lock().acquire()
         if self.direction == "OUT":
             raise ValueError("Pin is set to output. Reading is invalid")
@@ -139,7 +139,7 @@ class DigitalDevice:
     def get_device_status(self):
         return self.status
 
-    def pin_off(self):
+    def pin_off(self): # manually turn output pin off
         Lock().acquire()
         if self.direction == "IN":
             raise ValueError("Can't set input pin to output value")
@@ -147,7 +147,7 @@ class DigitalDevice:
         self.board_dio.value = False
         Lock().release()
 
-    def pin_on(self):
+    def pin_on(self): # manually turn output pin on
         Lock().acquire()
         if self.direction == "IN":
             raise ValueError("Can't set input pin to output value")
@@ -157,21 +157,3 @@ class DigitalDevice:
 
     def get_device_id(self):
         return self.device_id
-
-
-def play_sound_pattern(_speaker, _list):
-    return _speaker.output_pattern(_speaker, _list)
-
-
-def get_speaker_status(_speaker):
-    return _speaker.status
-
-
-# convention for main
-if __name__ == "__main__":
-    speaker = DigitalDevice("speaker", "OUT", 23)
-    play_sound_pattern(speaker, list)
-    get_speaker_status(speaker)
-
-    solenoid = DigitalDevice("solenoid", "OUT", 17)
-    solenoid_status = solenoid.status
