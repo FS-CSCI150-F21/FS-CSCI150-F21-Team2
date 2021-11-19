@@ -104,6 +104,7 @@ async function getDefaultGarden() {
 }
 
 var gardens = [];
+
 async function getAllGardens(){
     var user = window.sessionStorage.getItem("username");
 
@@ -114,6 +115,7 @@ async function getAllGardens(){
 
 
 }
+
 function getLatest(){
 
     var gettingRange = $.ajax({
@@ -131,5 +133,11 @@ function getLatest(){
 
         }
     });
+
+}
+
+function populateGardenList() {
+    var list = document.getElementById("gardenId");
+    list.innerHTML = '<option value="' + defaultGarden.gardenId + '">' + defaultGarden.gardenName + '</option>';
 
 }
