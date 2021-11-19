@@ -100,7 +100,12 @@ def register(timeout: int = 300000):
 
     # Generate POST request body and send post request
     registration_body = body.PiRegistration(username, pairing_code).__dict__
-    uuid = requests.post(url=Endpoint.REGISTRATION_ENDPOINT, json=registration_body)
+    uuid: any
+    try:
+        uuid = requests.post(url=Endpoint.REGISTRATION_ENDPOINT, json=registration_body)
+    except requests.exceptions.RequestException as e:
+        log('Connection ERROR: Please try again later.')
+        log(f'ERROR Details: {e}')
     gardenID = uuid.content.decode('utf-8')
     
     # Write new credential to registration file
@@ -109,5 +114,3 @@ def register(timeout: int = 300000):
         FILE.write(f'{__gardenID_pref}{gardenID}')
 
     log(f'Pi registered under ID: {gardenID} to username {username}!')
-
-
