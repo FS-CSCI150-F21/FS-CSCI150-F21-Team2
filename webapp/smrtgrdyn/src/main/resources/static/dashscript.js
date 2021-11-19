@@ -112,7 +112,7 @@ async function getAllGardens(){
           .then(data => data.forEach(garden => gardens.push(garden)))
           .then(gardens.forEach(gardenP => console.log(gardenP)));
 
-        
+
 }
 function getLatest(){
 
