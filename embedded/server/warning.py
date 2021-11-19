@@ -1,5 +1,6 @@
 from enum import Enum
 import requests
+from time import time
 
 from utils.logging import log
 from server.endpoints import Endpoint
@@ -10,7 +11,7 @@ class WarningType(str, Enum):
     ANIMAL_DETECTED = 'animal'
     WATER_LEAK = 'leak'
 
-def generate_animal_warning(timestamp: int, msg: str = ''):
+def generate_animal_warning(msg: str = ''):
     """
     Send animal warning to server
     Args: 
@@ -20,7 +21,7 @@ def generate_animal_warning(timestamp: int, msg: str = ''):
     # Get registration
     _, uuid = get_registration()
     # Write warning
-    warning_body = body.Warning(gardenId=uuid, timestamp=timestamp, type=WarningType.ANIMAL_DETECTED, message=msg).__dict__
+    warning_body = body.Warning(gardenId=uuid, timestamp=time(), type=WarningType.ANIMAL_DETECTED, message=msg).__dict__
     # Attempt to send warning
     warn: any
     try:
