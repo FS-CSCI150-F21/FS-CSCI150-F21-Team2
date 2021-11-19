@@ -156,4 +156,5 @@ function generateOption(gardenId, gardenName) {
 $('document').ready(function () {
   //do this for async functions, basically to wait for them to finish execution since they make fetch calls
     getDefaultGarden().then(response => getAllGardens()).then(repsonse2 => populateGardenList());
+    getLatest();
 })
