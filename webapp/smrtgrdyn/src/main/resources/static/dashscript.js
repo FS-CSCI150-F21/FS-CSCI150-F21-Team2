@@ -1,7 +1,5 @@
 function getChart(chartName){
 
-    console.log("getChart Called");
-
     switch(chartName){
         case 'temp':
             return getTempChart();
@@ -96,6 +94,10 @@ function getLatest() {
 
     var gardenId = defaultGarden.
     var body = { "gardenId": gardenId };
+function getLatest(){
+
+    var gardenId = defaultGarden.
+    var body = {"gardenId": gardenId};
 
     var gettingRange = $.ajax({
         type: 'post',
@@ -105,6 +107,7 @@ function getLatest() {
         data: JSON.stringify(body),
         success: function (response) {
             latest = response;
+            var values = response;
             console.log(values);
         },
         error: function (xhr, status, error) {

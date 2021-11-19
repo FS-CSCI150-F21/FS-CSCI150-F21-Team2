@@ -1,6 +1,7 @@
 package com.smrtgrdyn.smrtgrdyn.User.Session;
 
 
+import com.smrtgrdyn.smrtgrdyn.Garden.GardenName.GardenName;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @RestController
@@ -54,13 +56,16 @@ public class UserSessionController {
 
     @RequestMapping("api/v1/user_session/setDefault")
     @PostMapping
-    public void setDefaultGarden(HttpServletRequest request, @RequestParam("gardenId") String gardenId){
+    public void setDefaultGarden(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("gardenId") String gardenId){
         HttpSession session = request.getSession(false);
 
         if(session != null){
             session = request.getSession();
-            String username = session.getAttribute("username").toString();
-            userSessionService.setDefaultGarden(gardenId, username);
+
+            if(username.equals(session.getAttribute("username").toString())){
+                userSessionService.setDefaultGarden(gardenId, username);
+            }
+
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No User Logged In");
@@ -69,16 +74,37 @@ public class UserSessionController {
 
     @RequestMapping("api/v1/user_session/default_garden")
     @GetMapping
-    public String getUserData(HttpServletRequest request){
+    public GardenName getDefaultGarden(HttpServletRequest request, @RequestParam("username") String username){
         HttpSession session = request.getSession(false);
 
         if(session != null){
             session = request.getSession();
-            String username = session.getAttribute("username").toString();
-            return userSessionService.getDefaultGarden(username);
+            if(username.equals(session.getAttribute("username").toString())){
+                return userSessionService.getDefaultGarden(username);
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No User Logged In");
         }
     }
+
+    @RequestMapping("api/v1/user_session/get_gardens")
+    @GetMapping
+    public List<GardenName> getUsersGardens(HttpServletRequest request, @RequestParam("username") String username){
+        HttpSession session = request.getSession(false);
+
+        if(session != null){
+            session = request.getSession();
+            if(username.equals(session.getAttribute("username").toString())){
+                return userSessionService.getUsersGardens(username);
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No User Logged In");
+        }
+    }
+
+
 }

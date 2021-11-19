@@ -1,6 +1,7 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 
 
+import com.smrtgrdyn.smrtgrdyn.Garden.GardenName.GardenName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class GardenRegistrationController {
 
     @PostMapping
     @RequestMapping("api/v1/garden_registration/user")
-    public void registrationConfirmationFromUser(HttpServletRequest servletRequest,
+    public String registrationConfirmationFromUser(HttpServletRequest servletRequest,
                                                  @RequestBody GardenRegistrationRequest request){
 
         //Get the session
@@ -44,12 +45,20 @@ public class GardenRegistrationController {
         if(session != null){
             String username = (String) session.getAttribute("username");
 
-            service.confirmRegistration(username, request);
+            return service.confirmRegistration(username, request);
+
 
         }else{
             //Otherwise nobody is logged in, throw error
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not logged in");
         }
+    }
+
+    @PostMapping
+    @RequestMapping("api/v1/garden_registration/name_garden")
+    public void nameGarden(@RequestBody GardenName gardenName){
+
+        service.setGardenName(gardenName);
     }
 
 }

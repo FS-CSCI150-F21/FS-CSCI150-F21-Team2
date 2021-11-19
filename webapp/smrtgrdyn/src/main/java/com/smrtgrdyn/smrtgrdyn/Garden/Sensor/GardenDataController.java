@@ -22,13 +22,13 @@ public class GardenDataController {
 
     }
 
-    @GetMapping("api/v1/garden_data_collection/latest")
+    @PostMapping("api/v1/garden_data_collection/latest")
     public GardenSensorData getLatestData(@RequestBody GardenDataRequest request){
 
         return gardenDataSaveService.getLatestData(request);
     }
 
-    @GetMapping("api/v1/garden_data_collection/range")
+    @PostMapping("api/v1/garden_data_collection/range")
     public List getDataFromRange(@RequestBody GardenDataRequest request){
 
         return gardenDataSaveService.getDataFromRange(request);

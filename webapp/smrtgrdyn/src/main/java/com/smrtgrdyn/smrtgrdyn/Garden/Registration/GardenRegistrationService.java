@@ -1,22 +1,18 @@
 package com.smrtgrdyn.smrtgrdyn.Garden.Registration;
 
 import com.smrtgrdyn.smrtgrdyn.Garden.Connection.GardenConnectionInformation;
+import com.smrtgrdyn.smrtgrdyn.Garden.GardenName.GardenName;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenConnectionInformationRepository;
+import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenNameRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.GardenRegistrationRequestRepository;
 import com.smrtgrdyn.smrtgrdyn.Garden.Repository.UserInformationRepository;
 import com.smrtgrdyn.smrtgrdyn.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +23,7 @@ public class GardenRegistrationService {
     private final GardenConnectionInformationRepository gardenConnectionInformationRepository;
 
     private final UserInformationRepository userInformationRepository;
+    private final GardenNameRepository gardenNameRepository;
 
     private GardenConnectionInformation gardenConnectionInformation;
     private GardenRegistrationRequest gardenRegistrationRequest;
@@ -35,14 +32,15 @@ public class GardenRegistrationService {
     @Autowired
     public GardenRegistrationService(GardenRegistrationRequestRepository pairingRepository,
                                      GardenConnectionInformationRepository gardenConnectionInformationRepository,
-                                     UserInformationRepository userInformationRepository) {
+                                     UserInformationRepository userInformationRepository, GardenNameRepository gardenNameRepository) {
 
         this.registrationRequestRepository = pairingRepository;
         this.gardenConnectionInformationRepository = gardenConnectionInformationRepository;
         this.userInformationRepository = userInformationRepository;
+        this.gardenNameRepository = gardenNameRepository;
     }
 
-    public void confirmRegistration(String username, GardenRegistrationRequest request) {
+    public String confirmRegistration(String username, GardenRegistrationRequest request) {
 
         // Verify Username is the same one on the corresponding request
         setupRegistrationConfirmation(request.getPiId());
@@ -59,12 +57,14 @@ public class GardenRegistrationService {
             /*
              *  sendUUID to pi will currently NOT work as the server only tests locally
              * */
-             sendUUIDToPi(gardenRegistrationRequest.getGardenId());
+             //sendUUIDToPi(gardenRegistrationRequest.getGardenId());
 
             // Drop request
             dropRequest();
+            return gardenRegistrationRequest.getGardenId();
         }
 
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User");
     }
 
     private void setupRegistrationConfirmation(String piId){
@@ -114,35 +114,46 @@ public class GardenRegistrationService {
         registrationRequestRepository.delete(gardenRegistrationRequest);
     }
 
-    private void sendUUIDToPi(String gardenId) {
+    public void setGardenName(GardenName gardenName){
 
-        Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
-                gardenConnectionInformationRepository.findById(gardenId);
-
-        if (optionalGardenConnectionInformation.isPresent()) {
-            try {
-                Socket socket = new Socket(optionalGardenConnectionInformation.get().getHostName(),
-                        optionalGardenConnectionInformation.get().getPortNumber());
-                if (socket.isConnected()) {
-                    //Setup Output Stream
-                    OutputStream outputStream = socket.getOutputStream();
-                    DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
-
-                    //Write to outputStream
-                    dataOutputStream.writeChars(gardenId.toString());
-
-                    //Flush and Close Stream and Socket
-                    dataOutputStream.flush();
-                    dataOutputStream.close();
-                    socket.close();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not Connect to Garden", e);
-            }
+        if(isGardenAlreadyRegisteredWithUser(gardenName.getUsername(), gardenName.getGardenId())){
+            gardenNameRepository.save(gardenName);
+            return;
         }
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot Name Garden");
     }
+
+
+//    private void sendUUIDToPi(String gardenId) {
+//
+//        Optional<GardenConnectionInformation> optionalGardenConnectionInformation =
+//                gardenConnectionInformationRepository.findById(gardenId);
+//
+//        if (optionalGardenConnectionInformation.isPresent()) {
+//            try {
+//                Socket socket = new Socket(optionalGardenConnectionInformation.get().getHostName(),
+//                        optionalGardenConnectionInformation.get().getPortNumber());
+//                if (socket.isConnected()) {
+//                    //Setup Output Stream
+//                    OutputStream outputStream = socket.getOutputStream();
+//                    DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+//
+//                    //Write to outputStream
+//                    dataOutputStream.writeChars(gardenId.toString());
+//
+//                    //Flush and Close Stream and Socket
+//                    dataOutputStream.flush();
+//                    dataOutputStream.close();
+//                    socket.close();
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not Connect to Garden", e);
+//            }
+//        }
+//    }
 
     public void openRegistrationRequest(HttpServletRequest servletRequest, GardenRegistrationRequest registrationRequest) {
 
