@@ -316,7 +316,7 @@ function setwaterstatusData(field) {
 }
 
 function setAllData(){
-     dataFields.forEach(getInstanceData(field));
+     dataFields.forEach(field => getInstanceData(field));
 }
 
 //=====================================================================chart data==========================================================================

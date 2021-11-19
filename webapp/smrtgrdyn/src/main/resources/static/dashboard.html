@@ -25,7 +25,12 @@
             <li><a href="#">Waterflow</a></li>
             <li><a href="#">Soil Moisture</a></li>
             <li>Watering Status
-                <br><br><input type="radio" name="Water Active" class="toggle switch nav_button">
+                <br><br>
+                <label class="switch">
+                    <input type="checkbox" class="toggle">
+                    <span class="slider round"></span>
+                </label>
+<!--                <br><br><input type="checkbox" name="Water Active" class="toggle switch nav_button">-->
             </li>
         </ul>
     </div>
@@ -111,11 +116,15 @@
                         <canvas id="waterStatusChart"></canvas>
 <!--                        <script>getChart("waterstatus")</script>-->
                     </div>
-                    <div class="instance switch">
+                    <div class="instance status">
                         <div id="waterstatus-data"></div>
                         <script>getInstanceData("waterstatus-data")</script>
-
-                        <input type="radio" name="waterstatus-btn">
+                        <label class="switch">
+                            <input type="checkbox" class="toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <!--                <br><br><input type="checkbox" name="Water Active" class="toggle switch nav_button">-->
+<!--                        <input type="checkbox" name="waterstatus-btn">-->
                     </div>
                     <!-- This is where a big on/off switch will be -->
                 </div>
