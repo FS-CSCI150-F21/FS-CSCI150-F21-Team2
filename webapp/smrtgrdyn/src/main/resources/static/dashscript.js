@@ -103,6 +103,17 @@ async function getDefaultGarden() {
 
 }
 
+var gardens = [];
+async function getAllGardens(){
+    var user = window.sessionStorage.getItem("username");
+
+        fetch("api/v1/user_session/get_gardens?username=" + user)
+          .then(response => response.json())
+          .then(data => data.forEach(garden => gardens.push(garden)))
+          .then(gardens.forEach(gardenP => console.log(gardenP)));
+
+        
+}
 function getLatest(){
 
     var gettingRange = $.ajax({
