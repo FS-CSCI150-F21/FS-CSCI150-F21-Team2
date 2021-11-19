@@ -89,14 +89,18 @@ function newChart(ctx, dlabel, xVals, yVals){
 }
 
 const latest = {};
+const defaultGarden = {};
+//asyncrenouse function executes while doing its own thing
+async function getDefaultGarden() {
+    window.sessionStorage.getItem("user", uname);
+    //gets username
+    var user = window.sessionStorage.getItem("user");
+    defaultGarden =await fetch("api/v1/user_session/default_garden?username=" + user)
+}
 
-function getLatest() {
-
-    var gardenId = defaultGarden.
-    var body = { "gardenId": gardenId };
 function getLatest(){
 
-    var gardenId = defaultGarden.
+    var gardenId = defaultGarden.username;
     var body = {"gardenId": gardenId};
 
     var gettingRange = $.ajax({
