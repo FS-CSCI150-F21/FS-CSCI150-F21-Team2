@@ -89,7 +89,7 @@ function newChart(ctx, dlabel, xVals, yVals){
 }
 
 const latest = {};
-const defaultGarden = {};
+var defaultGarden = {};
 //asynchronous function executes while doing its own thing
 async function getDefaultGarden() {
 

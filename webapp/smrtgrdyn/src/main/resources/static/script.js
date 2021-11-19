@@ -90,3 +90,7 @@ function showErrorMessage(divId, msg){
     errorDiv.innerHTML = msg;
 
 }
+
+function logout() {
+    fetch("api/v1/user_session/logout");
+}
