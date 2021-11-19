@@ -4,7 +4,8 @@ class PiRegistration:
         self.piId = piId
 
 class Warning:
-    def __init__(self, garden_id, timestamp, type):
-        self.garden_id = garden_id
-        self.timestamp = timestamp
+    def __init__(self, gardenId, timestamp, type, message = ''):
+        self.gardenId = gardenId
+        self.timestamp = int(timestamp)
         self.type = type
+        self.message = message
