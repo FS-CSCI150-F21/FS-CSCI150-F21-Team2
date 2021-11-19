@@ -81,22 +81,23 @@ h4 {
 
 .instance {
     display: inline-block;
-    margin-top: 20px;
+    margin-top: 25px;
     margin-left: 10px;
+    width: 90%;
 
 }
-.instance.status:nth-child(2) {
-    background
-    margin-left: 50px;
+.instance.status {
+    display: flex;
+    justify-content: space-between;
 }
 
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #027302;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #027302;
 }
 
 input:checked + .slider:before {
