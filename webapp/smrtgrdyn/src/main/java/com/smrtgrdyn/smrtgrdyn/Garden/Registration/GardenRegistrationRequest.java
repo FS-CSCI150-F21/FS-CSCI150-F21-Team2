@@ -16,6 +16,7 @@ public class GardenRegistrationRequest {
         this.piId = piId;
         this.username = username;
         this.gardenId = gardenId;
+
     }
 
     public String getGardenId() {
