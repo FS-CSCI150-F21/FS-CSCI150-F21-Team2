@@ -90,3 +90,26 @@ function newChart(ctx, dlabel, xVals, yVals){
 
 }
 
+const latest = {};
+
+function getLatest() {
+
+    var gardenId = defaultGarden.
+    var body = { "gardenId": gardenId };
+
+    var gettingRange = $.ajax({
+        type: 'post',
+        url: 'api/v1/garden_data_collection/latest',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(body),
+        success: function (response) {
+            latest = response;
+            console.log(values);
+        },
+        error: function (xhr, status, error) {
+
+        }
+    });
+
+}

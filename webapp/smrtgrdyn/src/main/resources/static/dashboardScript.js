@@ -35,6 +35,8 @@ function makeChart(type){
 
 }
 
+const latest = {};
+
 function getLatest(){
 <<<<<<< HEAD
 
@@ -42,12 +44,12 @@ function getLatest(){
 =======
     var gettingRange = $.ajax({
         type: 'GET',
-        url: 'api/v1/farden_data_collection/range',
+        url: 'api/v1/farden_data_collection/latest',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        success: function (data) {
+        success: function (response) {
             //var current = jQuery.parseJSON(data);
-            var values = data;
+            latest = response.responseJSON;
             console.log(obj);
         },
         error: function (xhr, status, error) {
@@ -65,7 +67,7 @@ function getLast13hours(){
     // get request with a body
 }
 
-function translateTemp(timeStamp) {
+function translateTime(timeStamp) {
     if (timeStamp == 12) {
         timeStamp = timeStamp + "pm";
     }
