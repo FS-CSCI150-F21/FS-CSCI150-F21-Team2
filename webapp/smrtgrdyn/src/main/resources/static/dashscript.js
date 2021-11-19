@@ -111,8 +111,6 @@ async function getAllGardens(){
         fetch("api/v1/user_session/get_gardens?username=" + user)
           .then(response => response.json())
           .then(data => data.forEach(garden => gardens.push(garden)))
-          .then(gardens.forEach(gardenP => console.log(gardenP)));
-
         
 }
 
@@ -138,11 +136,16 @@ function getLatest(){
 
 function populateGardenList() {
     var list = document.getElementById("gardenId");
-    //editing 
+    //editing the otpions to dynamically add the name of the garden, based on ID of the garden
     list.innerHTML = generateOption(defaultGarden.gardenId, defaultGarden.gardenName);
-
+    gardens.forEach(garden => function () {
+        if (garden.gardenId !== defaultGarden.gardenId) {
+            //makes sure default garden isnt in there twice by chekcing its id
+            list.innerHTML += generateOption(garden.gardenId, garden.gardenName)
+    }
+    })
 }
-
+//modularizing the previouse 
 function generateOption(gardenId, gardenName) {
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
