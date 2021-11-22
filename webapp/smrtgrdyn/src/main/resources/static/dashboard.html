@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
-    <script src="dashscript.js"></script>
+
 </head>
 <body>
 <script>
@@ -47,7 +47,7 @@
         </div>
         <div class="selector flex">
             <div class="drop_down_menu">
-                <select name="gardenId" id="gardenId">
+                <select name="gardenId" id="gardenId" onchange="changeVals(this)">
                     <option value="">No Gardens Registered</option>
                 </select>
             </div>
@@ -64,7 +64,7 @@
                         </div>
                         <div class="instance data">
                             <div id="temp-data"></div>
-                            <script> getInstanceData("temp-data")</script>
+<!--                            <script> getInstanceData("temp-data")</script>-->
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@
                         </div>
                         <div class="instance data">
                             <div id="humid-data"></div>
-                            <script>getInstanceData("humid-data")</script>
+<!--                            <script>getInstanceData("humid-data")</script>-->
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="instance data">
                             <div id="waterflow-data"></div>
-                            <script>getInstanceData("waterflow-data")</script>
+<!--                            <script>getInstanceData("waterflow-data")</script>-->
                         </div>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                         </div>
                         <div class="instance data">
                             <div id="soil-data"></div>
-                            <script>getInstanceData("soil-data")</script>
+<!--                            <script>getInstanceData("soil-data")</script>-->
                         </div>
                     </div>
                 </div>
@@ -118,11 +118,13 @@
                     </div>
                     <div class="instance status">
                         <div id="waterstatus-data"></div>
-                        <script>getInstanceData("waterstatus-data")</script>
-                        <label class="switch">
+<!--                        <script>getInstanceData("waterstatus-data")</script>-->
+                        <div id = "waterSwitch">
+                        <label class="switch" >
                             <input type="checkbox" class="toggle">
                             <span class="slider round"></span>
                         </label>
+                        </div>
                         <!--                <br><br><input type="checkbox" name="Water Active" class="toggle switch nav_button">-->
 <!--                        <input type="checkbox" name="waterstatus-btn">-->
                     </div>
@@ -133,6 +135,6 @@
         </div>
     </div>
 </div>
-
+<script src="dashscript.js"></script>
 </body>
 </html>

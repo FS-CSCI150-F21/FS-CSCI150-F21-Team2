@@ -19,7 +19,7 @@
                 Login
             </div>
             <div class="title signup">
-                Signup
+                Sign Up
             </div>
         </div>
         <div class="form-container">
@@ -27,16 +27,16 @@
                 <input type="radio" name="slide" id="login" checked>
                 <input type="radio" name="slide" id="signup">
                 <label for="login" class="slide login">Login</label>
-                <label for="signup" class="slide signup">Signup</label>
+                <label for="signup" class="slide signup">Sign Up</label>
                 <div class="slider-tab"></div>
             </div>
             <div class="form-inner">
-                <form action="api/v1/user_session/login" class="login" id="loginForm">
+                <form autocomplete="off" action="api/v1/user_session/login" class="login" id="loginForm">
                     <div class="field">
-                        <input type="text" placeholder="Email Address" name="username" required>
+                        <input type="text" placeholder="Username" name="username" required>
                     </div>
                     <div class="field">
-                        <input type="password" placeholder="Password" name="password" required>
+                        <input autocomplete="new-password" type="password" placeholder="Password" name="password" required>
                     </div>
                     <div class="pass-link">
                         <a href="#">Forgot password?</a>
@@ -44,7 +44,7 @@
                     <div id="login_error"></div>
                     <div class="field btn">
                         <div class="btn-layer"></div>
-                        <input type="submit" value="login">
+                        <input type="submit" value="Login">
                     </div>
                     <div class="signup-link">
                         Not a member? <a href="">Signup now</a>
@@ -52,20 +52,20 @@
 
                 </form>
 
-                <form action="api/v1/user_registration" class="signup" id="signUpForm">
+                <form autocomplete="off" action="api/v1/user_registration" class="signup" id="signUpForm">
                     <div class="field">
-                        <input type="text" placeholder="Email Address" name="username" required>
+                        <input type="text" placeholder="Username" name="username" required>
                     </div>
                     <div class="field">
-                        <input type="password" placeholder="Password" name="password" required>
+                        <input autocomplete="new-password" type="password" placeholder="Password" name="password" required>
                     </div>
                     <div class="field">
-                        <input type="password" placeholder="Confirm password" name="pConfirm" required>
+                        <input autocomplete="new-password" type="password" placeholder="Confirm password" name="pConfirm" required>
                     </div>
                     <div id="signup_error"></div>
                     <div class="field btn">
                         <div class="btn-layer"></div>
-                        <input type="submit" value="signup">
+                        <input type="submit" value="Sign Up">
                     </div>
                 </form>
             </div>

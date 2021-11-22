@@ -1,20 +1,32 @@
+var tempChart = "";
+var humidChart = "";
+var waterFlowChart = "";
+var moistureChart = "";
+var waterStatusChart = "";
+
 function getChart(chartName){
+
 
     switch(chartName){
         case 'temp':
-            return getTempChart();
+            if(tempChart) tempChart.destroy();
+            tempChart = getTempChart();
             break;
         case "humid":
-            return getHumidChart();
+            if(humidChart) humidChart.destroy();
+            humidChart = getHumidChart();
             break;
         case "waterflow":
-            return getWaterFlowChart();
+            if(waterFlowChart) waterFlowChart.destroy();
+            waterFlowChart = getWaterFlowChart();
             break;
         case "moisture":
-            return getMoistureChart();
+            if(moistureChart) moistureChart.destroy();
+            moistureChart = getMoistureChart();
             break;
         case "waterstatus":
-            return getwaterStatusChart();
+            if(waterStatusChart) waterStatusChart.destroy();
+            waterStatusChart = getwaterStatusChart();
             break;
         default:
             break;
@@ -55,7 +67,7 @@ function getwaterStatusChart(){
 function newChart(ctx, dlabel, yVals){
 
 
-    new Chart(ctx, {
+    return new Chart(ctx, {
             type: "bar",
             data: {
                 labels: timeLabels,
@@ -108,6 +120,7 @@ function getLast13Hours(){
              setGraphData(local, utc);
          },
          error: function (xhr, status, error) {
+            gardenDataLast13 = []
             setGraphData(local, utc);
          }
      });
@@ -154,13 +167,21 @@ function setGraphData(local, utc){
     setTimeValues(local, utc);
     getAveragesPerHour();
     graphFields.forEach(field => getChart(field));
-//    graphFields.forEach(buildAndFillGraphData(field));
+
 }
 
 var timeValues = [];
 var timeLabels = [];
 
+function clearTimeValues(){
+    timeValues = [];
+    timeLabels = [];
+
+}
 function setTimeValues(local, utc){
+
+    clearTimeValues();
+
 
     var localHour = local.getHours();
     var utcHour = utc.getHours();
@@ -206,8 +227,19 @@ var moistureYVals = []
 var waterflowYVals = []
 var waterstatusYVals = []
 
+function clearAverages(){
+
+   tempYVals = [];
+   humidYVals = [];
+   moistureYVals = [];
+   waterflowYVals = [];
+   waterstatusYVals = [];
+
+}
 
 function getAveragesPerHour(){
+
+    clearAverages();
 
 
     var hourIndex = 0;
@@ -225,8 +257,6 @@ function getAveragesPerHour(){
 
             var dataHour = new Date(Date.parse(data.timestamp)).getHours();
             if(dataHour == timeValues[index]){
-
-
                 // Push data into temp arrays
                 t.push(data.temperature);
                 h.push(data.humidity);
@@ -295,24 +325,66 @@ function getInstanceData(fieldName) {
 
 //setting data for graphs
 function setTempData(field) {
-    field.innerHTML = "Latest Reading: "+ latest.temperature + "F";
+    if(latest){
+         //var temp convert to Celcius
+         field.innerHTML = "Latest Reading: "+ latest.temperature + " \u00B0F";
+    }else {
+         field.innerHTML = "No Reading Available";
+    }
+
 }
 function setHumidData(field) {
-    field.innerHTML = "Latest Reading: " + latest.humidity;
+
+    if(latest){
+         field.innerHTML = "Latest Reading: " + latest.humidity;
+    }else {
+         field.innerHTML = "No Reading Available";
+    }
+
 }
 function setwaterFlowData(field) {
-    field.innerHTML = "Latest Reading: " + latest.waterFlow;
+    if(latest){
+
+         field.innerHTML = "Latest Reading: " + latest.waterFlow;
+    }else {
+         field.innerHTML = "No Reading Available";
+    }
+
 
 }
 function setSoilData(field) {
-    field.innerHTML = "Latest Reading: " + latest.soilMoisture;
+
+    if(latest){
+        field.innerHTML = "Latest Reading: " + latest.soilMoisture;
+    }
+    else{
+         field.innerHTML = "No Reading Available";
+    }
+
 }
 function setwaterstatusData(field) {
-    var msg = "Off";
-    if (latest.waterActive) {
-        msg = "On";
+
+    var switches = document.querySelectorAll('input[type=checkbox]')
+    switches.forEach(s => s.checked = false);
+    if(latest){
+
+        var msg = "Off";
+        if (latest.waterActive) {
+            msg = "On";
+
+            switches.forEach(s => s.checked = true);
+        }
+        field.innerHTML = "Status: " + msg;
+        var waterSwitch = document.getElementById("waterSwitch");
+        waterSwitch.style.display = "inline-block";
     }
-    field.innerHTML = "Status: " + msg;
+    else{
+        var waterSwitch = document.getElementById("waterSwitch");
+
+         field.innerHTML = "No Reading Available";
+         waterSwitch.style.display = "none";
+    }
+
 }
 
 function setAllData(){
@@ -321,7 +393,8 @@ function setAllData(){
 
 //=====================================================================chart data==========================================================================
 
-var latest = {};
+var latest = "";
+var selectedGarden = {};
 var defaultGarden = {};
 //asynchronous function executes while doing its own thing
 async function getDefaultGarden() {
@@ -330,17 +403,19 @@ async function getDefaultGarden() {
     var user = window.sessionStorage.getItem("username");
 
     response = await fetch("api/v1/user_session/default_garden?username=" + user)
-    defaultGarden = await response.json();
+
+    selectedGarden = await response.json();
+    defaultGarden = selectedGarden;
 }
 
 var gardens = [];
 
 async function getAllGardens(){
+
     var user = window.sessionStorage.getItem("username");
 
     fetch("api/v1/user_session/get_gardens?username=" + user)
-        .then(response => response.json())
-        .then(data => data.forEach(garden => gardens.push(garden)));
+        .then(getRes => getRes.json()).then(json => populateGardenList(json));
 
 
 }
@@ -348,7 +423,7 @@ async function getAllGardens(){
 
 function getLatest() {
 
-    var body = { "gardenId": defaultGarden.gardenId };
+    var body = { "gardenId": selectedGarden.gardenId };
     var gettingRange = $.ajax({
         type: 'post',
         url: 'api/v1/garden_data_collection/latest',
@@ -360,21 +435,22 @@ function getLatest() {
             setAllData();
         },
         error: function (xhr, status, error) {
-            showNoData(); //========================================================TODO===================================
+            latest = "";
+            setAllData();
         }
     });
 
 }
 
-function showNoData(){
 
-
-}
-function populateGardenList() {
+function populateGardenList(allGardens) {
     var list = document.getElementById("gardenId");
+    console.log(allGardens);
+    allGardens.forEach(garden => gardens.push(garden));
     //editing the options to dynamically add the name of the garden, based on ID of the garden
     list.innerHTML = generateOption(defaultGarden.gardenId, defaultGarden.gardenName);
-    gardens.forEach(garden => function () {
+    gardens.forEach(function (garden) {
+        console.log(garden.gardenName);
         if (garden.gardenId !== defaultGarden.gardenId) {
             //makes sure default garden isnt in there twice by checking its id
             list.innerHTML += generateOption(garden.gardenId, garden.gardenName)
@@ -388,13 +464,21 @@ function generateOption(gardenId, gardenName) {
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
 
+function changeVals(sel){
+
+        selectedGarden.gardenId = sel.options[sel.selectedIndex].value;
+        selectedGarden.gardenName = sel.options[sel.selectedIndex].text;
+
+        getLatest();
+        getLast13Hours();
+}
+
 $('document').ready(function () {
   //do this for async functions, basically to wait for them to finish execution since they make fetch calls
     getDefaultGarden()
-        .then(response => getAllGardens())
-        .then(response2 => populateGardenList())
-        .then(res3 => getLatest())
-        .then(res4 => getLast13Hours());
+    .then(response => getAllGardens())
+    .then(res3 => getLatest())
+    .then(res4 => getLast13Hours());
 
 })
 
