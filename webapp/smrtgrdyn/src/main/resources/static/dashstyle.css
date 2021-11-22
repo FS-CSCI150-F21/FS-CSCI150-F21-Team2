@@ -77,7 +77,31 @@ canvas {
 h4 {
     padding-left: 20px;
 }
+h3 {
+    margin: auto;
+    margin-left: 5px;
 
+}
+img {
+    margin-top: 3px;
+    margin-left: 5px;
+    height:45px;
+    width:45px;
+    border-radius: 50%;
+    border: 1px solid
+    border-color: green;
+}
+
+img:hover {
+    overflow: visible;
+    border: 2px solid;
+    height:50px;
+    width:50px;
+    border-color: lightgreen;
+    padding: 0;
+    -webkit-transition: .1s;
+    transition: .1s;
+}
 
 .instance {
     display: inline-block;
@@ -180,6 +204,7 @@ select {
     width:100%;
     margin :0;
 }
+
 
 .switch {
   position: relative;

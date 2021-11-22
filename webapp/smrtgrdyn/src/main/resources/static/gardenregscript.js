@@ -130,3 +130,13 @@ async function logout() {
     document.location.href="/";
     window.sessionStorage.clear();
 }
+
+function home(){
+    document.location.href="/";
+}
+
+$('document').ready(function(){
+    var profileName = document.getElementById("profileName");
+    profileName.innerHTML = "| " + window.sessionStorage.getItem("username");
+
+})

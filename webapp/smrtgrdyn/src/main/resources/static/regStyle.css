@@ -46,6 +46,33 @@ body, html {
     margin-bottom: 15px;
 }
 
+h3 {
+    margin: auto;
+    margin-left: 5px;
+
+}
+
+img {
+    margin-top: 3px;
+    margin-left: 10px;
+    height:45px;
+    width:45px;
+    border-radius: 50%;
+    border: 1px solid
+    border-color: green;
+}
+
+img:hover {
+    overflow: visible;
+    border: 2px solid;
+    height:50px;
+    width:50px;
+    border-color: lightgreen;
+    padding: 0;
+    -webkit-transition: .1s;
+    transition: .1s;
+}
+
 .card .title {
 
     width: 50%;
@@ -154,10 +181,7 @@ form .btn input[type="submit"] {
     display: grid;
 }
 
-h3 {
-    margin-top: 10px;
-    padding: 0 10px;
-}
+
 
 #piId{
     margin-top: 15px;

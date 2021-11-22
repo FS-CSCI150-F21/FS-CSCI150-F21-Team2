@@ -508,6 +508,10 @@ async function onReload(){
 }
 $('document').ready(function () {
   //do this for async functions, basically to wait for them to finish execution since they make fetch calls
+
+  var profileName = document.getElementById("profileName");
+  profileName.innerHTML = "| " + window.sessionStorage.getItem("username");
+
   if(window.sessionStorage.getItem("selectedId")){
     onReload();
   }else{
@@ -524,4 +528,7 @@ async function logout() {
 
     document.location.href="/";
     window.sessionStorage.clear();
+}
+function home(){
+    document.location.href="/";
 }
