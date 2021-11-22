@@ -26,10 +26,12 @@
             <li><a href="#">Soil Moisture</a></li>
             <li>Watering Status
                 <br><br>
-                <label class="switch">
-                    <input type="checkbox" class="toggle">
-                    <span class="slider round"></span>
-                </label>
+                <div class = "waterSwitch">
+                    <label class="switch" >
+                        <input type="checkbox" class="toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
 <!--                <br><br><input type="checkbox" name="Water Active" class="toggle switch nav_button">-->
             </li>
         </ul>
@@ -119,7 +121,7 @@
                     <div class="instance status">
                         <div id="waterstatus-data"></div>
 <!--                        <script>getInstanceData("waterstatus-data")</script>-->
-                        <div id = "waterSwitch">
+                        <div class = "waterSwitch">
                         <label class="switch" >
                             <input type="checkbox" class="toggle">
                             <span class="slider round"></span>

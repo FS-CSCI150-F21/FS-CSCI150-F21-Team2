@@ -364,29 +364,42 @@ function setSoilData(field) {
 }
 function setwaterstatusData(field) {
 
-    var switches = document.querySelectorAll('input[type=checkbox]')
-    switches.forEach(s => s.checked = false);
+   deactivateSwitches();
     if(latest){
 
         var msg = "Off";
         if (latest.waterActive) {
             msg = "On";
+            activateSwitches()
 
-            switches.forEach(s => s.checked = true);
         }
         field.innerHTML = "Status: " + msg;
-        var waterSwitch = document.getElementById("waterSwitch");
-        waterSwitch.style.display = "inline-block";
+        showSwitches();
     }
     else{
-        var waterSwitch = document.getElementById("waterSwitch");
-
          field.innerHTML = "No Reading Available";
-         waterSwitch.style.display = "none";
+         hideSwitches();
     }
 
 }
 
+function activateSwitches(){
+    var switches = document.querySelectorAll('input[type=checkbox]')
+    switches.forEach(s => s.checked = true);
+}
+function deactivateSwitches(){
+    var switches = document.querySelectorAll('input[type=checkbox]')
+    switches.forEach(s => s.checked = false);
+}
+function hideSwitches(){
+    var switches = Array.from(document.getElementsByClassName("waterSwitch"));
+        switches.forEach(s => s.style.display = "none");
+}
+
+function showSwitches(){
+    var switches = Array.from(document.getElementsByClassName("waterSwitch"));
+    switches.forEach(s => s.style.display = "inline-block")
+}
 function setAllData(){
      dataFields.forEach(field => getInstanceData(field));
 }
