@@ -6,6 +6,7 @@ target/
 
 # Mac Index Files
 .DS_Store
+._*
 
 ### STS ###
 .apt_generated
