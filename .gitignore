@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Mac Index Files
+.DS_Store
+
 ### STS ###
 .apt_generated
 .classpath
