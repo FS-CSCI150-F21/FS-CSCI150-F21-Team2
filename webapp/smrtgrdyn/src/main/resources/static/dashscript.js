@@ -417,8 +417,13 @@ async function getDefaultGarden() {
 
     response = await fetch("api/v1/user_session/default_garden?username=" + user)
 
-    selectedGarden = await response.json();
-    defaultGarden = selectedGarden;
+    defaultGarden = await response.json();
+    selectedGarden = defaultGarden;
+    if(window.sessionStorage.getItem("selectedId")){
+        selectedGarden.gardenId = window.sessionStorage.getItem("selectedId")
+        selectedGarden.gardenName = window.sessionStorage.getItem("selectedName")
+    }
+
 }
 
 var gardens = [];
@@ -474,6 +479,9 @@ function populateGardenList(allGardens) {
 //modularizing the previous
 function generateOption(gardenId, gardenName) {
     //gardenId determines the gardenName for the dropdown menu in dashboard.html
+    if(window.sessionStorage.getItem("selectedId") && window.sessionStorage.getItem("selectedId") == gardenId){
+        return '<option value="' + gardenId + '" selected = "true">' + gardenName + '</option>';
+    }
     return '<option value="' + gardenId + '">' + gardenName + '</option>';
 }
 
@@ -481,17 +489,33 @@ function changeVals(sel){
 
         selectedGarden.gardenId = sel.options[sel.selectedIndex].value;
         selectedGarden.gardenName = sel.options[sel.selectedIndex].text;
+        window.sessionStorage.setItem("selectedId", selectedGarden.gardenId)
+        window.sessionStorage.setItem("selectedName", selectedGarden.gardenName)
 
         getLatest();
         getLast13Hours();
 }
+async function onReload(){
+        await getDefaultGarden();
+        await getAllGardens();
 
+        selectedGarden.gardenId = window.sessionStorage.getItem("selectedId");
+        selectedGarden.gardenName = window.sessionStorage.getItem("selectedName");
+
+         getLatest();
+         getLast13Hours();
+
+}
 $('document').ready(function () {
   //do this for async functions, basically to wait for them to finish execution since they make fetch calls
-    getDefaultGarden()
-    .then(response => getAllGardens())
-    .then(res3 => getLatest())
-    .then(res4 => getLast13Hours());
+  if(window.sessionStorage.getItem("selectedId")){
+    onReload();
+  }else{
+         getDefaultGarden()
+            .then(response => getAllGardens())
+            .then(res3 => getLatest())
+            .then(res4 => getLast13Hours());
+  }
 
 })
 
