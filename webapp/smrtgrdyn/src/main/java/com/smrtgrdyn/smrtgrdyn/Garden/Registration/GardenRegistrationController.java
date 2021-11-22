@@ -47,7 +47,6 @@ public class GardenRegistrationController {
 
             return service.confirmRegistration(username, request);
 
-
         }else{
             //Otherwise nobody is logged in, throw error
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not logged in");

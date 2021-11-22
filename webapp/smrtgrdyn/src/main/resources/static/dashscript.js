@@ -108,7 +108,7 @@ function getLast13Hours(){
              setGraphData(local, utc);
          },
          error: function (xhr, status, error) {
-
+            setGraphData(local, utc);
          }
      });
 
@@ -360,13 +360,16 @@ function getLatest() {
             setAllData();
         },
         error: function (xhr, status, error) {
-
+            showNoData(); //========================================================TODO===================================
         }
     });
 
 }
 
+function showNoData(){
 
+
+}
 function populateGardenList() {
     var list = document.getElementById("gardenId");
     //editing the options to dynamically add the name of the garden, based on ID of the garden

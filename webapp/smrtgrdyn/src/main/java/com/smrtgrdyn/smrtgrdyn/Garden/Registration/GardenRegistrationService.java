@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,11 +72,12 @@ public class GardenRegistrationService {
     }
 
     private void addDefaultGardenName(){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
+
         String defaultName = gardenRegistrationRequest.getUsername() + "'s Garden " + formatter.format(date);
         GardenName name = new GardenName(gardenRegistrationRequest.getGardenId(),
-                gardenRegistrationRequest.getUsername() + "'s Garden ", gardenRegistrationRequest.getUsername());
+                defaultName, gardenRegistrationRequest.getUsername());
 
         if(!gardenNameRepository.existsById(gardenRegistrationRequest.getGardenId())){
             gardenNameRepository.save(name);
