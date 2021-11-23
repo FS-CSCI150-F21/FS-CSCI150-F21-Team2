@@ -1,14 +1,12 @@
-import time
-import board
-import digitalio
+import sensors.analogdevice
+import sensors.digitaldevice
+import sensors.speaker
+import sensors.solenoid
+import sensors.soilmoisture
+import sensors.light12v
+import sensors.flow_meter
+import sensors.temperature
 
-print("hello blinky!")
-
-led = digitalio.DigitalInOut(board.D2)
-led.direction = digitalio.Direction.OUTPUT
-
-while True:
-    led.value = True
-    time.sleep(10)
-    led.value = False
-    time.sleep(5)
+# global objects
+if __name__ == "__main__":
+    pass
