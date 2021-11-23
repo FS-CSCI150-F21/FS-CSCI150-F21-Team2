@@ -2,7 +2,6 @@ import board
 import busio
 import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
-from threading import Thread, Lock
 
 
 class AnalogDevice():
@@ -10,8 +9,10 @@ class AnalogDevice():
     __ads = ADS.ADS1115(__i2c)
     __occupied = [None] * 4
 
-    def __init__(self, pin):
+    def __init__(self, device_id, pin):
         self.pin = pin
+        self.device_id = device_id
+
         if AnalogDevice.__occupied is not None and AnalogDevice.__occupied[pin]:
             raise ValueError("Pin is already assigned")
 
@@ -30,7 +31,7 @@ class AnalogDevice():
         else:
             raise ValueError("Invalid pin in use")  # user entered the incorrect pin
 
-    def read_soil_moisture(self):
+    def read_analog_data(self):
         return self.channel.value
 
 
