@@ -5,7 +5,7 @@ from threading import Lock
 
 
 class DigitalDevice:
-    digital_occupied = None
+    __digital_occupied = [None] * 27
 
     """ This the pin-out for RPI Zero W
     J8:
@@ -40,55 +40,71 @@ class DigitalDevice:
 
         # Note: not all pins are available as they are reserved for i2c and other protocols
         # check digital pin to see if it is occupied
-        if DigitalDevice.digital_occupied is not None and DigitalDevice.digital_occupied[self.pin]:
+        if DigitalDevice.__digital_occupied is not None and DigitalDevice.__digital_occupied[self.pin]:
             raise ValueError("Pin is already assigned")
 
         if self.pin == 17:  # check pin-out for board
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D17)  # map the light to GPIO 17 on the rpi
             self.__io_direction__()
         elif self.pin == 27:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D27)  # map the light to GPIO 27 on the rpi
             self.__io_direction__()
         elif self.pin == 22:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D22)  # map the light to GPIO 22 on the rpi
             self.__io_direction__()
         elif self.pin == 10:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D10)  # map the light to GPIO 10 on the rpi
             self.__io_direction__()
         elif self.pin == 9:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D9)  # map the light to GPIO 9 on the rpi
             self.__io_direction__()
         elif self.pin == 11:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D11)  # map the light to GPIO 11 on the rpi
             self.__io_direction__()
         elif self.pin == 5:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D5)  # map the light to GPIO 5 on the rpi
             self.__io_direction__()
         elif self.pin == 6:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D6)  # map the light to GPIO 6 on the rpi
             self.__io_direction__()
         elif self.pin == 19:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D19)  # map the light to GPIO 19 on the rpi
             self.__io_direction__()
         elif self.pin == 26:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D26)  # map the light to GPIO 26 on the rpi
             self.__io_direction__()
         elif self.pin == 23:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D23)  # map the light to GPIO 23 on the rpi
             self.__io_direction__()
         elif self.pin == 24:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D24)  # map the light to GPIO 24 on the rpi
             self.__io_direction__()
         elif self.pin == 25:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D25)  # map the light to GPIO 25 on the rpi
             self.__io_direction__()
         elif self.pin == 8:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D8)  # map the light to GPIO 8 on the rpi
             self.__io_direction__()
         elif self.pin == 7:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D7)  # map the light to GPIO 7 on the rpi
             self.__io_direction__()
         elif self.pin == 16:
+            DigitalDevice.__digital_occupied[self.pin] = True
             self.board_dio = digitalio.DigitalInOut(board.D16)  # map the light to GPIO 16 on the rpi
             self.__io_direction__()
         else:
