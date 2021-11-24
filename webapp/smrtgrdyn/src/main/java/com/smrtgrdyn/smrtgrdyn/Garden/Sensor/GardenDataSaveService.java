@@ -34,6 +34,7 @@ public class GardenDataSaveService {
     public void saveGardenData(GardenSensorData sensorData){
 
         if(isGardenRegistered(sensorData.getGardenId())){
+
             gardenDataRepository.save(sensorData);
         }
 
@@ -74,14 +75,14 @@ public class GardenDataSaveService {
 
     public GardenSensorData getLatestData(GardenDataRequest request){
         if(isGardenRegistered(request.getGardenId())){
-            Optional<GardenSensorData> gardenSensorDataOptional =
+            List<GardenSensorData> gardenSensorDataOptional =
                     gardenDataRepository.findLatestEntryByGardenId(request.getGardenId());
 
             if(gardenSensorDataOptional.isEmpty()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
             }
 
-            return gardenSensorDataOptional.get();
+            return gardenSensorDataOptional.get(0);
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Not Registered");
