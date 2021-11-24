@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta lang="en-US">
     <meta dir="ltr">
+    <title>Smrt Grdyn</title>
     <link rel="stylesheet" href="dashstyle.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -28,7 +29,7 @@
                 <br><br>
                 <div class = "waterSwitch">
                     <label class="switch" >
-                        <input type="checkbox" class="toggle">
+                        <input type="checkbox" class="toggle waterSwitch" onChange="flipSwitches(this)">
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -44,9 +45,36 @@
 <!--                <h3 class="logo">Logo | </h3>-->
                 <h3 class="profile_text" id="profileName">| Profile Name</h3>
             </div>
-            <div class="menu_button flex">
-                <input type="radio" name="main_menu_btn" class="main_menu_btn" onclick="logout()">
-            </div>
+            <nav role="navigation">
+                <div id="menuToggle">
+                    <!--
+                    A fake / hidden checkbox is used as click reciever,
+                    so you can use the :checked selector on it.
+                    -->
+                    <input type="checkbox"  />
+
+                    <!--
+                    Some spans to act as a hamburger.
+
+                    They are acting like a real hamburger,
+                    not that McDonalds stuff.
+                    -->
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                    <!--
+                    Too bad the menu has to be inside of the button
+                    but hey, it's pure CSS magic.
+                    -->
+                    <ul id="menu">
+                        <a href="/dashboard.html"><li>Home</li></a>
+                        <a href="/garden_registration.html"><li>Register Garden</li></a>
+                        <a href="#"><li>Notifications</li></a>
+                        <a href="#" onclick="logout()"><li>Logout</li></a>
+                    </ul>
+                </div>
+            </nav>
         </div>
         <div class="selector flex">
             <div class="drop_down_menu">
@@ -124,7 +152,7 @@
 <!--                        <script>getInstanceData("waterstatus-data")</script>-->
                         <div class = "waterSwitch">
                         <label class="switch" >
-                            <input type="checkbox" class="toggle">
+                            <input type="checkbox" class="toggle waterSwitch" onChange="flipSwitches(this)">
                             <span class="slider round"></span>
                         </label>
                         </div>

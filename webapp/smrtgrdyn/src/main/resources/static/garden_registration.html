@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta lang="en-US">
     <meta dir="ltr">
+    <title>Smrt Grdyn | Garden Registration</title>
     <link rel="stylesheet" href="regStyle.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -24,9 +25,36 @@
         <div class="img"><img src="smrtGrdyn_v2_logo.png" onclick="home()"></div>
         <h3 class="profile_text" id="profileName">| Profile Name</h3>
     </div>
-    <div class="menu_drop flex">
-        <input type="checkbox">
-    </div>
+    <nav role="navigation">
+        <div id="menuToggle">
+            <!--
+            A fake / hidden checkbox is used as click reciever,
+            so you can use the :checked selector on it.
+            -->
+            <input type="checkbox"  />
+
+            <!--
+            Some spans to act as a hamburger.
+
+            They are acting like a real hamburger,
+            not that McDonalds stuff.
+            -->
+            <span></span>
+            <span></span>
+            <span></span>
+
+            <!--
+            Too bad the menu has to be inside of the button
+            but hey, it's pure CSS magic.
+            -->
+            <ul id="menu">
+                <a href="/dashboard.html"><li>Home</li></a>
+                <a href="/garden_registration.html"><li>Register Garden</li></a>
+                <a href="#"><li>Notifications</li></a>
+                <a href="#" onclick="logout()"><li>Logout</li></a>
+            </ul>
+        </div>
+    </nav>
 
 </div>
 

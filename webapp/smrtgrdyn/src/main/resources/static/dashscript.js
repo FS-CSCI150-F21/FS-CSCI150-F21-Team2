@@ -385,11 +385,25 @@ function setwaterstatusData(field) {
 
 function activateSwitches(){
     var switches = document.querySelectorAll('input[type=checkbox]')
-    switches.forEach(s => s.checked = true);
+//    switches.forEach(s => s.checked = true);
+//    switches.forEach(s => s.value = 'on');
+    switches.forEach(function(s){
+            if(s.classList.contains("waterSwitch")){
+                s.checked = true;
+                s.value = 'on'
+            }
+         })
 }
 function deactivateSwitches(){
     var switches = document.querySelectorAll('input[type=checkbox]')
-    switches.forEach(s => s.checked = false);
+//    switches.forEach(s => s.checked = false);
+//     switches.forEach(s => s.value = 'off');
+     switches.forEach(function(s){
+        if(s.classList.contains("waterSwitch")){
+            s.checked = false;
+            s.value = 'off'
+        }
+     })
 }
 function hideSwitches(){
     var switches = Array.from(document.getElementsByClassName("waterSwitch"));
@@ -464,16 +478,19 @@ function getLatest() {
 function populateGardenList(allGardens) {
     var list = document.getElementById("gardenId");
     console.log(allGardens);
-    allGardens.forEach(garden => gardens.push(garden));
-    //editing the options to dynamically add the name of the garden, based on ID of the garden
-    list.innerHTML = generateOption(defaultGarden.gardenId, defaultGarden.gardenName);
-    gardens.forEach(function (garden) {
-        console.log(garden.gardenName);
-        if (garden.gardenId !== defaultGarden.gardenId) {
-            //makes sure default garden isnt in there twice by checking its id
-            list.innerHTML += generateOption(garden.gardenId, garden.gardenName)
+    if(allGardens.length > 1){
+        allGardens.forEach(garden => gardens.push(garden));
+            //editing the options to dynamically add the name of the garden, based on ID of the garden
+            list.innerHTML = generateOption(defaultGarden.gardenId, defaultGarden.gardenName);
+            gardens.forEach(function (garden) {
+                console.log(garden.gardenName);
+                if (garden.gardenId !== defaultGarden.gardenId) {
+                    //makes sure default garden isnt in there twice by checking its id
+                    list.innerHTML += generateOption(garden.gardenId, garden.gardenName)
+            }
+            })
     }
-    })
+
 }
 
 //modularizing the previous
@@ -510,7 +527,9 @@ $('document').ready(function () {
   //do this for async functions, basically to wait for them to finish execution since they make fetch calls
 
   var profileName = document.getElementById("profileName");
+
   profileName.innerHTML = "| " + window.sessionStorage.getItem("username");
+  document.title += " | " + window.sessionStorage.getItem("username");
 
   if(window.sessionStorage.getItem("selectedId")){
     onReload();
@@ -531,4 +550,21 @@ async function logout() {
 }
 function home(){
     document.location.href="/";
+}
+
+function test(value){
+    console.log(value);
+    console.log(value.value);
+}
+
+function flipSwitches(source){
+
+    if(source.checked){
+        activateSwitches();
+    }else if(!source.checked){
+        deactivateSwitches();
+    }
+
+    return;
+
 }
