@@ -439,11 +439,13 @@ async function getDefaultGarden() {
     response = await fetch("api/v1/user_session/default_garden?username=" + user)
 
     defaultGarden = await response.json();
+    console.log(defaultGarden);
     selectedGarden = defaultGarden;
     if(window.sessionStorage.getItem("selectedId")){
         selectedGarden.gardenId = window.sessionStorage.getItem("selectedId")
         selectedGarden.gardenName = window.sessionStorage.getItem("selectedName")
     }
+
 
 }
 
@@ -485,7 +487,7 @@ function getLatest() {
 function populateGardenList(allGardens) {
     var list = document.getElementById("gardenId");
     console.log(allGardens);
-    if(allGardens.length > 1){
+    if(allGardens.length >= 1){
         allGardens.forEach(garden => gardens.push(garden));
             //editing the options to dynamically add the name of the garden, based on ID of the garden
             list.innerHTML = generateOption(defaultGarden.gardenId, defaultGarden.gardenName);
