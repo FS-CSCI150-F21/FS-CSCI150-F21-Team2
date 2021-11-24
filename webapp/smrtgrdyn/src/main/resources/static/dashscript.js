@@ -96,17 +96,24 @@ var gardenDataLast13 = [];
 function getLast13Hours(){
 
     var end = new Date();
-    var local = end;
+    var local = new Date();
     var utc = toUTC(end);
 
     var start = new Date();
 
     start.setHours(end.getHours() - 13);
+    console.log(start);
+    console.log(end);
+
     end = toUTC(end);
     start = toUTC(start);
+    console.log(start);
+    console.log(end);
 
     start = pITAFormatting(start);
     end = pITAFormatting(end);
+    console.log(start);
+    console.log(end);
 
      var body = { "gardenId": defaultGarden.gardenId, start: start, end: end };
      var gettingRange = $.ajax({
@@ -182,7 +189,6 @@ function setTimeValues(local, utc){
 
     clearTimeValues();
 
-
     var localHour = local.getHours();
     var utcHour = utc.getHours();
 
@@ -241,7 +247,6 @@ function getAveragesPerHour(){
 
     clearAverages();
 
-
     var hourIndex = 0;
     var currentHour = timeValues[hourIndex];
 
@@ -255,7 +260,9 @@ function getAveragesPerHour(){
 
         gardenDataLast13.forEach(function(data) {
 
-            var dataHour = new Date(Date.parse(data.timestamp)).getHours();
+            var dataHour = toUTC(new Date(Date.parse(data.timestamp))).getHours();
+//            console.log("data hour: " + dataHour);
+//            console.log("time value: " + timeValues[index])
             if(dataHour == timeValues[index]){
                 // Push data into temp arrays
                 t.push(data.temperature);
