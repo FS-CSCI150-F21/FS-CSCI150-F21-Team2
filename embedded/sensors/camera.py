@@ -15,7 +15,9 @@ def capture_image():
 
     mutex.acquire()
 
-    _image_folder = str(os.path.normpath(os.path.dirname(__file__) + os.sep + os.pardir) + '/sensor_data/images/')
+    _root = str(os.path.normpath(os.path.dirname(__file__) + os.sep + os.pardir))
+    _image_folder = _root + '/sensor_data/images/'
+    _camera_script = _root + '/sensors/camera.sh'
 
     # prevent access attempt of non-existent folder
     if not os.path.isdir(_image_folder):
@@ -26,7 +28,7 @@ def capture_image():
     image_path = str(_image_folder + timestamp + '.jpeg')
 
     # run scipr to capture image
-    os.system(f'./camera.sh {image_path}')
+    os.system(f'{_camera_script} {image_path}')
 
     mutex.release()
 
