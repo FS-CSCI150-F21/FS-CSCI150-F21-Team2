@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow_hub as tfhub
 from time import sleep, time
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 
 # local imports
@@ -39,11 +39,11 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
     now = datetime.now()
     log('Loading model (this may take a while)...')
     model = tfhub.load("https://tfhub.dev/tensorflow/efficientdet/d2/1")
-    # model = tfhub.load("https://tfhub.dev/tensorflow/centernet/resnet101v1_fpn_512x512/1")
     now = datetime.now() - now
     log(f'Loaded model in {now}.')
 
     while (True):
+        next_loop_time = datetime.now() + timedelta(seconds=frequency)
         log('Capturing image...')
         _img_path = camera.capture_image()
         log('Captured image.')
@@ -78,4 +78,8 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
         if animals_detected:
             sw.generate_warning(type=sw.WarningType, msg=f'Animal(s) detected: {str(animals_detected)[1:-1]}')
 
-        sleep(float(frequency))
+        # Sleep until next image should be taken
+        if next_loop_time > datetime.now():
+            stime = (next_loop_time - datetime.now()).total_seconds()
+            if stime > 0:
+                sleep(stime)
