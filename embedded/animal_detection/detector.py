@@ -42,8 +42,9 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
     now = datetime.now() - now
     log(f'Loaded model in {now}.')
 
+    next_capture_time = datetime.now()
     while (True):
-        next_loop_time = datetime.now() + timedelta(seconds=frequency)
+        next_capture_time += timedelta(seconds=frequency)
         log('Capturing image...')
         _img_path = camera.capture_image()
         log('Captured image.')
@@ -79,7 +80,7 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
             sw.generate_warning(type=sw.WarningType, msg=f'Animal(s) detected: {str(animals_detected)[1:-1]}')
 
         # Sleep until next image should be taken
-        if next_loop_time > datetime.now():
-            stime = (next_loop_time - datetime.now()).total_seconds()
+        if next_capture_time > datetime.now():
+            stime = (next_capture_time - datetime.now()).total_seconds()
             if stime > 0:
                 sleep(stime)
