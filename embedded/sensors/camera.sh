@@ -1,1 +1,1 @@
-sudo fswebcam -d /dev/video1 -r 768x768 --no-banner $1
+sudo fswebcam -d /dev/video1 -r 800x600 --no-banner $1

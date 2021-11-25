@@ -55,7 +55,7 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
 
         log('Loading image...')
         img = tf.io.decode_image(tf.io.read_file(_img_path))
-        img = tf.reshape(img, [-1, 768, 768, 3])
+        img = tf.reshape(img, [-1, 800, 600, 3])
         log('Loaded image.')
 
         now = datetime.now()
