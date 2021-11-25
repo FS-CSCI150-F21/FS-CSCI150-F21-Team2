@@ -7,7 +7,7 @@ from server.endpoints import Endpoint
 import server.json_bodies as body
 from server.connection import get_registration
 
-class WarningType(str, Enum):
+class WarningType(str):
     ANIMAL_DETECTED = 'animal'
     WATER_LEAK = 'leak'
 
@@ -30,7 +30,7 @@ def generate_warning(type: str, msg: str = ''):
     warn: any
     try:
         warn = requests.post(url=Endpoint.WARNING_ENDPOINT, json=warning_body)
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         log('Connection ERROR. Warning was not sent to the server.')
         log(f'ERROR Details:{e}')
         raise Exception('Warning could not be sent to the server!')
