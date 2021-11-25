@@ -1,4 +1,5 @@
 import tensorflow as tf
+import tensorflow_hub as tfhub
 from time import sleep, time
 from datetime import datetime
 import os
@@ -35,14 +36,15 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
             _animal_labels[int(label[0])] = label[1] 
     log('Imported labels.')
 
+    now = datetime.now()
     log('Loading model (this may take a while)...')
-    log(f'{_model_path}')
-    model = tf.saved_model(_model_path)
-    log('Loaded model.')
+    model = tfhub.load("https://tfhub.dev/tensorflow/efficientdet/d2/1")
+    # model = tfhub.load("https://tfhub.dev/tensorflow/centernet/resnet101v1_fpn_512x512/1")
+    now = datetime.now() - now
+    log(f'Loaded model in {now}.')
 
     while (True):
         log('Capturing image...')
-        img_timestamp = time()
         _img_path = camera.capture_image()
         log('Captured image.')
 
@@ -52,24 +54,28 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
             continue
 
         log('Loading image...')
-        img = tf.keras.utils.load_img(_img_path, target_size=(768,768))
-        img = tf.keras.utils.img_to_array(img, dtype='uint8')
-        img = tf.expand_dims(img, 0)
+        img = tf.io.decode_image(tf.io.read_file(_img_path))
+        img = tf.reshape(img, [-1, 768, 768, 3])
         log('Loaded image.')
 
+        now = datetime.now()
         log('Searching image for animal...')
         prediction = model(img)
-        class_ids = prediction["detection_classes"][0]
         detection_scores = prediction["detection_scores"][0]
+        class_ids = prediction["detection_classes"][0]
+        now = datetime.now() - now
+        print(f'Searched image in {now}.')
 
         animals_detected = []
         for score, id in zip(detection_scores, class_ids):
-            if score > 0.50 and id in _animal_labels:
+            score = float(score)
+            id = int(id)
+            if score > 0.5 and id in _animal_labels:
                 cur_animal = _animal_labels[id]
                 animals_detected.append(cur_animal)
                 log(f'{cur_animal} detected with {score*100}% certainty.')
 
         if animals_detected:
-            sw.generate_warning(type=sw.WarningType, msg=f'Animals detected: {str(animals_detected)[1:-1]}')
+            sw.generate_warning(type=sw.WarningType, msg=f'Animal(s) detected: {str(animals_detected)[1:-1]}')
 
         sleep(float(frequency))
