@@ -1,4 +1,3 @@
-from picamera import PiCamera
 from datetime import datetime
 from threading import Thread, Lock
 import os
@@ -26,10 +25,8 @@ def capture_image():
     timestamp = datetime.utcnow().strftime("%Y_%m_%d_%H%M%S")
     image_path = str(_image_folder + timestamp + '.jpeg')
 
-    camera = PiCamera()
-    camera.resolution = (1920, 1920)
-    camera.capture(image_path)
-    camera.close()
+    # run scipr to capture image
+    os.system(f'./camera.sh {image_path}')
 
     mutex.release()
 
