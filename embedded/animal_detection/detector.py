@@ -2,10 +2,12 @@ import tensorflow as tf
 import tensorflow_hub as tfhub
 from time import sleep, time
 from datetime import datetime, timedelta
+import requests
 import os
 
 # local imports
 from utils.logging import log
+from server.endpoints import Endpoint
 import server.warning as sw
 import sensors.camera as camera
 
@@ -44,40 +46,49 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
 
     next_capture_time = datetime.now()
     while (True):
-        next_capture_time += timedelta(seconds=frequency)
-        log('Capturing image...')
-        _img_path = camera.capture_image()
-        log('Captured image.')
+        try:
+            next_capture_time += timedelta(seconds=frequency)
+            log('Capturing image...')
+            _img_path = camera.capture_image()
+            log('Captured image.')
 
-        if _img_path is None:
-            log(f'Image capture failed, retrying in {frequency} seconds...')
-            sleep(float(frequency))
-            continue
+            if _img_path is None:
+                log(f'Image capture failed, retrying in {frequency} seconds...')
+                sleep(float(frequency))
+                continue
 
-        log('Loading image...')
-        img = tf.io.decode_image(tf.io.read_file(_img_path))
-        img = tf.reshape(img, [-1, 800, 600, 3])
-        log('Loaded image.')
+            log('Loading image...')
+            img = tf.io.decode_image(tf.io.read_file(_img_path))
+            img = tf.reshape(img, [-1, 800, 600, 3])
+            log('Loaded image.')
 
-        now = datetime.now()
-        log('Searching image for animal...')
-        prediction = model(img)
-        detection_scores = prediction["detection_scores"][0]
-        class_ids = prediction["detection_classes"][0]
-        now = datetime.now() - now
-        print(f'Searched image in {now}.')
+            now = datetime.now()
+            log('Searching image for animal...')
+            prediction = model(img)
+            detection_scores = prediction["detection_scores"][0]
+            class_ids = prediction["detection_classes"][0]
+            now = datetime.now() - now
+            print(f'Searched image in {now}.')
 
-        animals_detected = []
-        for score, id in zip(detection_scores, class_ids):
-            score = float(score)
-            id = int(id)
-            if score > 0.5 and id in _animal_labels:
-                cur_animal = _animal_labels[id]
-                animals_detected.append(cur_animal)
-                log(f'{cur_animal} detected with {score*100}% certainty.')
+            animals_detected = []
+            for score, id in zip(detection_scores, class_ids):
+                score = float(score)
+                id = int(id)
+                if score > 0.5 and id in _animal_labels:
+                    cur_animal = _animal_labels[id]
+                    animals_detected.append(cur_animal)
+                    log(f'{cur_animal} detected with {score*100}% certainty.')
 
-        if animals_detected:
-            sw.generate_warning(type=sw.WarningType, msg=f'Animal(s) detected: {str(animals_detected)[1:-1]}')
+            if animals_detected:
+                # Send warning to server
+                sw.generate_warning(type=sw.WarningType, msg=f'Animal(s) detected: {str(animals_detected)[1:-1]}')
+                # Send image to server
+                with open(_img_path, 'rb') as IMAGE_FILE:
+                    img_request = requests.post(url=Endpoint.IMAGE_ENDPOINT, files=IMAGE_FILE)
+
+        except Exception as e:
+            log('ERROR: Something went wrong in the animal detection process...')
+            log(f'ERROR Details:{e}')
 
         # Sleep until next image should be taken
         if next_capture_time > datetime.now():
