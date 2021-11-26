@@ -9,3 +9,8 @@ class Warning:
         self.timestamp = int(timestamp)
         self.type = type
         self.message = message
+
+class Image:
+    def __init__(self, gardenId, timestamp):
+        self.gardenId = gardenId
+        self.timestamp = timestamp

@@ -81,10 +81,7 @@ def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
 
             if animals_detected:
                 # Send warning to server
-                sw.generate_warning(type=sw.WarningType, msg=f'Animal(s) detected: {str(animals_detected)[1:-1]}')
-                # Send image to server
-                with open(_img_path, 'rb') as IMAGE_FILE:
-                    img_request = requests.post(url=Endpoint.IMAGE_ENDPOINT, files=IMAGE_FILE)
+                sw.generate_warning(type=sw.WarningType, msg=f'Animal(s) detected: {str(animals_detected)[1:-1]}', img_path=_img_path)
 
         except Exception as e:
             log('ERROR: Something went wrong in the animal detection process...')
