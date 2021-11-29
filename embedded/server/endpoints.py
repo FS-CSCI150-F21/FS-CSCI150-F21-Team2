@@ -9,3 +9,5 @@ class Endpoint(str):
     REGISTRATION_ENDPOINT = str(__base_url + 'api/v1/garden_registration/pi')
     IMAGE_ENDPOINT = str(__base_url + 'api/v1/garden_images')
     WARNING_ENDPOINT = str(__base_url + 'api/v1/notifications')
+    DATA_ENDPOINT = str(__base_url + 'api/v1/garden_data_collection/save')
+    LISTEN_DATA_ENDPOINT = str(__base_url + 'api/v1/garden_data_collection/latest')
