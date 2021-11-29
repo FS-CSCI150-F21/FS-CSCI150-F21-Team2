@@ -113,5 +113,3 @@ def register(timeout: int = 300000):
     with open(__registration_file, 'w') as FILE:
         FILE.write(f'{__username_pref}{username}\n')
         FILE.write(f'{__gardenID_pref}{gardenID}')
-
-    log(f'Pi registered under ID: {gardenID} to username {username}!')
