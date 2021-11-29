@@ -552,18 +552,12 @@ $('document').ready(function () {
 })
 
 async function logout() {
-    var response = await fetch("api/v1/user_session/logout");
-
-    document.location.href="/";
     window.sessionStorage.clear();
+    var response = await fetch("api/v1/user_session/logout");
+    document.location.href="/";
 }
 function home(){
     document.location.href="/";
-}
-
-function test(value){
-    console.log(value);
-    console.log(value.value);
 }
 
 function flipSwitches(source){

@@ -59,9 +59,9 @@ public class UserSessionService {
 
         //Only a null session or username = "" constitutes starting a valid session.
         if(session != null){
-//            if( session.getAttribute("username") != "" ){
+            if( session.getAttribute("username") != "" ){
             System.out.println(session.getAttribute("username"));
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Someone is already Logged In");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Someone is already Logged In");}
         }
 
         session = request.getSession();

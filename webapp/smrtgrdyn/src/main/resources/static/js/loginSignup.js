@@ -76,7 +76,7 @@ function sendPost(body, username, url, divId){
         contentType: "application/json; charset=utf-8",
         success: function () {
             window.sessionStorage.setItem("username", username);
-            window.location.replace(window.location.href + "dashboard.html");
+            window.location.replace(window.location.href + "html/dashboard.html");
         },
         error: function (xhr, status, error) {
             showErrorMessage(divId, xhr.responseJSON.message);
@@ -92,8 +92,7 @@ function showErrorMessage(divId, msg) {
 
 }
 async function logout() {
-    var response = await fetch("api/v1/user_session/logout");
-
-    document.location.href="/";
     window.sessionStorage.clear();
+    var response = await fetch("api/v1/user_session/logout");
+    document.location.href="/";
 }

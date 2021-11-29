@@ -125,11 +125,11 @@ function removeErrorFromCard(){
 }
 
 async function logout() {
-    var response = await fetch("api/v1/user_session/logout");
-
-    document.location.href="/";
     window.sessionStorage.clear();
+    var response = await fetch("api/v1/user_session/logout");
+    document.location.href="/";
 }
+
 
 function home(){
     document.location.href="/";

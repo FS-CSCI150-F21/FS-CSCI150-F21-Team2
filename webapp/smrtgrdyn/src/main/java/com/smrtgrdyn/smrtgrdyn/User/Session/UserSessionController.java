@@ -45,7 +45,7 @@ public class UserSessionController {
         HttpSession session = request.getSession(false);
         if(session != null){
             session.setAttribute("username", "");
-            session.invalidate();
+            session = null;
         }
     }
 
