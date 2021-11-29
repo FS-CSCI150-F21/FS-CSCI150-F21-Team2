@@ -28,9 +28,7 @@ def generate_warning(type: str, msg: str = '', img_path: str = ''):
     # Write warning
     timestamp = str(datetime.utcnow())
     timestamp_t = timestamp[:10] + 'T' + timestamp[11:]
-    print(timestamp)
     warning_body = body.Warning(gardenId=uuid, timestamp=timestamp_t, type=type, message=msg).__dict__
-    print(warning_body)
     # Attempt to send warning
     try:
         warn = requests.post(url=Endpoint.WARNING_ENDPOINT,
