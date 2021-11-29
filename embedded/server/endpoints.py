@@ -7,5 +7,5 @@ class Endpoint(str):
     __base_url = __url_file.readline()
     __url_file = __url_file.close()
     REGISTRATION_ENDPOINT = str(__base_url + 'api/v1/garden_registration/pi')
-    IMAGE_ENDPOINT = str(__base_url + 'api/v1/images')
+    IMAGE_ENDPOINT = str(__base_url + 'api/v1/garden_images')
     WARNING_ENDPOINT = str(__base_url + 'api/v1/notifications')
