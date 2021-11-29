@@ -23,7 +23,7 @@ public class GardenImageController {
     }
 
     @PostMapping(path = "api/v1/garden_images", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void saveImage(@ModelAttribute GardenImage gardenImage, @RequestParam("image")MultipartFile multipartFile) throws IOException, ServletException {
+    public void saveImage(@ModelAttribute GardenImage gardenImage, @RequestParam("image")MultipartFile multipartFile){
         service.saveImage(gardenImage, multipartFile);
     }
 

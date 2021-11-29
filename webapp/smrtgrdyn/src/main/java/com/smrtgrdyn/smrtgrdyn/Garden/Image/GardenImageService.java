@@ -44,7 +44,7 @@ public class GardenImageService {
 
         try {
             uploadImage(multipartFile);
-            generateNotification(gardenImage);
+
         } catch (IOException ioe) {
 
             dropImageInfo(gardenImage);
