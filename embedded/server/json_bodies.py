@@ -15,3 +15,15 @@ class Image:
         self.gardenId = gardenId
         self.timestamp = timestamp
         self.image = image
+
+class Data:
+    def __init__(self, gardenId: str, timestamp: str, humidity: str,
+                soilmoisture: float, temperature: float, waterflow: float, 
+                wateractive: bool):
+        self.gardenId = gardenId
+        self.timestamp = timestamp
+        self.humidity = humidity
+        self.soilmoisture = soilmoisture
+        self.temperature = temperature
+        self.waterflow = waterflow
+        self.wateractive = wateractive
