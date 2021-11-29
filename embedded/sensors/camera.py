@@ -1,4 +1,3 @@
-from picamera import PiCamera
 from datetime import datetime
 from threading import Thread, Lock
 import os
@@ -16,7 +15,9 @@ def capture_image():
 
     mutex.acquire()
 
-    _image_folder = str(os.path.normpath(os.path.dirname(__file__) + os.sep + os.pardir) + '/sensor_data/images/')
+    _root = str(os.path.normpath(os.path.dirname(__file__) + os.sep + os.pardir))
+    _image_folder = _root + '/sensor_data/images/'
+    _camera_script = _root + '/sensors/camera.sh'
 
     # prevent access attempt of non-existent folder
     if not os.path.isdir(_image_folder):
@@ -26,9 +27,8 @@ def capture_image():
     timestamp = datetime.utcnow().strftime("%Y_%m_%d_%H%M%S")
     image_path = str(_image_folder + timestamp + '.jpeg')
 
-    camera = PiCamera()
-    camera.resolution = (1920, 1920)
-    camera.capture(image_path)
+    # run scipr to capture image
+    os.system(f'{_camera_script} {image_path}')
 
     mutex.release()
 

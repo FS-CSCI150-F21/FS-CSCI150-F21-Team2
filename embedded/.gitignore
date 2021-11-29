@@ -2,6 +2,10 @@
 tf_models/
 models/
 
+# Registration
+.registration
+.url
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

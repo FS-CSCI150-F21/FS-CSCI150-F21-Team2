@@ -1,5 +1,4 @@
-picamera
-opencv-python
 RPi.GPIO
 adafruit-blinka
-tensorflow
+requests
+requests_toolbelt
