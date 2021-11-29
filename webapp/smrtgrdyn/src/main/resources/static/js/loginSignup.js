@@ -76,7 +76,7 @@ function sendPost(body, username, url, divId){
         contentType: "application/json; charset=utf-8",
         success: function () {
             window.sessionStorage.setItem("username", username);
-            window.location.replace(window.location.href + "html/dashboard.html");
+            window.location.replace(window.location.href + "dashboard.html");
         },
         error: function (xhr, status, error) {
             showErrorMessage(divId, xhr.responseJSON.message);

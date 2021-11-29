@@ -119,7 +119,7 @@ async function getNotifs(){
 
     var response = await fetch("api/v1/notifications?gardenId=" + selectedGarden.gardenId);
     var resJson = await response.json();
-
+    notifs = [];
     notifs = resJson;
 
     console.log(resJson);
@@ -135,12 +135,20 @@ function loadNotifs(){
         addCustEventListeners();
 
     }
+    else{
+        console.log("no notifs")
+        document.getElementById("list-window").innerHTML = '<div class="no-list">No Notifications</div>'
+    }
+
 }
 
 function populateNotifList(){
 
     var listWindow = document.getElementById("list-window");
     listWindow.innerHTML = "";
+    while(listWindow.firstChild){
+        listWindow.removeChild(listWindow.firstChild);
+    }
 
     notifs.forEach(function(n){
         var newChild = buildNotif(n)
@@ -194,51 +202,99 @@ function addCustEventListeners(){
 function addCustEventListener(list_el){
 
     list_el.addEventListener("dblclick", function(list_el){
-        test(list_el.target);
+        loadModal(list_el.target);
     });
 
 }
 
-function test(element){
+function loadModal(element){
 
-    var message = element.getAttribute('value');
-    var timestamp = element.querySelector(".list-el-date").getAttribute('value');
-    // var message = element.value;
-    var type = element.querySelector(".list-el-type").getAttribute('value');
+    try{
 
-    console.log(timestamp + "\n" + type + "\n" + message);
+        var timestamp = element.querySelector(".list-el-date").getAttribute('value');
+        var date = pitaJustDate(timestamp);
+        var time = pitaJustTime(timestamp);
+
+        var message = pitaMessage(date, time, element.getAttribute('value'));
+
+        var type = pitaType( element.querySelector(".list-el-type").getAttribute('value'));
+
+        populateModal(type, timestamp, message);
+
+        var modal = document.getElementById("modal");
+        modal.style.display = "block";
+
+        console.log(message);
+    } catch(err){
+        console.log(err);
+    }
+
 }
 
+function pitaJustDate(timestamp){
+    var newDate = new Date(timestamp);
+    return ''+ newDate.getMonth() + '-' + newDate.getDate()
+    + "-" + newDate.getFullYear();
+}
 
-//=======================================LOGOUT====================================//
+function pitaJustTime(timestamp){
+    var newDate = new Date(timestamp);
+    var time = formatAMPM(newDate);
+    return time;
+}
+
+function clearModal(){
+    var modal_type = document.getElementById("modal-type");
+    var modal_date = document.getElementById("modal-date");
+    var modal_message = document.getElementById("modal-message");
+
+    modal_type.innerHTML = "";
+    modal_date.innerHTML = "";
+    modal_message.innerHTML = "";
+}
+
+function populateModal(type, timestamp, message){
+
+    clearModal();
+     var modal_type = document.getElementById("modal-type");
+     var modal_date = document.getElementById("modal-date");
+     var modal_message = document.getElementById("modal-message");
+
+     modal_type.innerHTML = type;
+     modal_date.innerHTML = pitaDate(timestamp);
+     modal_message.innerHTML = message;
+
+}
+function pitaMessage(date, time, message){
+
+    return "On " + date + " at" + time + "\u00A0" + message;
+
+}
+//=======================================LOGOUT/HOME====================================//
 async function logout() {
     window.sessionStorage.clear();
     var response = await fetch("api/v1/user_session/logout");
     document.location.href="/";
 }
 
+function home(){
+    window.location.href = "/"
+}
+
 //================================CONST TEST VARS====================================//
 const __baseURL = "http://172.22.158.171:8080/"
 
-var notifs = [{
-                    gardenId:"e945cbba-f6e5-4b84-b76b-f38e5313b21f",
-                    timestamp:"2021-10-28T22:58:59.347",
-                    type: "animal",
-                    message: "chonky boy spotted"},
-                {
-                    gardenId:"e945cbba-f6e5-4b84-b76b-f38e5313b21f",
-                    timestamp:"2021-10-28T21:58:59.347",
-                    type: "animal",
-                    message: "Super chonky boy spotted"},
-                {
-                    gardenId:"e945cbba-f6e5-4b84-b76b-f38e5313b21f",
-                    timestamp:"2021-10-28T21:58:59.347",
-                    type: "animal",
-                    message: "Super chonky boy spotted"},
-                {
-                    gardenId:"e945cbba-f6e5-4b84-b76b-f38e5313b21f",
-                    timestamp:"2021-10-28T20:58:59.347",
-                    type: "leak",
-                    message: "Cidney, The Tv Leaking"},
+var notifs = [];
 
-                ];
+
+//=================================ON CHANGE===========================================//
+
+function changeVals(sel){
+     selectedGarden.gardenId = sel.options[sel.selectedIndex].value;
+     selectedGarden.gardenName = sel.options[sel.selectedIndex].text;
+     window.sessionStorage.setItem("selectedId", selectedGarden.gardenId)
+     window.sessionStorage.setItem("selectedName", selectedGarden.gardenName)
+
+     getNotifs().then(res => loadNotifs());
+
+}

@@ -216,11 +216,15 @@ function appendMeriem(hour){
         hour += 12
         if(hour == 0){
             hour = 12
+            meriem = 'am'
+        }else{
+            meriem = 'pm'
         }
-         meriem = 'pm'
     }else if(hour == 0){
         hour = 12
         meriem = 'am'
+    }else if(hour == 12){
+        meriem = "pm"
     }
 
     return hour + meriem;
@@ -570,4 +574,8 @@ function flipSwitches(source){
 
     return;
 
+}
+
+function home(){
+    window.location.href = "/"
 }

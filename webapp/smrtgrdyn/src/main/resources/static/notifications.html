@@ -58,7 +58,27 @@
     </nav>
 
 </div>
-
+<div class="modal" id="modal">
+    <div class="modal-card">
+        <div class="title-text">
+            <div class="title-field flex" id="modal-title">
+                <div class="type-field" id="modal-type">Test Type</div>
+                <h4 class="title-divider">|</h4>
+                <div class="date-field" id="modal-date">Test Date</div>
+            </div>
+        </div>
+        <div class="message-container">
+            <div class="message-field" id="modal-message"></div>
+        </div>
+        <div class="form-container">
+            <form id="close-modal-btn">
+                <div class="field btn">
+                    <div class="btn-layer"></div><input type="submit" value="close">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="card">
 
     <div class="title-container flex">
@@ -69,8 +89,8 @@
         </div>
         <div class="selector">
             <label for="gardenId">Garden:</label>
-            <select name="gardenId" id="gardenId">
-                <option value = "e945cbba-f6e5-4b84-b76b-f38e5313b21f">Ryan1Up's Garden</option>
+            <select name="gardenId" id="gardenId" onchange="changeVals(this)">
+                <option value="">No Gardens Registered</option>
             </select>
         </div>
     </div>
