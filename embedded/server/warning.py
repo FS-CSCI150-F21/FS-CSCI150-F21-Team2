@@ -1,6 +1,7 @@
-from enum import Enum
 import requests
 from time import time
+from datetime import datetime
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from utils.logging import log
 from server.endpoints import Endpoint
@@ -25,16 +26,43 @@ def generate_warning(type: str, msg: str = '', img_path: str = ''):
     # Get registration
     _, uuid = get_registration()
     # Write warning
-    cur_time = time()
-    warning_body = body.Warning(gardenId=uuid, timestamp=cur_time, type=type, message=msg).__dict__
+    timestamp = str(datetime.utcnow())
+    timestamp_t = timestamp[:10] + 'T' + timestamp[11:]
+    print(timestamp)
+    warning_body = body.Warning(gardenId=uuid, timestamp=timestamp_t, type=type, message=msg).__dict__
+    print(warning_body)
     # Attempt to send warning
-    warn: any
     try:
-        warn = requests.post(url=Endpoint.WARNING_ENDPOINT, json=warning_body)
-        if type == WarningType.ANIMAL_DETECTED:
-            with open(img_path, 'rb') as IMAGE_FILE:
-                image_body = body.Image(gardenId=uuid, timestamp=cur_time).__dict__
-                image = requests.post(url=Endpoint.IMAGE_ENDPOINT, json=image_body, files=IMAGE_FILE)
+        warn = requests.post(url=Endpoint.WARNING_ENDPOINT,
+                                json=warning_body)
+        # Code for sending image, disabled at the moment due to unknown request hang
+        # print(warn)
+        # if type == WarningType.ANIMAL_DETECTED:
+
+        #     img_data = MultipartEncoder(
+        #         fields={'gardenId': uuid,
+        #                 'timestamp': timestamp,
+        #                 'image': (img_path.split('/')[-1],
+        #                             open(img_path, 'rb'),
+        #                             'image/jpeg')
+        #                 })
+
+        #     print(Endpoint.IMAGE_ENDPOINT)
+        #     r = requests.post(Endpoint.IMAGE_ENDPOINT,
+        #                         data=img_data,
+        #                         headers={'Content-Type': img_data.content_type})
+        #     print(r)
+            
+            # img_data = (img_path.split('/')[-1], open(img_path, 'rb'), 'application/octect-stream')
+            # img_body = body.Image(gardenId=uuid, timestamp=str(cur_time), image=img_data).__dict__
+            # img_data = MultipartEncoder(fields=img_body)
+            # print(Endpoint.IMAGE_ENDPOINT)
+
+            # image = requests.post(url=Endpoint.IMAGE_ENDPOINT,
+            #                     headers={'Content-Type' : img_data.content_type},
+            #                     data=img_data)
+            # print(image)
+
     except Exception as e:
         log('Connection ERROR. Warning was not sent to the server.')
         log(f'ERROR Details:{e}')

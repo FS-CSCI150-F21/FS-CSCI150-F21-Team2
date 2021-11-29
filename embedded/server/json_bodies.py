@@ -6,11 +6,12 @@ class PiRegistration:
 class Warning:
     def __init__(self, gardenId, timestamp, type, message = ''):
         self.gardenId = gardenId
-        self.timestamp = int(timestamp)
+        self.timestamp = timestamp
         self.type = type
         self.message = message
 
 class Image:
-    def __init__(self, gardenId, timestamp):
+    def __init__(self, gardenId, timestamp, image):
         self.gardenId = gardenId
         self.timestamp = timestamp
+        self.image = image
