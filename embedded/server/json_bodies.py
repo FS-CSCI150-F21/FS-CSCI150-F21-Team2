@@ -27,3 +27,8 @@ class Data:
         self.temperature = temperature
         self.waterflow = waterflow
         self.wateractive = wateractive
+
+class ServerRequest:
+    def __init__(self, gardenId: str, action: int):
+        self.gardenId = gardenId
+        self.action = action
