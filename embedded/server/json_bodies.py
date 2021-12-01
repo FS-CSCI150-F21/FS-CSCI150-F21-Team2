@@ -23,10 +23,10 @@ class Data:
         self.gardenId = gardenId
         self.timestamp = timestamp
         self.humidity = humidity
-        self.soilmoisture = soilmoisture
+        self.soilMoisture = soilmoisture
         self.temperature = temperature
-        self.waterflow = waterflow
-        self.wateractive = wateractive
+        self.waterFlow = waterflow
+        self.waterActive = wateractive
 
 class ServerRequest:
     def __init__(self, gardenId: str, action: str):
