@@ -1,0 +1,4 @@
+RPi.GPIO
+adafruit-blinka
+requests
+requests_toolbelt
