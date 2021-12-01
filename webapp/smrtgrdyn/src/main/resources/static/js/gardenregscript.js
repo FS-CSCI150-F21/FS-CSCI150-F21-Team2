@@ -137,6 +137,6 @@ function home(){
 
 $('document').ready(function(){
     var profileName = document.getElementById("profileName");
-    profileName.innerHTML = "| " + window.sessionStorage.getItem("username");
+    profileName.innerHTML = "\u00A0" + window.sessionStorage.getItem("username");
 
 })

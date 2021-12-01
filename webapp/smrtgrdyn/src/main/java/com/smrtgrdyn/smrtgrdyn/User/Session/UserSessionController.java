@@ -31,7 +31,7 @@ public class UserSessionController {
 
         try{
             userSessionService.loginUser(request, user);
-            return;
+
         }catch(IllegalStateException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid Login", e);
         }

@@ -91,7 +91,7 @@ img {
     width:45px;
     border-radius: 50%;
     border: 1px solid;
-    border-color: black;
+    border-color: green;
 }
 
 img:hover {
@@ -103,6 +103,7 @@ img:hover {
     padding: 0;
     -webkit-transition: .1s;
     transition: .1s;
+    cursor: pointer;
 }
 
 .instance {

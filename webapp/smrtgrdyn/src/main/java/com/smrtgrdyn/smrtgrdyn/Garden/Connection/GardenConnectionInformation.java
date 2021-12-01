@@ -16,7 +16,7 @@ public class GardenConnectionInformation {
     @Id
     String gardenId;
 
-    @NotBlank
+
     String user;
     @NotBlank
     String hostName;

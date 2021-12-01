@@ -15,7 +15,6 @@ public class User {
     private String username;
     @NotBlank
     private String password;
-    private String storedSalt;
 
 
     @ElementCollection(targetClass = String.class)
@@ -24,10 +23,9 @@ public class User {
     private String defaultGarden;
 
 
-    public User(String username, String password, String storedSalt, List<String> registeredGardens, String defaultGarden) {
+    public User(String username, String password, List<String> registeredGardens, String defaultGarden) {
         this.username = username;
         this.password = password;
-        this.storedSalt = storedSalt;
         if(registeredGardens == null){
             this.registeredGardens = new ArrayList<String>();
         }else{
@@ -54,14 +52,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getStoredSalt() {
-        return storedSalt;
-    }
-
-    public void setStoredSalt(String storedSalt) {
-        this.storedSalt = storedSalt;
     }
 
     public void setRegisteredGardens(List<String> registeredGardens) {

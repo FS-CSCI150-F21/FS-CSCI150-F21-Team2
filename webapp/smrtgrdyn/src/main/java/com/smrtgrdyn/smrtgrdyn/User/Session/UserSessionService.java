@@ -41,10 +41,7 @@ public class UserSessionService {
 
         if(userOptional.isPresent()){
 
-            String plainTextPassword = user.getPassword();
-            String hashedPassword = BCrypt.hashpw(user.getPassword(), userOptional.get().getStoredSalt());
-
-            if(BCrypt.checkpw(plainTextPassword, hashedPassword)) {
+            if(BCrypt.checkpw(user.getPassword(), userOptional.get().getPassword())) {
                 return true;
             }
         }

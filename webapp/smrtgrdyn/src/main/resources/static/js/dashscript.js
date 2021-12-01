@@ -145,7 +145,7 @@ function toUTC(date){
 function pITAFormatting(date){
 
     var year = prependZero(date.getFullYear());
-    var month = prependZero(date.getMonth());
+    var month = prependZero((date.getMonth()+1));
     var day = prependZero(date.getDate());
 
     var hour = prependZero(date.getHours());
@@ -541,7 +541,7 @@ $('document').ready(function () {
 
   var profileName = document.getElementById("profileName");
 
-  profileName.innerHTML = "| " + window.sessionStorage.getItem("username");
+  profileName.innerHTML = "\u00A0" + window.sessionStorage.getItem("username");
   document.title += " | " + window.sessionStorage.getItem("username");
 
   if(window.sessionStorage.getItem("selectedId")){

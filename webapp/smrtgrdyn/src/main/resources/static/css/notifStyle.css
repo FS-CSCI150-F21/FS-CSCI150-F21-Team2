@@ -66,6 +66,7 @@ img:hover {
     padding: 0;
     -webkit-transition: .1s;
     transition: .1s;
+    cursor: pointer;
 }
 
 .card .title {
@@ -146,7 +147,8 @@ form .btn input[type="submit"] {
 }
 
 .title-text {
-    width: 200%;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .errorMsg {
@@ -309,6 +311,7 @@ nav {
     margin: auto 0px;
 }
 .list-window{
+
     overflow: hidden;
     overflow-y: scroll;
     scroll-behavior: smooth;
@@ -328,13 +331,19 @@ nav {
     overflow-x: auto;
     overflow-y: hidden;
     border-bottom: 2px solid grey;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
+
 
 .list-el:hover {
     border-bottom: 2px solid lightgreen;
     margin-top: 1px;
     padding-bottom: 2px;
     transition: .2s ease-in;
+    cursor: pointer;
 }
 .list-el p:first-child{
 
@@ -374,4 +383,64 @@ nav {
     border-radius: 10px;
     box-shadow: 10px 5px 5px #0f3d1e;
     flex-wrap: wrap;
+}
+
+#close-modal-x{
+    justify-content: center;
+    text-align: center;
+    border-radius: 50%;
+    width: 20px;
+    margin: auto auto;
+    transform: translate(15px, -20px);
+
+}
+
+#close-modal-x:hover{
+    cursor: pointer;
+
+    background-color: lightgrey;
+    color: red;
+    transition: 0.2s ease-in;
+}
+
+.title-field {
+
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 5px;
+
+}
+
+.title-field p:first-child{
+    font-weight: bold;
+    margin: auto 0px;
+}
+
+.title-field h4 {
+    margin: auto 10px auto auto;
+}
+
+.title-field p:nth-child(3){
+    font-weight: lighter;
+    color: lightgrey;
+    margin: auto 0px auto 0;
+
+}
+
+
+.message-field {
+
+    min-height: 50px;
+    max-height: 200px;
+
+    border: 1px solid lightgrey;
+    width: 98%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
 }

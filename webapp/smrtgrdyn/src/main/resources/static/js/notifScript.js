@@ -2,17 +2,9 @@
 
 $('document').ready(function(){
 
-    //Get all gardens
-    // populate drop down
-    // grab data for default/selected garden
-    // grab data for onChange data
     setProfileName();
 
     loadGardens().then(response => getNotifs()).then(res => loadNotifs());
-//
-//    getNotifs();
-//
-//    loadNotifs();
 
 });
 
@@ -21,11 +13,15 @@ function setProfileName(){
 
     var profileName = document.getElementById("profileName");
 
-    profileName.innerHTML = "| " + window.sessionStorage.getItem("username");
+    profileName.innerHTML = "\u00A0" + window.sessionStorage.getItem("username");
     document.title += " | " + window.sessionStorage.getItem("username");
 
 }
 
+$("#home-button").submit(function(e){
+    e.preventDefault();
+    home();
+})
 
 //==============================Garden Loading ==================================//
 var selectedGarden = {};
@@ -111,7 +107,7 @@ function generateOption(gardenId, gardenName) {
 
 //===============================Notif Loading =====================================================//
 
-//TODO Finish This function: Get Notifs, display them in console, then return them
+
 async function getNotifs(){
 
     console.log(selectedGarden);
@@ -120,15 +116,50 @@ async function getNotifs(){
     var response = await fetch("api/v1/notifications?gardenId=" + selectedGarden.gardenId);
     var resJson = await response.json();
     notifs = [];
-    notifs = resJson;
+    notifs = resJson.sort(notifSort);
+    populateNotifsToDisplay();
 
-    console.log(resJson);
 }
 
+function notifSort(first, second){
+    return (new Date(first.timestamp)) < (new Date(second.timestamp));
+}
+function populateNotifsToDisplay(){
+
+    notifsToDisplay = [];
+
+    //get type filter
+    var e = document.getElementById("notif-type");
+    var filter = e.value;
+    //apply filters to notifs
+    if(filter !== "all"){
+        notifs.forEach(function(n){
+            if(n.type == filter){
+                notifsToDisplay.push(n);
+            }
+        });
+
+    }
+    else{
+        notifsToDisplay = notifs;
+    }
+    notifsToDisplay.sort(notifSort);
+
+    e = document.getElementById("notif-sort");
+    var sortVal = e.value;
+
+    if(sortVal === "old-to-new"){
+        notifsToDisplay.reverse();
+    }
+
+
+    return;
+    //if sort filter is oldest first, sort list, then reverse list
+}
 
 function loadNotifs(){
 
-    if(notifs.length > 0){
+    if(notifsToDisplay.length > 0){
 
         populateNotifList();
 
@@ -136,7 +167,6 @@ function loadNotifs(){
 
     }
     else{
-        console.log("no notifs")
         document.getElementById("list-window").innerHTML = '<div class="no-list">No Notifications</div>'
     }
 
@@ -150,7 +180,7 @@ function populateNotifList(){
         listWindow.removeChild(listWindow.firstChild);
     }
 
-    notifs.forEach(function(n){
+    notifsToDisplay.forEach(function(n){
         var newChild = buildNotif(n)
         listWindow.innerHTML += newChild;
     })
@@ -172,7 +202,7 @@ function buildNotif(notif){
 function pitaDate(timestamp){
     var newDate = new Date(timestamp);
     var time = formatAMPM(newDate);
-    return ''+ newDate.getMonth() + '-' + newDate.getDate()
+    return ''+ (newDate.getMonth() + 1) + '-' + newDate.getDate()
     + "-" + newDate.getFullYear() + "\t" + time;
 }
 
@@ -186,8 +216,8 @@ function formatAMPM(date) {
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
+    hours = (hours !== 0) ? hours : 12; // the hour '0' should be '12'
     hours = (hours < 10) ? "\u00A0 " + hours : hours;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0'+minutes : minutes;
     var strTime = hours + ':' + minutes + '' + ampm;
     return strTime;
@@ -199,6 +229,8 @@ function addCustEventListeners(){
     list_els.forEach(el => addCustEventListener(el));
 
 }
+
+
 function addCustEventListener(list_el){
 
     list_el.addEventListener("dblclick", function(list_el){
@@ -206,6 +238,12 @@ function addCustEventListener(list_el){
     });
 
 }
+//=================================MODALS=====================================//
+
+$("#close-modal-btn").submit(function(e){
+    e.preventDefault();
+    closeModal();
+})
 
 function loadModal(element){
 
@@ -224,16 +262,22 @@ function loadModal(element){
         var modal = document.getElementById("modal");
         modal.style.display = "block";
 
-        console.log(message);
     } catch(err){
         console.log(err);
     }
 
 }
 
+function closeModal(){
+    clearModal();
+    var modal = document.getElementById("modal");
+    modal.style.display = "none";
+}
+
+
 function pitaJustDate(timestamp){
     var newDate = new Date(timestamp);
-    return ''+ newDate.getMonth() + '-' + newDate.getDate()
+    return ''+ (newDate.getMonth() + 1) + '-' + newDate.getDate()
     + "-" + newDate.getFullYear();
 }
 
@@ -267,7 +311,7 @@ function populateModal(type, timestamp, message){
 }
 function pitaMessage(date, time, message){
 
-    return "On " + date + " at" + time + "\u00A0" + message;
+    return "On " + date + " at " + time + "\u00A0" + message;
 
 }
 //=======================================LOGOUT/HOME====================================//
@@ -285,11 +329,11 @@ function home(){
 const __baseURL = "http://172.22.158.171:8080/"
 
 var notifs = [];
-
+var notifsToDisplay = [];
 
 //=================================ON CHANGE===========================================//
 
-function changeVals(sel){
+function changeGarden(sel){
      selectedGarden.gardenId = sel.options[sel.selectedIndex].value;
      selectedGarden.gardenName = sel.options[sel.selectedIndex].text;
      window.sessionStorage.setItem("selectedId", selectedGarden.gardenId)
@@ -297,4 +341,10 @@ function changeVals(sel){
 
      getNotifs().then(res => loadNotifs());
 
+}
+
+async function applyFilter(){
+
+    await populateNotifsToDisplay();
+    loadNotifs();
 }

@@ -13,18 +13,18 @@
 
 
 </head>
-<!-- <script>
+<script>
     if(!window.sessionStorage.getItem("username")){
         window.sessionStorage.clear();
         document.location.href="/";
     }
-</script> -->
+</script>
 <body class="container">
 
 <div class="menu_bar flex">
     <div class="profile flex">
         <div class="img"><img src="smrtGrdyn_v2_logo.png" onclick="home()"></div>
-        <h3 class="profile_text" id="profileName">| Profile Name</h3>
+        <h3 class="profile_text" id="profileName"> Profile Name</h3>
     </div>
     <nav role="navigation">
         <div id="menuToggle">
@@ -60,20 +60,21 @@
 </div>
 <div class="modal" id="modal">
     <div class="modal-card">
-        <div class="title-text">
+        <div class="title-text flex">
             <div class="title-field flex" id="modal-title">
-                <div class="type-field" id="modal-type">Test Type</div>
+                <p class="type-field" id="modal-type">Test Type</p>
                 <h4 class="title-divider">|</h4>
-                <div class="date-field" id="modal-date">Test Date</div>
+                <p class="date-field" id="modal-date">Test Date</p>
             </div>
+            <span id="close-modal-x" onclick=closeModal()>&times;</span>
         </div>
         <div class="message-container">
             <div class="message-field" id="modal-message"></div>
         </div>
         <div class="form-container">
-            <form id="close-modal-btn">
+            <form id="close-modal-btn" onsubmit="closeModal()">
                 <div class="field btn">
-                    <div class="btn-layer"></div><input type="submit" value="close">
+                    <div class="btn-layer"></div><input type="submit" value="Close">
                 </div>
             </form>
         </div>
@@ -89,7 +90,7 @@
         </div>
         <div class="selector">
             <label for="gardenId">Garden:</label>
-            <select name="gardenId" id="gardenId" onchange="changeVals(this)">
+            <select name="gardenId" id="gardenId" onchange="changeGarden(this)">
                 <option value="">No Gardens Registered</option>
             </select>
         </div>
@@ -100,7 +101,7 @@
             <div class="selectors flex">
                 <div class="selector">
                     <label for="notif-type">Type:</label>
-                    <select name="type" id="notif-type" onchange="changeType(this)">
+                    <select name="type" id="notif-type" onchange="applyFilter(this)">
                         <option value = "all">All</option>
                         <option value = "animal">Animal</option>
                         <option value = "leak">Leak</option>
@@ -108,7 +109,7 @@
                 </div>
                 <div class="selector">
                     <label for="notif-sort">Sort By:</label>
-                    <select name="sort" id="notif-sort" onchange="sortNotifs(this)">
+                    <select name="sort" id="notif-sort" onchange="applyFilter(this)">
                         <option value="new-to-old">Newest First</option>
                         <option value = "old-to-new">Oldest First</option>
                     </select>
@@ -120,7 +121,7 @@
             </div>
         </div>
         <div class="form-container">
-            <form id="confirmation">
+            <form id="home-button">
                 <div class="field btn">
                     <div class="btn-layer"></div><input type="submit" value="Home">
                 </div>
