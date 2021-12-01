@@ -5,30 +5,36 @@ import sensors.solenoid_sensor as Sol
 import sensors.soilmoisture as Soil
 import sensors.flow_meter as Flow
 import sensors.temperature as TempHum
+import sensor_data.gather_sensor_data as get_data
 
-"""
+# global variables needed for the process
 
-const int AirValue = 520;   
-const int WaterValue = 260;  
-int intervals = (AirValue - WaterValue)/3;   
-int soilMoistureValue = 0;
-void setup() {
-  Serial.begin(9600); // open serial port, set the baud rate to 9600 bps
-}
-void loop() {
-soilMoistureValue = analogRead(A0);  //put Sensor insert into soil
-if(soilMoistureValue > WaterValue && soilMoistureValue < (WaterValue + intervals)) { Serial.println("Very Wet"); } else if(soilMoistureValue > (WaterValue + intervals) && soilMoistureValue < (AirValue - intervals))
-{
-  Serial.println("Wet");
-}
-else if(soilMoistureValue < AirValue && soilMoistureValue > (AirValue - intervals))
-{
-  Serial.println("Dry");
-}
-delay(100);
-}
+__AirValue = 520;
+__WaterValue = 260;
+__intervals = (__AirValue - __WaterValue) / 3;
 
-"""
 
+# The moisture thresholds are split into 3 levels of moisture Very wet, wet, and dry
 def automatic_watering():
+    garden_data = get_data.gather_all_sensor_data()
+    soilMoistureValue = garden_data[4]
+    if __WaterValue < soilMoistureValue < (__WaterValue + __intervals):
+        garden_data[3].pin_off()
+        print("Very Wet")
+        leak_detection(garden_data[3], garden_data[2])
+    elif (__WaterValue + __intervals) < soilMoistureValue < (__AirValue - __intervals):
+        garden_data[3].pin_off()
+        print("Wet")
+    elif __AirValue > soilMoistureValue > (__AirValue - __intervals):
+        garden_data[3].pin_on()
+        print("Dry")
+    time.sleep(500)
+
+
+def leak_detection(solenoid: Sol, flow_rate):
+    if solenoid().get_solenoid_status() == False and flow_rate() > 0:
+        print("Potential water leak detected")
+        warn()
+
+def warn(case):
     pass

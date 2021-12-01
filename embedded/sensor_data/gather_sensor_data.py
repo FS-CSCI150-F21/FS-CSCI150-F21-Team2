@@ -24,7 +24,7 @@ def gather_all_sensor_data():
     temp_hum = TempHum.TemperatureHumiditySensor("TempHum")
 
     data = [temp_hum.dht.temperature, temp_hum.dht.humidity, flow_meter.read_analog_data,
-            solenoid_stat.get_device_status(), moisture.read_analog_data]
+            solenoid_stat, moisture.read_analog_data]
     return data
 
 
@@ -33,7 +33,7 @@ def to_server():
         print("Gathering data")
         Lock().acquire()
         data = gather_all_sensor_data()
-        send_data = DataRequest(data[0], data[1], data[2], data[3], data[4])
+        send_data = DataRequest(data[0], data[1], data[2], data[3].get_device_status(), data[4])
         print("Data acquired:", send_data.__dict__)
         Lock().release()
         time.sleep(5000)
