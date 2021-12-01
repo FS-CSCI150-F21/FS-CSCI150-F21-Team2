@@ -3,6 +3,7 @@ import logging
 
 import server.connection as sc
 import server.json_bodies as body
+from utils.logging import log
 import utils.status as us
 import server.data as sd
 
@@ -25,11 +26,9 @@ class S(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
-        logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
-                str(self.path), str(self.headers), post_data.decode('utf-8'))
 
         try:
-            CurServerRequest = self.get_body(post_data)
+            CurServerRequest = self.get_request_body(post_data)
             self.execute_server_request(CurServerRequest)
             self._set_response()
             self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
@@ -48,7 +47,7 @@ class S(BaseHTTPRequestHandler):
         keys = [post_body[i][post_body[i].find('=')+2:-1] for i in range(0, len(post_body), 2)]
         # get values from odd lines
         values = [post_body[i] for i in range(1, len(post_body), 2)]
-        
+        post_body = {}
         for key, value in zip(keys, values):
             post_body[key] = value
 
@@ -64,10 +63,13 @@ class S(BaseHTTPRequestHandler):
 
         if action == 1:
             us.set_automatic_watering_status(False)
+            log('Automatic watering disabled.')
         elif action == 2:
             us.set_automatic_watering_status(True)
+            log('Automatic watering enabled.')
         elif action == 3:
             sd.send_current_data()
+            log('Current data snapshot sent to server.')
         else:
             raise Exception('ERROR: Invalid action.')
 
