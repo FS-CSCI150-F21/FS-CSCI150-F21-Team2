@@ -33,6 +33,3 @@ class AnalogDevice():
 
     def read_analog_data(self):
         return self.channel.value
-
-
-mutex.release()

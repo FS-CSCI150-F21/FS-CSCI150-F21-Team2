@@ -1,5 +1,3 @@
-import sensors.analogdevice
-import sensors.digitaldevice
 import sensors.solenoid_sensor as Sol
 import sensors.soilmoisture as Soil
 import sensors.flow_meter as Flow
