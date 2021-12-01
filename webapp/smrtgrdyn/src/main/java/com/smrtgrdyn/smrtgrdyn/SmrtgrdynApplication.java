@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /*
 Main Class for Smrt Grdyn Server
 
-
-Current Status: DB disabled to allow launch
  */
 
 @SpringBootApplication

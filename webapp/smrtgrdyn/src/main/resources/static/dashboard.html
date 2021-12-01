@@ -82,8 +82,6 @@
                     <option value="">No Gardens Registered</option>
                 </select>
             </div>
-
-        </div>
         <div class="grid main">
             <div class="flex graph ">
                 <div class="card " id="temperature-card">
@@ -91,11 +89,9 @@
                         <div><h4>Temperature</h4></div>
                         <div class="chart" id="temperature-chart">
                             <canvas id="tempChart"></canvas>
-<!--                            <script> getChart("temp") </script>-->
                         </div>
                         <div class="instance data">
                             <div id="temp-data"></div>
-<!--                            <script> getInstanceData("temp-data")</script>-->
                         </div>
                     </div>
 
@@ -105,11 +101,9 @@
                         <div><h4>Humidity</h4></div>
                         <div class="chart" id="humidity-chart">
                             <canvas id="humidChart" ></canvas>
-<!--                            <script>getChart("humid")</script>-->
                         </div>
                         <div class="instance data">
                             <div id="humid-data"></div>
-<!--                            <script>getInstanceData("humid-data")</script>-->
                         </div>
                     </div>
                 </div>
@@ -118,11 +112,9 @@
                         <div><h4>Water Flow</h4></div>
                         <div class="chart" id="waterflow-chart">
                             <canvas id="waterFlowChart"></canvas>
-<!--                            <script>getChart("waterflow")</script>-->
                         </div>
                         <div class="instance data">
                             <div id="waterflow-data"></div>
-<!--                            <script>getInstanceData("waterflow-data")</script>-->
                         </div>
                     </div>
                 </div>
@@ -133,11 +125,9 @@
                         <div><h4>Soil Moisture</h4></div>
                         <div class="chart" id="soil-chart">
                             <canvas id="moistureChart" ></canvas>
-<!--                            <script>getChart("moisture")</script>-->
                         </div>
                         <div class="instance data">
                             <div id="soil-data"></div>
-<!--                            <script>getInstanceData("soil-data")</script>-->
                         </div>
                     </div>
                 </div>
@@ -145,21 +135,16 @@
                     <div><h4>Watering Status</h4></div>
                     <div class="chart" id="waterStatus-chart">
                         <canvas id="waterStatusChart"></canvas>
-<!--                        <script>getChart("waterstatus")</script>-->
                     </div>
                     <div class="instance status">
                         <div id="waterstatus-data"></div>
-<!--                        <script>getInstanceData("waterstatus-data")</script>-->
                         <div class = "waterSwitch">
                         <label class="switch" >
                             <input type="checkbox" class="toggle waterSwitch" onChange="flipSwitches(this)">
                             <span class="slider round"></span>
                         </label>
                         </div>
-                        <!--                <br><br><input type="checkbox" name="Water Active" class="toggle switch nav_button">-->
-<!--                        <input type="checkbox" name="waterstatus-btn">-->
                     </div>
-                    <!-- This is where a big on/off switch will be -->
                 </div>
             </div>
 
@@ -169,3 +154,4 @@
 <script src="js/dashscript.js"></script>
 </body>
 </html>
+
