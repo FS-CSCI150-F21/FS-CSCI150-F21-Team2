@@ -21,8 +21,8 @@ import java.util.Optional;
 public interface GardenDataRepository extends CrudRepository<GardenSensorData, GardenSensorDataId> {
 
 
-    @Query("SELECT g FROM GardenSensorData g WHERE g.timestamp = (SELECT Max(g.timestamp) FROM GardenSensorData g WHERE g.gardenId = :gardenId)")
-    Optional<GardenSensorData> findLatestEntryByGardenId(@Param("gardenId") String gardenId);
+    @Query("SELECT DISTINCT (g) FROM GardenSensorData g WHERE g.timestamp = (SELECT Max(g.timestamp) FROM GardenSensorData g WHERE g.gardenId = :gardenId)")
+    List<GardenSensorData> findLatestEntryByGardenId(@Param("gardenId") String gardenId);
 
     List<GardenSensorData> findByGardenIdAndTimestampBetween(String gardenId, Timestamp start, Timestamp end);
 }

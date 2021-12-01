@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
@@ -21,8 +23,7 @@ public class GardenImageController {
     }
 
     @PostMapping(path = "api/v1/garden_images", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void saveImage(@ModelAttribute GardenImage gardenImage,@RequestParam("image")MultipartFile multipartFile) throws IOException {
-
+    public void saveImage(@ModelAttribute GardenImage gardenImage, @RequestParam("image")MultipartFile multipartFile){
         service.saveImage(gardenImage, multipartFile);
     }
 

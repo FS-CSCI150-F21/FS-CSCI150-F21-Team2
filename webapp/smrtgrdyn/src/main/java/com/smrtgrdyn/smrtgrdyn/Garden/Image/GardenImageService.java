@@ -44,7 +44,7 @@ public class GardenImageService {
 
         try {
             uploadImage(multipartFile);
-            generateNotification(gardenImage);
+
         } catch (IOException ioe) {
 
             dropImageInfo(gardenImage);
@@ -71,8 +71,8 @@ public class GardenImageService {
     }
 
     private void generateNotification(GardenImage gardenImage){
-        //Notification: GardenId, Timestamp, Type
-        notificationUtil.generateNotification(gardenImage.getGardenId(), gardenImage.getTimestamp(), NotificationType.ANIMAL);
+        //Notification: GardenId, Timestamp, Type, Message
+        notificationUtil.generateNotification(gardenImage.getGardenId(), gardenImage.getTimestamp(), NotificationType.ANIMAL, gardenImage.getMessage());
 
     }
     private void dropImageInfo(GardenImage gardenImage){

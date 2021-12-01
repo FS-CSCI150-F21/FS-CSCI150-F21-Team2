@@ -11,4 +11,6 @@ public enum NotificationType {
     public String getType() {
         return type;
     }
+
+
 }

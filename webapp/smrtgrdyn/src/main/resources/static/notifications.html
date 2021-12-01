@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta lang="en-US">
+    <meta dir="ltr">
+    <title>Smrt Grdyn | Notifications
+    </title>
+    <link rel="stylesheet" href="css/notifStyle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+</head>
+<script>
+    if(!window.sessionStorage.getItem("username")){
+        window.sessionStorage.clear();
+        document.location.href="/";
+    }
+</script>
+<body class="container">
+
+<div class="menu_bar flex">
+    <div class="profile flex">
+        <div class="img"><img src="smrtGrdyn_v2_logo.png" onclick="home()"></div>
+        <h3 class="profile_text" id="profileName"> Profile Name</h3>
+    </div>
+    <nav role="navigation">
+        <div id="menuToggle">
+            <!--
+            A fake / hidden checkbox is used as click reciever,
+            so you can use the :checked selector on it.
+            -->
+            <input type="checkbox"  />
+
+            <!--
+            Some spans to act as a hamburger.
+
+            They are acting like a real hamburger,
+            not that McDonalds stuff.
+            -->
+            <span></span>
+            <span></span>
+            <span></span>
+
+            <!--
+            Too bad the menu has to be inside of the button
+            but hey, it's pure CSS magic.
+            -->
+            <ul id="menu">
+                <a href="/dashboard.html"><li>Home</li></a>
+                <a href="/garden_registration.html"><li>Register Garden</li></a>
+                <a href="/notifications.html"><li>Notifications</li></a>
+                <a href="#" onclick="logout()"><li>Logout</li></a>
+            </ul>
+        </div>
+    </nav>
+
+</div>
+<div class="modal" id="modal">
+    <div class="modal-card">
+        <div class="title-text flex">
+            <div class="title-field flex" id="modal-title">
+                <p class="type-field" id="modal-type">Test Type</p>
+                <h4 class="title-divider">|</h4>
+                <p class="date-field" id="modal-date">Test Date</p>
+            </div>
+            <span id="close-modal-x" onclick=closeModal()>&times;</span>
+        </div>
+        <div class="message-container">
+            <div class="message-field" id="modal-message"></div>
+        </div>
+        <div class="form-container">
+            <form id="close-modal-btn" onsubmit="closeModal()">
+                <div class="field btn">
+                    <div class="btn-layer"></div><input type="submit" value="Close">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="card">
+
+    <div class="title-container flex">
+        <div class="title-text">
+            <div class="title">
+                Notifications
+            </div>
+        </div>
+        <div class="selector">
+            <label for="gardenId">Garden:</label>
+            <select name="gardenId" id="gardenId" onchange="changeGarden(this)">
+                <option value="">No Gardens Registered</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="list-container">
+        <div class="list-wrapper">
+            <div class="selectors flex">
+                <div class="selector">
+                    <label for="notif-type">Type:</label>
+                    <select name="type" id="notif-type" onchange="applyFilter(this)">
+                        <option value = "all">All</option>
+                        <option value = "animal">Animal</option>
+                        <option value = "leak">Leak</option>
+                    </select>
+                </div>
+                <div class="selector">
+                    <label for="notif-sort">Sort By:</label>
+                    <select name="sort" id="notif-sort" onchange="applyFilter(this)">
+                        <option value="new-to-old">Newest First</option>
+                        <option value = "old-to-new">Oldest First</option>
+                    </select>
+                </div>
+            </div>
+            <div class="list-window" id="list-window">
+                <div class="no-list">No Notifications</div>
+                <!-- Add Notif Elements Here  -->
+            </div>
+        </div>
+        <div class="form-container">
+            <form id="home-button">
+                <div class="field btn">
+                    <div class="btn-layer"></div><input type="submit" value="Home">
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script src="js/notifScript.js"></script>
+
+</body>
+
+</html>

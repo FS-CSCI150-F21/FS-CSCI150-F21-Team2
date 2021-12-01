@@ -1,185 +1,157 @@
 ﻿<!DOCTYPE html>
+<html>
 <head>
+    <meta charset="utf-8">
+    <meta lang="en-US">
+    <meta dir="ltr">
+    <title>Smrt Grdyn</title>
+    <link rel="stylesheet" href="css/dashstyle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
+
 </head>
-<link rel="stylesheet" href="DashStyle.css">
-<div class="grid-container">
-    <div class="menu-icon">
-        <i class="fas fa-bars header__menu"></i>
-    </div>
-
-    <div class="header">
-        <div class="Account_Avatar">Profile</div>
-    </div>
-
-    <div class="sidenav">
-        <div class="sidenav__close-icon">
-            <i class="fas fa-times sidenav__brand-close"></i>
-        </div>
-        <ul class="sidenav__list">
-            <li class="sidenav__list-item"> <a href="tempGraph.html">Temperature</a></li>
-            <li class="sidenav__list-item"><a href="humidityGraph.html">Humidity</a></li>
-            <li class="sidenav__list-item"><a href="phGraph.html">Ph balance</a></li>
-            <li class="sidenav__list-item"><a href="waterLevels.html">Water Level</a></li>
-            <li class="sidenav__list-item">Somthing?</li>
+<body>
+<script>
+    if(!window.sessionStorage.getItem("username")){
+        window.sessionStorage.clear();
+        document.location.href="/";
+    }
+</script>
+<div class="container grid showcase">
+    <div class="nav container">
+        <ul id="nav_list">
+            <li><a href="#">Temperature</a></li>
+            <li><a href="#">Humidity</a></li>
+            <li><a href="#">Waterflow</a></li>
+            <li><a href="#">Soil Moisture</a></li>
+            <li>Watering Status
+                <br><br>
+                <div class = "waterSwitch">
+                    <label class="switch" >
+                        <input type="checkbox" class="toggle waterSwitch" onChange="flipSwitches(this)">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+<!--                <br><br><input type="checkbox" name="Water Active" class="toggle switch nav_button">-->
+            </li>
         </ul>
     </div>
 
-    <main class="main">
-        <div class="row">
-            <div class="column">
-                <canvas id="tempChart" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
-
-                <script>
-                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
-                    var yValues = ["30F", "40F", "50F", "60F", "70F", "80F", "90F", "100F", "110F"];
-
-                    new Chart("tempChart", {
-                        type: "line",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                label:"Temperature",
-                                fill: false,
-                                lineTension: 0,
-                                backgroundColor: "rgba(0,0,255,1.0)",
-                                borderColor: "rgba(0,0,255,0.1)",
-                                data:[30,40,50,30,60,70,110]
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            scales: {
-                                yAxes: [{ ticks: { min: 6, max: 16 } }],
-                            }
-                        }
-                    });
-                </script>
-
+    <div class="grid content">
+        <div class="menu_bar flex">
+            <div class="profile container">
+                <div class="img"><img src="../smrtGrdyn_v2_logo.png" onclick="home()"></div>
+<!--                <h3 class="logo">Logo | </h3>-->
+                <h3 class="profile_text" id="profileName"> Profile Name</h3>
             </div>
-            <div class="column">
-                <canvas id="tempChart1" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
+            <nav role="navigation">
+                <div id="menuToggle">
+                    <!--
+                    A fake / hidden checkbox is used as click reciever,
+                    so you can use the :checked selector on it.
+                    -->
+                    <input type="checkbox"  />
 
-                <script>
-                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
-                    var yValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+                    <!--
+                    Some spans to act as a hamburger.
 
-                    new Chart("tempChart1", {
-                        type: "line",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                label: "Ph balance",
-                                fill: false,
-                                lineTension: 0,
-                                backgroundColor: "rgba(0,0,255,1.0)",
-                                borderColor: "rgba(0,0,255,0.1)",
-                                data: [1,4,6,8,5,7,5]
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            scales: {
-                                yAxes: [{ ticks: { min: 6, max: 16 } }],
-                            }
-                        }
-                    });
-                </script>
-            </div>
-            <div class="column">
-                <canvas id="tempChart2" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
+                    They are acting like a real hamburger,
+                    not that McDonalds stuff.
+                    -->
+                    <span></span>
+                    <span></span>
+                    <span></span>
 
-                <script>
-                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
-                    var yValues = [1,2,3,4,5,6,7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
-
-                    new Chart("tempChart2", {
-                        type: "line",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                label: "Water flow",
-                                fill: false,
-                                lineTension: 0,
-                                backgroundColor: "rgba(0,0,255,1.0)",
-                                borderColor: "rgba(0,0,255,0.1)",
-                                data: []
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            scales: {
-                                yAxes: [{ ticks: { min: 6, max: 16 } }],
-                            }
-                        }
-                    });
-                </script>
-
-            </div>
+                    <!--
+                    Too bad the menu has to be inside of the button
+                    but hey, it's pure CSS magic.
+                    -->
+                    <ul id="menu">
+                        <a href="/dashboard.html"><li>Home</li></a>
+                        <a href="/garden_registration.html"><li>Register Garden</li></a>
+                        <a href="/notifications.html"><li>Notifications</li></a>
+                        <a href="#" onclick="logout()"><li>Logout</li></a>
+                    </ul>
+                </div>
+            </nav>
         </div>
-        <div class="row">
-            <div class="column2">
-                <canvas id="tempChart3" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
-
-                <script>
-                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
-                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
-
-                    new Chart("tempChart3", {
-                        type: "line",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                fill: false,
-                                lineTension: 0,
-                                backgroundColor: "rgba(0,0,255,1.0)",
-                                borderColor: "rgba(0,0,255,0.1)",
-                                data: yValues
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            scales: {
-                                yAxes: [{ ticks: { min: 6, max: 16 } }],
-                            }
-                        }
-                    });
-                </script>
+        <div class="selector flex">
+            <div class="drop_down_menu">
+                <select name="gardenId" id="gardenId" onchange="changeVals(this)">
+                    <option value="">No Gardens Registered</option>
+                </select>
             </div>
-            <div class="column2">
-                <canvas id="tempChart4" style="width:50%;max-width:300px; max-height:300px; background-color:#D3D3D3"></canvas>
+        <div class="grid main">
+            <div class="flex graph ">
+                <div class="card " id="temperature-card">
+                    <div class="card-grid">
+                        <div><h4>Temperature</h4></div>
+                        <div class="chart" id="temperature-chart">
+                            <canvas id="tempChart"></canvas>
+                        </div>
+                        <div class="instance data">
+                            <div id="temp-data"></div>
+                        </div>
+                    </div>
 
-                <script>
-                    var xValues = ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm",];
-                    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
-
-                    new Chart("tempChart4", {
-                        type: "line",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                fill: false,
-                                lineTension: 0,
-                                backgroundColor: "rgba(0,0,255,1.0)",
-                                borderColor: "rgba(0,0,255,0.1)",
-                                data: yValues
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            scales: {
-                                yAxes: [{ ticks: { min: 6, max: 16 } }],
-                            }
-                        }
-                    });
-                </script>
-
+                </div>
+                <div class="card " id="humidity-card">
+                    <div class="card-grid">
+                        <div><h4>Humidity</h4></div>
+                        <div class="chart" id="humidity-chart">
+                            <canvas id="humidChart" ></canvas>
+                        </div>
+                        <div class="instance data">
+                            <div id="humid-data"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card " id="waterflow-card">
+                    <div class="card-grid">
+                        <div><h4>Water Flow</h4></div>
+                        <div class="chart" id="waterflow-chart">
+                            <canvas id="waterFlowChart"></canvas>
+                        </div>
+                        <div class="instance data">
+                            <div id="waterflow-data"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-           
+            <div class="flex graph ">
+                <div class="card " id="soil-card">
+                    <div class="card-grid">
+                        <div><h4>Soil Moisture</h4></div>
+                        <div class="chart" id="soil-chart">
+                            <canvas id="moistureChart" ></canvas>
+                        </div>
+                        <div class="instance data">
+                            <div id="soil-data"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card " id="waterstatus-card">
+                    <div><h4>Watering Status</h4></div>
+                    <div class="chart" id="waterStatus-chart">
+                        <canvas id="waterStatusChart"></canvas>
+                    </div>
+                    <div class="instance status">
+                        <div id="waterstatus-data"></div>
+                        <div class = "waterSwitch">
+                        <label class="switch" >
+                            <input type="checkbox" class="toggle waterSwitch" onChange="flipSwitches(this)">
+                            <span class="slider round"></span>
+                        </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-    </main>
-
-    <footer class="footer">
-    </footer>
+    </div>
 </div>
+<script src="js/dashscript.js"></script>
+</body>
+</html>
+

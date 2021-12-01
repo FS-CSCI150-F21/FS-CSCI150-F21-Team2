@@ -3,6 +3,7 @@ package com.smrtgrdyn.smrtgrdyn.Garden.Sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -16,19 +17,19 @@ public class GardenDataController {
     }
 
     @PostMapping("api/v1/garden_data_collection/save")
-    public void saveGardenData(@RequestBody GardenSensorData gardenSensorData){
+    public void saveGardenData(HttpServletRequest request, @RequestBody GardenSensorData gardenSensorData){
 
-        gardenDataSaveService.saveGardenData(gardenSensorData);
+        gardenDataSaveService.saveGardenData(request, gardenSensorData);
 
     }
 
-    @GetMapping("api/v1/garden_data_collection/latest")
+    @PostMapping("api/v1/garden_data_collection/latest")
     public GardenSensorData getLatestData(@RequestBody GardenDataRequest request){
 
         return gardenDataSaveService.getLatestData(request);
     }
 
-    @GetMapping("api/v1/garden_data_collection/range")
+    @PostMapping("api/v1/garden_data_collection/range")
     public List getDataFromRange(@RequestBody GardenDataRequest request){
 
         return gardenDataSaveService.getDataFromRange(request);

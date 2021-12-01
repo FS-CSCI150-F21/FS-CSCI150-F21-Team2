@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.apache.commons.lang3.EnumUtils;
+
+import java.util.Arrays;
 import java.util.Optional;
 
 
@@ -121,7 +123,7 @@ public class ValidationUtil {
         }
 
         if(!isNotificationTypeValid(notification)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Type");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Notification Type");
         }
         if(notification.getMessage() == null){
             notification.setMessageByType();
@@ -144,7 +146,14 @@ public class ValidationUtil {
 
     private boolean isNotificationTypeValid(Notification notification){
 
-        return EnumUtils.isValidEnum(NotificationType.class, notification.getType());
+        for(NotificationType enumVal : NotificationType.values()){
+            System.out.println(enumVal.getType());
+            if(enumVal.getType().equals(notification.getType())){
+                return true;
+            }
+        }
+        return false;
+
     }
 
     public boolean validateControlRequest(ControlRequest request, String username){

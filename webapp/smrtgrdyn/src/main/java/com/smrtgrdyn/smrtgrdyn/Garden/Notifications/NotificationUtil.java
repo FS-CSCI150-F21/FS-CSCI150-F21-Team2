@@ -19,9 +19,9 @@ public class NotificationUtil {
         this.validationUtil = validationUtil;
     }
 
-    public void generateNotification(String gardenId, Timestamp timestamp, NotificationType type){
-
-        Notification notification = new Notification(gardenId, timestamp, type.getType());
+    public void generateNotification(String gardenId, Timestamp timestamp, NotificationType type, String message){
+        if (message == null) message = "";
+        Notification notification = new Notification(gardenId, timestamp, type.getType(), message);
         validationUtil.validateNotification(notification);
         notifications.save(notification);
     }

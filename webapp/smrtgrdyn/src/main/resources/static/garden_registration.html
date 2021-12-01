@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta lang="en-US">
+    <meta dir="ltr">
+    <title>Smrt Grdyn | Garden Registration</title>
+    <link rel="stylesheet" href="css/regStyle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+</head>
+<script>
+    if(!window.sessionStorage.getItem("username")){
+        window.sessionStorage.clear();
+        document.location.href="/";
+    }
+</script>
+<body class="container">
+
+<div class="menu_bar flex">
+    <div class="profile flex">
+        <div class="img"><img src="smrtGrdyn_v2_logo.png" onclick="home()"></div>
+        <h3 class="profile_text" id="profileName"> Profile Name</h3>
+    </div>
+    <nav role="navigation">
+        <div id="menuToggle">
+            <!--
+            A fake / hidden checkbox is used as click reciever,
+            so you can use the :checked selector on it.
+            -->
+            <input type="checkbox"  />
+
+            <!--
+            Some spans to act as a hamburger.
+
+            They are acting like a real hamburger,
+            not that McDonalds stuff.
+            -->
+            <span></span>
+            <span></span>
+            <span></span>
+
+            <!--
+            Too bad the menu has to be inside of the button
+            but hey, it's pure CSS magic.
+            -->
+            <ul id="menu">
+                <a href="/dashboard.html"><li>Home</li></a>
+                <a href="/garden_registration.html"><li>Register Garden</li></a>
+                <a href="/notifications.html"><li>Notifications</li></a>
+                <a href="#" onclick="logout()"><li>Logout</li></a>
+            </ul>
+        </div>
+    </nav>
+
+</div>
+
+<div class="card" id="card">
+    <div class="title-text">
+        <div class="title piId">
+            Confirm Registration
+        </div>
+        <div class="title gardenName">
+            Why not name it?
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="form-inner">
+            <form action="api/v1/garden_registration/user"  id="piIdForm">
+                <div class="field">
+                    <label for="piId">Enter the 6 character code:</label>
+                    <input type="text" name="piId" id="piId" placeholder="PSSCDE">
+                </div>
+                <div id="error"></div>
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" value="Continue">
+                </div>
+            </form>
+
+            <form action="api/v1/garden_registration/name_garden" id="gardenNameForm">
+                <div class="field">
+                    <label for="gardenName">Give your garden a name</label>
+                    <input type="text" name="gardenName" id="gardenName" placeholder="My New Garden">
+                </div>
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" value="Finish">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="js/gardenregscript.js"></script>
+
+</body>
+
+</html>

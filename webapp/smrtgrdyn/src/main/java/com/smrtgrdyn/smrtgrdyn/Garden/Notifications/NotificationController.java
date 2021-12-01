@@ -18,7 +18,8 @@ public class NotificationController {
 
     @PostMapping
     public void addNotification(@RequestBody Notification notification){
-
+        System.out.println("Notification Received");
+        System.out.println(notification.toString());
         service.addNotification(notification);
     }
 

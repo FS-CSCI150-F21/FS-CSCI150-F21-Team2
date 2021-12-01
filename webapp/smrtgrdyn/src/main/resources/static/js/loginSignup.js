@@ -91,3 +91,8 @@ function showErrorMessage(divId, msg) {
     errorDiv.innerHTML = msg;
 
 }
+async function logout() {
+    window.sessionStorage.clear();
+    var response = await fetch("api/v1/user_session/logout");
+    document.location.href="/";
+}

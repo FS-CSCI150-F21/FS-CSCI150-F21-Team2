@@ -11,9 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GardenDataSaveService {
@@ -31,11 +33,33 @@ public class GardenDataSaveService {
         this.userInformationRepository = userInformationRepository;
     }
 
-    public void saveGardenData(GardenSensorData sensorData){
+    public void saveGardenData(HttpServletRequest request, GardenSensorData sensorData){
 
         if(isGardenRegistered(sensorData.getGardenId())){
+
             gardenDataRepository.save(sensorData);
         }
+
+    }
+
+    private void updateConnectionInformation(HttpServletRequest request, String gardenId){
+
+        //Extracted Values for clarity
+        String host = request.getRemoteHost();
+        Integer port = request.getRemotePort();
+
+        Optional<GardenConnectionInformation> info = gardenConnectionInformationRepository.findById(gardenId);
+
+        if(info.isPresent()){
+            info.get().setHostName(host);
+            info.get().setPortNumber(port);
+            gardenConnectionInformationRepository.save(info.get());
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Not Registered");
+        }
+
+
 
     }
 
@@ -74,14 +98,14 @@ public class GardenDataSaveService {
 
     public GardenSensorData getLatestData(GardenDataRequest request){
         if(isGardenRegistered(request.getGardenId())){
-            Optional<GardenSensorData> gardenSensorDataOptional =
+            List<GardenSensorData> gardenSensorDataOptional =
                     gardenDataRepository.findLatestEntryByGardenId(request.getGardenId());
 
             if(gardenSensorDataOptional.isEmpty()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data found");
             }
 
-            return gardenSensorDataOptional.get();
+            return gardenSensorDataOptional.get(0);
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Garden Not Registered");

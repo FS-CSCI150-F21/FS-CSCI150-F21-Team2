@@ -32,7 +32,6 @@ public class UserRegistrationController {
             HttpSession session = request.getSession();
             session.setAttribute("username", user.getUsername());
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }

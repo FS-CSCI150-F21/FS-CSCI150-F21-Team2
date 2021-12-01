@@ -14,10 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -106,49 +103,6 @@ class GardenDataRepositoryTest {
 //
 //    }
 
-    @Test
-    void itShouldSelectTheMostRecentTimeStampPerGardenId(){
-        //Given
-        String gardenId = UUID.randomUUID().toString();
-        Timestamp data_timestamp = Timestamp.valueOf("2012-5-21 15:25:44");
-        Timestamp data_timestamp1 = Timestamp.valueOf("2012-5-22 15:25:44");
-        GardenSensorData data = new GardenSensorData(gardenId, data_timestamp, true, 22.1, 12.2,55,12);
-        GardenSensorData data1 = new GardenSensorData(gardenId, data_timestamp1, true, 22.1, 12.2,55,12);
-
-        //When
-        underTest.save(data);
-        underTest.save(data1);
-
-        Optional<GardenSensorData> optional = underTest.findLatestEntryByGardenId(gardenId);
-
-        assertThat(optional).isPresent()
-                .hasValueSatisfying(c -> {
-                    c.getTimestamp().equals(data_timestamp1);
-                });
-
-
-    }
-
-    @Test
-    void itShouldSelectByMostRecentTimeStampAndGardenId() {
-        String gardenId = UUID.randomUUID().toString();
-        Timestamp data_timestamp = Timestamp.valueOf("2012-5-21 15:25:44");
-        Timestamp data_timestamp1 = Timestamp.valueOf("2012-5-22 15:25:44");
-        GardenSensorData data = new GardenSensorData(gardenId, data_timestamp, true, 22.1, 12.2, 55, 12);
-        GardenSensorData data1 = new GardenSensorData(gardenId, data_timestamp1, true, 22.1, 12.2, 55, 12);
-
-        //When
-        underTest.save(data);
-        underTest.save(data1);
-
-        Optional<GardenSensorData> optionalData = underTest.findLatestEntryByGardenId(gardenId);
-        assertThat(optionalData).isPresent()
-                .hasValueSatisfying(c -> {
-                    c.equals(data1);
-                });
-
-
-    }
 
     @Test
     void itShouldSelectMultipleEntriesForGivenTimeFrameAndId(){

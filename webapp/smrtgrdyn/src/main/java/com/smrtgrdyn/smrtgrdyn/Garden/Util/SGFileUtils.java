@@ -19,6 +19,7 @@ public class SGFileUtils {
 
     public static void saveFile(String uploadDir, String filename, MultipartFile file) throws IOException {
 
+        System.out.println("Attempting to upload file");
         Path uploadPath = Paths.get(uploadDir);
 
         if(!Files.exists(uploadPath)){
