@@ -1,3 +1,5 @@
+import time
+from threading import Lock
 import sensors.solenoid_sensor as Sol
 import sensors.soilmoisture as Soil
 import sensors.flow_meter as Flow
@@ -21,5 +23,18 @@ def gather_all_sensor_data():
     moisture = Soil.SoilMoistureSensor("SoilMoisture", 0)
     temp_hum = TempHum.TemperatureHumiditySensor("TempHum")
 
-    send_data = DataRequest(temp_hum.dht.temperature, temp_hum.dht.humidity, flow_meter.read_analog_data,
-                            solenoid_stat.get_device_status(), moisture.read_analog_data)
+    data = [temp_hum.dht.temperature, temp_hum.dht.humidity, flow_meter.read_analog_data,
+            solenoid_stat.get_device_status(), moisture.read_analog_data]
+    return data
+
+
+def to_server():
+    while True:
+        print("Gathering data")
+        Lock().acquire()
+        data = gather_all_sensor_data()
+        send_data = DataRequest(data[0], data[1], data[2], data[3], data[4])
+        print("Data acquired:", send_data.__dict__)
+        Lock().release()
+        time.sleep(5000)
+
