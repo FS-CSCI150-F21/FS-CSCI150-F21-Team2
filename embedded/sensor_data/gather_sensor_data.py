@@ -15,16 +15,13 @@ class DataRequest:
         self.soil_moisture = soil_moisture
 
 
-
 def gather_all_sensor_data():
-    solenoid_stat = Sol.Solenoid()
-    flow_meter = Flow.FlowMeter()
-    moisture = Soil.SoilMoistureSensor()
-    temp_hum = TempHum.TemperatureHumiditySensor()
+    # Declare sensors needed, note the pins must be exact on all around code base for each physical sensor.
+    # Cannot assign different pins to device already connected to another pin
+    solenoid_stat = Sol.Solenoid("WaterValve", "OUT", 17)
+    flow_meter = Flow.FlowMeter("FlowMeter", 1)
+    moisture = Soil.SoilMoistureSensor("SoilMoisture", 0)
+    temp_hum = TempHum.TemperatureHumiditySensor("TempHum")
 
-
-    #need to seperate temp and hum here
-
-# global objects
-if __name__ == "__main__":
-    pass
+    send_data = DataRequest(temp_hum.dht.temperature, temp_hum.dht.humidity, flow_meter.read_analog_data,
+                            solenoid_stat.get_device_status(), moisture.read_analog_data)
