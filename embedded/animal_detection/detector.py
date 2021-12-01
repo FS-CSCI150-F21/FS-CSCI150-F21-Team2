@@ -2,14 +2,19 @@ import tensorflow as tf
 import tensorflow_hub as tfhub
 from time import sleep, time
 from datetime import datetime, timedelta
-import requests
 import os
+import logging
 
 # local imports
 from utils.logging import log
-from server.endpoints import Endpoint
 import server.warning as sw
 import sensors.camera as camera
+
+# Suppress unneeded tensorflow warnings
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+logging.getLogger("tensorflow").setLevel(logging.CRITICAL)
+logging.getLogger("tensorflow_hub").setLevel(logging.CRITICAL)
+
 
 def detection_loop(frequency: int = 30000, detection_threshold: float = 0.5):
     """
