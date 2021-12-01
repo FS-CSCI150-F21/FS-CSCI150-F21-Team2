@@ -29,6 +29,6 @@ class Data:
         self.wateractive = wateractive
 
 class ServerRequest:
-    def __init__(self, gardenId: str, action: int):
+    def __init__(self, gardenId: str, action: str):
         self.gardenId = gardenId
-        self.action = action
+        self.action = int(action)
