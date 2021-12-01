@@ -1,6 +1,8 @@
 import os
 from typing import Tuple
 
+from utils.logging import log
+
 __utils_folder = os.path.normpath(os.path.dirname(__file__) + os.sep)
 __status_file = str(__utils_folder + '/.status')
 __animal_prefix = 'animal='
@@ -20,8 +22,13 @@ def __read_status_file() -> Tuple[bool, bool]:
     with open(__status_file, 'r') as FILE:
         status = FILE.read().splitlines()
 
-    animal_status = True if status[0].split('=')[1] == 'enabled' else False
-    watering_status = True if status[1].split('=')[1] == 'enabled' else False
+    try:
+        animal_status = True if status[0].split('=')[1] == 'enabled' else False
+        watering_status = True if status[1].split('=')[1] == 'enabled' else False
+    except Exception as e:
+        log('ERROR: Malformed status file. Rewriting status file to defaults...')
+        __write_status_file((True, True))
+        return (True, True)
 
     return (animal_status, watering_status)
 
