@@ -3,6 +3,8 @@ import logging
 
 import server.connection as sc
 import server.json_bodies as body
+import utils.status as us
+import server.data as sd
 
 class S(BaseHTTPRequestHandler):
     def _set_response(self):
@@ -28,12 +30,13 @@ class S(BaseHTTPRequestHandler):
 
         try:
             CurServerRequest = self.get_body(post_data)
+            self.execute_server_request(CurServerRequest)
             self._set_response()
             self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
             
         except Exception as e:
             self._set_malformed_response(e)
-            logging.info('POST request malformed.')
+            logging.info(str(e))
         
     def get_request_body(self, response) -> body.ServerRequest:
         # parse POST request for body
@@ -52,9 +55,22 @@ class S(BaseHTTPRequestHandler):
         # convert to object and return
         return body.ServerRequest(**post_body)
 
+    def execute_server_request(self, ServerRequestObj: body.ServerRequest):
+        _, uuid = sc.get_registration()
+        if uuid != ServerRequestObj.gardenId:
+            raise Exception('ERROR: Mismatched gardenId.')
 
+        action = ServerRequestObj.action
 
-        
+        if action == 1:
+            us.set_automatic_watering_status(False)
+        elif action == 2:
+            us.set_automatic_watering_status(True)
+        elif action == 3:
+            sd.send_current_data()
+        else:
+            raise Exception('ERROR: Invalid action.')
+
 
 def run(server_class=HTTPServer, handler_class=S, port=8080):
     logging.basicConfig(level=logging.INFO)
