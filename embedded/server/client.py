@@ -103,7 +103,7 @@ def get_network_ip_addr():
 
 def run(server_class=HTTPServer, handler_class=S, port=8080):
     logging.basicConfig(level=logging.INFO)
-    server_address = ('172.22.46.66', port)
+    server_address = (get_network_ip_addr(), port)
     httpd = server_class(server_address, handler_class)
     logging.info('Starting httpd...\n')
     try:
