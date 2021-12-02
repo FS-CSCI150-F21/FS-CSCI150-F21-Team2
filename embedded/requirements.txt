@@ -1,5 +1,6 @@
 RPi.GPIO
 adafruit-blinka
+Adafruit-ADS1x15
 adafruit-circuitpython-ads1x15
 requests
 requests_toolbelt
