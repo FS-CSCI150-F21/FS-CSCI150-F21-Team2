@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
+import netifaces
 
 import server.connection as sc
 import server.json_bodies as body
@@ -72,6 +73,27 @@ class S(BaseHTTPRequestHandler):
             log('Current data snapshot sent to server.')
         else:
             raise Exception('ERROR: Invalid action.')
+
+def get_ztc_network_interface() -> str:
+    """
+    Returns string containing name of ztc network interface
+
+    Args:
+        None
+    Returns:
+        str: ztc network interface name
+    """
+    for interface in netifaces.interfaces():
+        if interface.startswith('ztc'):
+            return interface
+    
+def get_network_ip_addr():
+    
+    ztc_interface = get_ztc_network_interface()
+
+
+    
+
 
 
 def run(server_class=HTTPServer, handler_class=S, port=8080):
