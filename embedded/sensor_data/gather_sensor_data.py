@@ -28,6 +28,11 @@ def gather_all_sensor_data():
     return data
 
 
+def leak_detection(solenoid: Sol, flow_rate):
+    if solenoid().get_solenoid_status() == False and flow_rate() > 0:
+        print("Potential water leak detected")
+
+
 def to_server():
     while True:
         print("Gathering data")
@@ -38,3 +43,6 @@ def to_server():
         Lock().release()
         time.sleep(5000)
 
+
+def warn(case):
+    pass
