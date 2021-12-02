@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
+import netifaces
 
 import server.connection as sc
 import server.json_bodies as body
@@ -73,10 +74,36 @@ class S(BaseHTTPRequestHandler):
         else:
             raise Exception('ERROR: Invalid action.')
 
+def get_ztc_network_interface() -> str:
+    """
+    Returns string containing name of ztc network interface
+
+    Args:
+        None
+    Returns:
+        str: ztc network interface name
+    """
+    for interface in netifaces.interfaces():
+        if interface.startswith('ztc'):
+            return interface
+    
+def get_network_ip_addr():
+    """
+    Returns network ip address for server to be hosted on
+
+    Args:
+        None
+    Returns:
+        str: ip address for server hosting
+    """
+    ztc_interface = get_ztc_network_interface()
+    interface_info = netifaces.ifaddresses(ztc_interface)[netifaces.AF_INET]
+    ip_addr = interface_info[0]['addr']
+    return ip_addr
 
 def run(server_class=HTTPServer, handler_class=S, port=8080):
     logging.basicConfig(level=logging.INFO)
-    server_address = ('172.22.46.66', port)
+    server_address = (get_network_ip_addr(), port)
     httpd = server_class(server_address, handler_class)
     logging.info('Starting httpd...\n')
     try:
