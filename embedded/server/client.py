@@ -88,13 +88,18 @@ def get_ztc_network_interface() -> str:
             return interface
     
 def get_network_ip_addr():
-    
+    """
+    Returns network ip address for server to be hosted on
+
+    Args:
+        None
+    Returns:
+        str: ip address for server hosting
+    """
     ztc_interface = get_ztc_network_interface()
-
-
-    
-
-
+    interface_info = netifaces.ifaddresses(ztc_interface)[netifaces.AF_INET]
+    ip_addr = interface_info[0]['addr']
+    return ip_addr
 
 def run(server_class=HTTPServer, handler_class=S, port=8080):
     logging.basicConfig(level=logging.INFO)
