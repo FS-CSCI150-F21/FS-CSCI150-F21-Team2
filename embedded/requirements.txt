@@ -1,5 +1,6 @@
-picamera
-opencv-python
 RPi.GPIO
 adafruit-blinka
 adafruit-circuitpython-ads1x15
+requests
+requests_toolbelt
+netifaces

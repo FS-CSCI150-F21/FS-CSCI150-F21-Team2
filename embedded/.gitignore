@@ -1,7 +1,18 @@
+# Models
+tf_models/
+models/
+
+# Registration
+.registration
+.url
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Images
+.images/
 
 # C extensions
 *.so
