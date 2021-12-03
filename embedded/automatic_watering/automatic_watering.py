@@ -29,11 +29,11 @@ def automatic_watering_loop(update_freq: int = 30000, timeout: int = 600000):
 
     update_freq /= 1000
     timeout /= 1000
-    Solenoid = Sol.Solenoid("WaterValve", "OUT", 17)
 
     while True:
         GardenData = get_data.gather_all_sensor_data()
         soil_moisture_value = GardenData.soilMoisture
+        Solenoid = Sol.Solenoid("WaterValve", "OUT", 17)
         if __WetValue < soil_moisture_value < (__WetValue + __Threshold):
             Solenoid.pin_off()
             log("Garden soil conditions are very wet.")
